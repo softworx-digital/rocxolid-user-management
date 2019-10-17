@@ -38,15 +38,15 @@ class RouteServiceProvider extends IlluminateServiceProvider
     {
         $router->group([
             'module' => 'rocXolid-user-management',
-            'middleware' => [ 'web', 'auth.rocXolid' ],
+            'middleware' => [ 'web', 'rocXolid.auth' ],
             'namespace' => 'Softworx\RocXolid\UserManagement\Http\Controllers',
             'prefix' => sprintf('%s/user-management', config('rocXolid.main.admin-path', 'rocXolid')),
-            'as' => 'rocxolid.user-management.',
+            'as' => 'rocXolid.user-management.',
         ], function ($router) {
-            CrudRouterService::create('user', User\Controller::class);
-            CrudRouterService::create('group', Group\Controller::class);
-            CrudRouterService::create('role', Role\Controller::class);
-            CrudRouterService::create('permission', Permission\Controller::class);
+            CrudRouterService::create('user', \User\Controller::class);
+            CrudRouterService::create('group', \Group\Controller::class);
+            CrudRouterService::create('role', \Role\Controller::class);
+            CrudRouterService::create('permission', \Permission\Controller::class);
         });
 
         return $this;

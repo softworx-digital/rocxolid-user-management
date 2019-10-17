@@ -7,16 +7,6 @@
  */
 return [
     /**
-     * Route path for administration environment.
-     */
-    'routes' => [
-        'login' => 'login',
-        'logout' => 'logout',
-        'ping' => 'ping',
-        'registration' => 'registration',
-        'forgot-password' => 'forgot-password',
-    ],
-    /**
      * View composers.
      */
     'composers' => [

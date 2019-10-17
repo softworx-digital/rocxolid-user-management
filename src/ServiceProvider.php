@@ -21,11 +21,8 @@ class ServiceProvider extends IlluminateServiceProvider
     public function register()
     {
         $this->app->register(Providers\ConfigurationServiceProvider::class);
-        $this->app->register(Providers\CommandServiceProvider::class);
-        $this->app->register(Providers\AuthServiceProvider::class);
         $this->app->register(Providers\ViewServiceProvider::class);
         $this->app->register(Providers\RouteServiceProvider::class);
-        $this->app->register(Providers\TranslationServiceProvider::class);
     }
 
      /**
@@ -50,7 +47,6 @@ class ServiceProvider extends IlluminateServiceProvider
         // php artisan vendor:publish --provider="Softworx\RocXolid\UserManagement\ServiceProvider" --tag="config" (--force to overwrite)
         $this->publishes([
             __DIR__ . '/../config/general.php' => config_path('rocXolid/user-management/general.php'),
-            __DIR__ . '/../config/auth.php' => config_path('rocXolid/user-management/auth.php'),
         ], 'config');
 
         // views files
@@ -59,17 +55,10 @@ class ServiceProvider extends IlluminateServiceProvider
             __DIR__ . '/../resources/views' => resource_path('views/vendor/softworx/rocXolid/user-management'),
         ], 'views');
 
-        // lang files
-        // php artisan vendor:publish --provider="Softworx\RocXolid\UserManagement\ServiceProvider" --tag="views" (--force to overwrite)
-        $this->publishes([
-            //__DIR__ . '/../resources/lang' => resource_path('lang/vendor/softworx/rocXolid/user-management'),
-            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rocXolid:user-management'),
-        ], 'views');
-
         // migrations
         // php artisan vendor:publish --provider="Softworx\RocXolid\UserManagement\ServiceProvider" --tag="migrations" (--force to overwrite)
         $this->publishes([
-            __DIR__.'/../database/migrations/' => database_path('migrations')
+            __DIR__.'/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
 
         return $this;

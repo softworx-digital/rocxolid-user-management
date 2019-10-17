@@ -1,0 +1,37 @@
+{
+    "name": "softworx/rocxolid-user-management",
+    "description": "Laravel Authentication, Authorization & User Management package for rocXolid library",
+    "keywords": [
+        "laravel",
+        "admin",
+        "user",
+        "user management",
+        "permissions"
+    ],
+    "type": "library",
+    "authors": [{
+        "name": "softworx",
+        "email": "hello@softworx.digital"
+    }],
+	"license": "MIT",
+    "require": {
+		"php": "~7.2",
+        "laravel/framework": "5.8.*|^6.0",
+        "softworx/rocxolid": "*",
+        "softworx/rocxolid-design": "*",
+        "softworx/rocxolid-admin": "*",
+        "softworx/rocxolid-common": "*"
+	},
+    "autoload": {
+        "psr-4": {
+            "Softworx\\RocXolid\\UserManagement\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Softworx\\RocXolid\\UserManagement\\ServiceProvider"
+            ]
+        }
+    }
+}

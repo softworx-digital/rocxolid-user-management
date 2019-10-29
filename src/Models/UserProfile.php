@@ -13,7 +13,7 @@ use Softworx\RocXolid\UserManagement\Models\User;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasUser;
 
 /**
- * rocXolid User Profile class.
+ * rocXolid user profile class.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\Admin

@@ -11,6 +11,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // components
 use Softworx\RocXolid\Components\General\Message;
+// traits
+use Softworx\RocXolid\Models\Traits\HasTitleColumn;
 // model traits
 use Softworx\RocXolid\Models\Traits\Crudable as CrudableTrait;
 // user management traits
@@ -21,7 +23,7 @@ use Softworx\RocXolid\UserManagement\Models\Traits\HasUserProfile;
 use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
 
 /**
- * rocXolid User class.
+ * rocXolid user class.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\Admin
@@ -31,6 +33,7 @@ class User extends Authenticatable implements Crudable
 {
     use Notifiable;
     use CrudableTrait;
+    use HasTitleColumn;
     use HasRoles;
     use HasGroups;
     use HasPermissions;
@@ -61,6 +64,7 @@ class User extends Authenticatable implements Crudable
     protected $fillable = [
         'name',
         'email',
+        'password',
     ];
 
     protected $hidden = [
@@ -76,34 +80,12 @@ class User extends Authenticatable implements Crudable
 
     protected $extra = [];
 
-    public function getTitle()
-    {
-        return $this->{$this->getTitleColumn()};
-    }
-
-    public function getTitleColumn()
-    {
-        return static::$title_column;
-    }
-
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = Hash::make($password);
     }
 
-    public function fillCustom($data)
-    {
-        $this->login = $this->email;
-
-        if (isset($data['password_unhashed']) && $data['password_unhashed'])
-        {
-            $this->password = $data['password_unhashed'];
-            $this->password_unhashed = null;
-        }
-
-        return $this;
-    }
-
+    /*
     public function getLastAction()
     {
         return Carbon::parse($this->last_action)->format('j.n.Y H:i:s');
@@ -127,6 +109,7 @@ class User extends Authenticatable implements Crudable
 
         return (new Message())->fetch(sprintf('status.%s', $logged ? 'on' : 'off'));
     }
+    */
 
     public function applyGroupFilters(&$builder, $column)
     {
@@ -146,6 +129,6 @@ class User extends Authenticatable implements Crudable
 
     public function isRoot()
     {
-        return $this->id == static::ROOT_ID;
+        return $this->id === static::ROOT_ID;
     }
 }

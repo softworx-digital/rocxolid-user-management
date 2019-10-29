@@ -17,6 +17,7 @@ class CreateUserManagementTables extends Migration
             ->groups()
             ->roles()
             ->users()
+            ->userProfiles()
             ->permissions()
             ->passwordResets()
             ->rolePermissions()
@@ -36,6 +37,7 @@ class CreateUserManagementTables extends Migration
         Schema::dropIfExists('groups');
         Schema::dropIfExists('roles');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('user_profiles');
         Schema::dropIfExists('permissions');
         Schema::dropIfExists('password_resets');
         Schema::dropIfExists('role_has_permissions');
@@ -48,7 +50,7 @@ class CreateUserManagementTables extends Migration
     protected function groups()
     {
         Schema::create('groups', function (Blueprint $table) {
-            $table->increments('id')->unique()->index();
+            $table->increments('id');
             $table->string('name');
             $table->timestamps();
             $table->unsignedInteger('created_by')->nullable();
@@ -64,9 +66,9 @@ class CreateUserManagementTables extends Migration
     protected function roles()
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->increments('id')->unique()->index();
+            $table->increments('id');
             $table->string('name');
-            $table->string('guard_name')->default('auth.rocXolid');
+            $table->string('guard_name')->default('rocXolid.auth');
             $table->timestamps();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
@@ -74,35 +76,69 @@ class CreateUserManagementTables extends Migration
         });
 
         DB::statement("INSERT INTO `roles` (`name`) VALUES ('Admin')");
+        DB::statement("INSERT INTO `roles` (`name`) VALUES ('Customer')");
 
         return $this;
     }
 
     protected function users()
     {
-        // users
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id')->unique()->index();
-            $table->unsignedInteger('language_id')->default(101); // slovak
+            $table->increments('id');
             $table->string('name');
-            $table->string('birthnumber')->nullable();
             $table->string('email')->unique();
-            $table->string('login')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('password_unhashed')->nullable();
-            $table->timestamp('last_action')->nullable();
-            $table->timestamp('logged_out')->nullable();
-            $table->timestamp('days_first_login')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->unsignedInteger('deleted_by')->nullable();
+        });
+
+        return $this;
+    }
+
+    protected function userProfiles()
+    {
+        Schema::create('user_profiles', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('language_id')->default(101); // slovak
+            $table->unsignedInteger('nationality_id')->default(1); // slovak
+            $table->string('email');
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
+            $table->string('company_name')->nullable();
+            $table->date('birthdate')->nullable();
+            $table->enum('gender', ['m', 'f'])->nullable();
+            $table->string('bank_account_no')->nullable();
+            $table->string('phone_no')->nullable();
+            $table->string('id1_no')->nullable();
+            $table->string('id2_no')->nullable();
+            $table->string('vat_no')->nullable();
+            
+            $table->timestamps();
+            $table->softDeletes();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
 
             $table->foreign('language_id')
                 ->references('id')
                 ->on('languages')
+                ->onDelete('cascade');
+
+            $table->foreign('nationality_id')
+                ->references('id')
+                ->on('nationalities')
                 ->onDelete('cascade');
         });
 
@@ -112,9 +148,9 @@ class CreateUserManagementTables extends Migration
     protected function permissions()
     {
         Schema::create('permissions', function (Blueprint $table) {
-            $table->increments('id')->unique()->index();
+            $table->increments('id');
             $table->string('name');
-            $table->string('guard_name')->default('auth.rocXolid');
+            $table->string('guard_name')->default('rocXolid.auth');
             $table->string('controller_class')->nullable();
             $table->string('controller_method_group')->nullable();
             $table->string('controller_method')->nullable();

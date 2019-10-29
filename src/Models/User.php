@@ -13,15 +13,19 @@ use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Components\General\Message;
 // model traits
 use Softworx\RocXolid\Models\Traits\Crudable as CrudableTrait;
-// common traits
-use Softworx\RocXolid\Common\Models\Traits\HasLanguage;
 // user management traits
-use Softworx\RocXolid\UserManagement\Models\Traits\HasRoles,
-    Softworx\RocXolid\UserManagement\Models\Traits\HasGroups,
-    Softworx\RocXolid\UserManagement\Models\Traits\HasPermissions,
-    Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
+use Softworx\RocXolid\UserManagement\Models\Traits\HasRoles;
+use Softworx\RocXolid\UserManagement\Models\Traits\HasGroups;
+use Softworx\RocXolid\UserManagement\Models\Traits\HasPermissions;
+use Softworx\RocXolid\UserManagement\Models\Traits\HasUserProfile;
+use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
+
 /**
+ * rocXolid User class.
  *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\Admin
+ * @version 1.0.0
  */
 class User extends Authenticatable implements Crudable
 {
@@ -30,7 +34,7 @@ class User extends Authenticatable implements Crudable
     use HasRoles;
     use HasGroups;
     use HasPermissions;
-    use HasLanguage;
+    use HasUserProfile;
     use ProtectsRoot;
 
     const ROOT_ID = 1;
@@ -45,9 +49,7 @@ class User extends Authenticatable implements Crudable
 
     protected $system = [
         'password',
-        'password_unhashed',
         'remember_token',
-        'birthnumber',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -59,11 +61,6 @@ class User extends Authenticatable implements Crudable
     protected $fillable = [
         'name',
         'email',
-        'login',
-        'language_id',
-        'password',
-        'password_unhashed',
-        //'birthnumber',
     ];
 
     protected $hidden = [
@@ -72,7 +69,6 @@ class User extends Authenticatable implements Crudable
     ];
 
     protected $relationships = [
-        'language',
         'groups',
         'roles',
         'permissions',

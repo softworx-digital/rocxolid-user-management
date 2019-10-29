@@ -5,7 +5,7 @@ namespace Softworx\RocXolid\UserManagement;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 /**
- * RocXolid Authentication, Authorization & User Management package service provider.
+ * rocXolid Authentication, Authorization & User Management package service provider.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\Admin

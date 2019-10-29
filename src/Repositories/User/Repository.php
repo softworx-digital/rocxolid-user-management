@@ -24,20 +24,7 @@ class Repository extends AbstractCrudRepository
                     ],
                 ],
             ],
-        ],/*
-        'birthnumber' => [
-            'type' => Text::class,
-            'options' => [
-                'label' => [
-                    'title' => 'birthnumber'
-                ],
-                'wrapper' => [
-                    'attributes' => [
-                        'class' => 'text-center',
-                    ],
-                ],
-            ],
-        ],*/
+        ],
         'email' => [
             'type' => Text::class,
             'options' => [
@@ -50,20 +37,7 @@ class Repository extends AbstractCrudRepository
                     ],
                 ],
             ],
-        ],/*
-        'password_unhashed' => [
-            'type' => Text::class,
-            'options' => [
-                'label' => [
-                    'title' => 'password_unhashed'
-                ],
-                'wrapper' => [
-                    'attributes' => [
-                        'class' => 'text-center',
-                    ],
-                ],
-            ],
-        ],*/
+        ],
         'language' => [
             'type' => ModelRelation::class,
             'options' => [

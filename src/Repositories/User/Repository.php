@@ -37,7 +37,7 @@ class Repository extends AbstractCrudRepository
                     ],
                 ],
             ],
-        ],
+        ],/*
         'language' => [
             'type' => ModelRelation::class,
             'options' => [
@@ -83,7 +83,7 @@ class Repository extends AbstractCrudRepository
                     ],
                 ],
             ],
-        ],
+        ],*/
         'days_first_login' => [
             'type' => Method::class,
             'options' => [

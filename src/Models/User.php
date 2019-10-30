@@ -85,6 +85,21 @@ class User extends Authenticatable implements Crudable
         $this->attributes['password'] = Hash::make($password);
     }
 
+    public function getLastAction()
+    {
+        return null;
+    }
+
+    public function getStatus($seconds = 3600)
+    {
+        return null;
+    }
+
+    public function getDaysFirstLogin()
+    {
+        return null;
+    }
+
     /*
     public function getLastAction()
     {

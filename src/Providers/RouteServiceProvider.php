@@ -40,7 +40,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
             'module' => 'rocXolid-user-management',
             'middleware' => [ 'web', 'rocXolid.auth' ],
             'namespace' => 'Softworx\RocXolid\UserManagement\Http\Controllers',
-            'prefix' => sprintf('%s/user-management', config('rocXolid.main.admin-path', 'rocXolid')),
+            'prefix' => sprintf('%s/user-management', config('rocXolid.admin.general.routes.root', 'rocXolid')),
             'as' => 'rocXolid.user-management.',
         ], function ($router) {
             CrudRouterService::create('user', \User\Controller::class);

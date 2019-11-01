@@ -8,8 +8,6 @@ use Softworx\RocXolid\Repositories\Columns\Type\Method;
 
 class Repository extends AbstractCrudRepository
 {
-    protected static $translation_param = 'permission';
-
     protected $columns = [
         'name' => [
             'type' => Method::class,

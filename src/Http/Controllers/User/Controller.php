@@ -16,6 +16,8 @@ class Controller extends AbstractCrudController
     protected static $model_class = User::class;
 
     protected static $repository_class = Repository::class;
+
+    protected $translation_param = 'user';
     /*
     protected static $form_class = [
         'create' => CreateForm::class,

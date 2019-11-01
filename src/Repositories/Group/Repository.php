@@ -11,8 +11,6 @@ use Softworx\RocXolid\Commerce\Models\Shop;
  */
 class Repository extends AbstractCrudRepository
 {
-    protected static $translation_param = 'group';
-
     protected $columns = [
         'name' => [
             'type' => Text::class,

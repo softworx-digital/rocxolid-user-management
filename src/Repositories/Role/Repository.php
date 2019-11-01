@@ -8,8 +8,6 @@ use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
 
 class Repository extends AbstractCrudRepository
 {
-    protected static $translation_param = 'role';
-
     protected $columns = [
         'name' => [
             'type' => Text::class,

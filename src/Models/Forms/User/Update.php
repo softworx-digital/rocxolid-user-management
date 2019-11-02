@@ -35,21 +35,7 @@ class Update extends RocXolidAbstractCrudForm
                     ],
                 ],
             ],
-        ],/*
-        'birthnumber' => [
-            'type' => Input::class,
-            'options' => [
-                'label' => [
-                    'title' => 'birthnumber',
-                ],
-                'validation' => [
-                    'rules' => [
-                        'required',
-                        'max:255',
-                    ],
-                ],
-            ],
-        ],*/
+        ],
         'email' => [
             'type' => Email::class,
             'options' => [
@@ -60,21 +46,6 @@ class Update extends RocXolidAbstractCrudForm
                     'rules' => [
                         'required',
                         'email',
-                    ],
-                ],
-            ],
-        ],
-        'password_unhashed' => [
-            'type' => Input::class,
-            'options' => [
-                'label' => [
-                    'title' => 'password_unhashed',
-                ],
-                'validation' => [
-                    'rules' => [
-                        //'required',
-                        //'min:6',
-                        'max:255',
                     ],
                 ],
             ],

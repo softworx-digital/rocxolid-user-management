@@ -52,6 +52,7 @@ class User extends Authenticatable implements Crudable
 
     protected $system = [
         'password',
+        'email_verified_at',
         'remember_token',
         'created_at',
         'updated_at',

@@ -3,6 +3,7 @@
 return [
     'field' => [
         'id' => 'ID',
+        'email' => 'e-mail',
         'created_at' => 'Čas vytvorenia',
         'updated_at' => 'Čas poslednej aktualizácie',
         'deleted_at' => 'Čas vymazania',
@@ -50,7 +51,10 @@ return [
         'destroyConfirm' => 'Potvrdenie vymazania',
     ],
     'text' => [
+        'base-data' => 'Základné údaje',
         'destroy-confirmation' => 'Naozaj vymazať',
         'not-yet' => 'zatiaľ nie je',
+        'male' => 'Muž',
+        'female' => 'Žena',
     ],
 ];

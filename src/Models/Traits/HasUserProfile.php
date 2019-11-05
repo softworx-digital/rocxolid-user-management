@@ -10,4 +10,9 @@ trait HasUserProfile
     {
         return $this->hasOne(UserProfile::class);
     }
+
+    public function buildUserProfile()
+    {
+        return new UserProfile();
+    }
 }

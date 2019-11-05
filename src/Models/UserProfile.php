@@ -31,9 +31,20 @@ class UserProfile extends AbstractCrudModel
         'last_name',
     ];
 
-    protected $fillable = [
-        'name',
+    protected $system = [
+        'id',
         'email',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'created_by',
+        'updated_by',
+        'deleted_by',
+    ];
+
+    protected $fillable = [
+        'user_id',
+        'name',
         'first_name',
         'middle_name',
         'last_name',
@@ -51,4 +62,11 @@ class UserProfile extends AbstractCrudModel
         'language',
         'nationality',
     ];
+    
+    public function fillCustom($data, $action = null)
+    {
+        $this->email = $this->user->email;
+
+        return $this;
+    }
 }

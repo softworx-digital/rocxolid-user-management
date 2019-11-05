@@ -1,6 +1,6 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Models\Forms\User;
+namespace Softworx\RocXolid\UserManagement\Models\Forms\UserProfile;
 
 use Illuminate\Validation\Rule;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
@@ -9,9 +9,6 @@ use Softworx\RocXolid\Forms\Fields\Type\Email;
 use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
 use Softworx\RocXolid\Forms\Fields\Type\CollectionCheckbox;
 use Softworx\RocXolid\Common\Models\Language;
-use Softworx\RocXolid\UserManagement\Models\Group;
-use Softworx\RocXolid\UserManagement\Models\Role;
-use Softworx\RocXolid\UserManagement\Models\Permission;
 
 class Update extends RocXolidAbstractCrudForm
 {
@@ -50,40 +47,11 @@ class Update extends RocXolidAbstractCrudForm
                 ],
             ],
         ],
-        'groups' => [
-            'type' => CollectionCheckbox::class,
+        'language_id' => [
+            'type' => CollectionSelect::class,
             'options' => [
                 'label' => [
-                    'title' => 'groups',
-                ],
-                'collection' => [
-                    'model' => Group::class,
-                    'column' => 'name',
-                ],
-            ],
-        ],
-        'roles' => [
-            'type' => CollectionCheckbox::class,
-            'options' => [
-                'label' => [
-                    'title' => 'roles',
-                ],
-                'collection' => [
-                    'model' => Role::class,
-                    'column' => 'name',
-                ],
-            ],
-        ],
-        'permissions' => [
-            'type' => CollectionCheckbox::class,
-            'options' => [
-                'label' => [
-                    'title' => 'extra_permissions',
-                ],
-                'collection' => [
-                    'model' => Permission::class,
-                    'column' => 'name',
-                    'method' => 'getTitle',
+                    'title' => 'language',
                 ],
             ],
         ],
@@ -91,6 +59,8 @@ class Update extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
+        $fields['language_id']['options']['collection'] = Language::where('is_admin_available', 1)->pluck('name', 'id');
+
         $rule = Rule::unique('users', 'email')
             ->ignore($this->getModel()->id);
 

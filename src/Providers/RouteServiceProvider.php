@@ -44,6 +44,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
             'as' => 'rocXolid.user-management.',
         ], function ($router) {
             CrudRouterService::create('user', \User\Controller::class);
+            CrudRouterService::create('user-profile', \UserProfile\Controller::class);
             CrudRouterService::create('group', \Group\Controller::class);
             CrudRouterService::create('role', \Role\Controller::class);
             CrudRouterService::create('permission', \Permission\Controller::class);

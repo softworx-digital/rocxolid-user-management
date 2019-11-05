@@ -32,4 +32,10 @@ return [
             'plural' => 'Používatelia administrácie',
         ],
     ],
+    'text' => [
+        'authentication-data' => 'Prihlasovacie údaje',
+        'authorization-data' => 'Autorizačné údaje',
+        'profile-data' => 'Osobné údaje',
+        'profile-data-unavailable' => 'Osobné údaje ešte nie sú vyplnené',
+    ],
 ];

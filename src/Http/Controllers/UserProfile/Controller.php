@@ -1,20 +1,18 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Http\Controllers\User;
+namespace Softworx\RocXolid\UserManagement\Http\Controllers\UserProfile;
 
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 use Softworx\RocXolid\Repositories\Contracts\Repository as RepositoryContract;
-use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
 use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
-use Softworx\RocXolid\UserManagement\Models\User;
-use Softworx\RocXolid\UserManagement\Repositories\User\Repository;
-use Softworx\RocXolid\UserManagement\Components\ModelViewers\UserViewer;
+use Softworx\RocXolid\UserManagement\Models\UserProfile;
+use Softworx\RocXolid\UserManagement\Repositories\UserProfile\Repository;
 
 class Controller extends AbstractCrudController
 {
-    protected static $model_class = User::class;
+    protected static $model_class = UserProfile::class;
 
     protected static $repository_class = Repository::class;
 
@@ -23,30 +21,24 @@ class Controller extends AbstractCrudController
         'store' => 'create',
         'edit' => 'update',
         'update' => 'update',
-        'edit.authentication-data' => 'update-authentication',
-        'update.authentication-data' => 'update-authentication',
-        'edit.authorization-data' => 'update-authorization',
-        'update.authorization-data' => 'update-authorization',
+        'create.profile-data' => 'create-in-user',
+        'store.profile-data' => 'create-in-user',
+        'edit.profile-data' => 'update-in-user',
+        'update.profile-data' => 'update-in-user',
     ];
-
-    public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
-    {
-        return UserViewer::build($this, $this)
-            ->setModel($model)
-            ->setController($this);
-    }
 
     protected function successResponse(CrudRequest $request, RepositoryContract $repository, AbstractCrudForm $form, CrudableModel $model, string $action)
     {
         if ($request->ajax() && $request->has('_section'))
         {
-            $user_model_viewer_component = $model->getModelViewerComponent();
+            $user_profile_model_viewer_component = $model->getModelViewerComponent();
+            $user_model_viewer_component = $model->user->getModelViewerComponent();
 
             $template_name = sprintf('include.%s', $request->_section);
 
             return $this->response
                 ->replace($user_model_viewer_component->getDomId($request->_section), $user_model_viewer_component->fetch($template_name))
-                ->modalClose($user_model_viewer_component->getDomId(sprintf('modal-%s', $action)))
+                ->modalClose($user_profile_model_viewer_component->getDomId(sprintf('modal-%s', $action)))
                 ->get();
         }
         else

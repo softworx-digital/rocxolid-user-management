@@ -2,54 +2,22 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\User;
 
-use Illuminate\Validation\Rule;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-use Softworx\RocXolid\Forms\Fields\Type\Input;
-use Softworx\RocXolid\Forms\Fields\Type\Email;
-use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
 use Softworx\RocXolid\Forms\Fields\Type\CollectionCheckbox;
-use Softworx\RocXolid\Common\Models\Language;
 use Softworx\RocXolid\UserManagement\Models\Group;
 use Softworx\RocXolid\UserManagement\Models\Role;
 use Softworx\RocXolid\UserManagement\Models\Permission;
 
-class Update extends RocXolidAbstractCrudForm
+class UpdateAuthorization extends RocXolidAbstractCrudForm
 {
     protected $options = [
         'method' => 'POST',
         'route-action' => 'update',
         'class' => 'form-horizontal form-label-left',
+        'section' => 'authorization-data',
     ];
 
     protected $fields = [
-        'name' => [
-            'type' => Input::class,
-            'options' => [
-                'label' => [
-                    'title' => 'name',
-                ],
-                'validation' => [
-                    'rules' => [
-                        'required',
-                        'max:255',
-                    ],
-                ],
-            ],
-        ],
-        'email' => [
-            'type' => Email::class,
-            'options' => [
-                'label' => [
-                    'title' => 'email',
-                ],
-                'validation' => [
-                    'rules' => [
-                        'required',
-                        'email',
-                    ],
-                ],
-            ],
-        ],
         'groups' => [
             'type' => CollectionCheckbox::class,
             'options' => [
@@ -88,24 +56,4 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
     ];
-
-    protected function adjustFieldsDefinition($fields)
-    {
-        $rule = Rule::unique('users', 'email')
-            ->ignore($this->getModel()->id);
-
-        $fields = array_merge_recursive($fields, [
-            'email' => [
-                'options' => [
-                    'validation' => [
-                        'rules' => [
-                            $rule
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-
-        return $fields;
-    }
 }

@@ -6,7 +6,7 @@ use Softworx\RocXolid\Components\AbstractActiveComponent as RocXolidAbstractActi
 
 abstract class AbstractActiveComponent extends RocXolidAbstractActiveComponent
 {
-    // @TODO: cleanup, fallback probably not needed
+    // @todo: cleanup, fallback probably not needed
     protected $view_package = [
         'rocXolid:user-management',
         'rocXolid', // fallback

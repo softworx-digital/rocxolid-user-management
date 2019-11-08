@@ -1,7 +1,7 @@
 <div id="{{ $component->getDomId('address') }}">
     <h2>
         {{ $component->translate('text.address') }}
-    @if ((!isset($ro) || !$ro) && $component->getModel()->userCan('write'))
+    @if ($component->getModel()->userCan('write'))
         <a data-ajax-url="{{ $component->getController()->getRoute('edit', $component->getModel(), ['_section' => 'address']) }}" class="margin-left-5"><i class="fa fa-pencil"></i></a>
     @endif
     </h2>

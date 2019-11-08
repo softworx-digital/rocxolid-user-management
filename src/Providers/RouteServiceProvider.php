@@ -45,6 +45,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
         ], function ($router) {
             CrudRouterService::create('user', \User\Controller::class);
             CrudRouterService::create('user-profile', \UserProfile\Controller::class);
+            CrudRouterService::create('company-profile', \CompanyProfile\Controller::class);
             CrudRouterService::create('group', \Group\Controller::class);
             CrudRouterService::create('role', \Role\Controller::class);
             CrudRouterService::create('permission', \Permission\Controller::class);

@@ -24,6 +24,7 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->app->register(Providers\ViewServiceProvider::class);
         $this->app->register(Providers\RouteServiceProvider::class);
         $this->app->register(Providers\TranslationServiceProvider::class);
+        $this->app->register(Providers\ValidationServiceProvider::class);
     }
 
      /**
@@ -49,6 +50,13 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->publishes([
             __DIR__ . '/../config/general.php' => config_path('rocXolid/user-management/general.php'),
         ], 'config');
+
+        // lang files
+        // php artisan vendor:publish --provider="Softworx\RocXolid\UserManagement\ServiceProvider" --tag="lang" (--force to overwrite)
+        $this->publishes([
+            //__DIR__ . '/../resources/lang' => resource_path('lang/vendor/softworx/rocXolid/user-management'),
+            __DIR__ . '/../resources/lang' => resource_path('lang/vendor/rocXolid:user-management'),
+        ], 'lang');
 
         // views files
         // php artisan vendor:publish --provider="Softworx\RocXolid\UserManagement\ServiceProvider" --tag="views" (--force to overwrite)

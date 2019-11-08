@@ -11,7 +11,7 @@ trait HasUserProfile
         return $this->hasOne(UserProfile::class);
     }
 
-    public function buildUserProfile()
+    public function makeUserProfile()
     {
         return new UserProfile();
     }

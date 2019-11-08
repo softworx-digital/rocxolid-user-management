@@ -7,19 +7,22 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-// contracts
+// rocXolid contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
-// components
+// rocXolid components
 use Softworx\RocXolid\Components\General\Message;
-// traits
+// rocXolid traits
 use Softworx\RocXolid\Models\Traits\HasTitleColumn;
-// model traits
+// rocXolid model traits
 use Softworx\RocXolid\Models\Traits\Crudable as CrudableTrait;
+// common traits
+use Softworx\RocXolid\Common\Models\Traits\HasAddresses;
 // user management traits
 use Softworx\RocXolid\UserManagement\Models\Traits\HasRoles;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasGroups;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasPermissions;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasUserProfile;
+use Softworx\RocXolid\UserManagement\Models\Traits\HasCompanyProfile;
 use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
 
 /**
@@ -38,9 +41,12 @@ class User extends Authenticatable implements Crudable
     use HasGroups;
     use HasPermissions;
     use HasUserProfile;
+    use HasCompanyProfile;
+    use HasAddresses;
     use ProtectsRoot;
 
     const ROOT_ID = 1;
+
     /**
      * Flag if model instances can be user deleted.
      *
@@ -145,6 +151,6 @@ class User extends Authenticatable implements Crudable
 
     public function isRoot()
     {
-        return $this->id === static::ROOT_ID;
+        return ($this->id === static::ROOT_ID);
     }
 }

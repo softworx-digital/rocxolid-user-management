@@ -18,6 +18,7 @@ class CreateUserManagementTables extends Migration
             ->roles()
             ->users()
             ->userProfiles()
+            ->companyProfiles()
             ->permissions()
             ->passwordResets()
             ->rolePermissions()
@@ -107,6 +108,7 @@ class CreateUserManagementTables extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('language_id')->default(101); // slovak
             $table->unsignedInteger('nationality_id')->default(1); // slovak
+            $table->enum('legal_entity', ['natural', 'juridical'])->default('natural');
             $table->string('email');
             $table->string('first_name');
             $table->string('middle_name')->nullable();
@@ -116,9 +118,6 @@ class CreateUserManagementTables extends Migration
             $table->enum('gender', ['m', 'f'])->nullable();
             $table->string('bank_account_no')->nullable();
             $table->string('phone_no')->nullable();
-            $table->string('id1_no')->nullable();
-            $table->string('id2_no')->nullable();
-            $table->string('vat_no')->nullable();
             
             $table->timestamps();
             $table->softDeletes();
@@ -139,6 +138,33 @@ class CreateUserManagementTables extends Migration
             $table->foreign('nationality_id')
                 ->references('id')
                 ->on('nationalities')
+                ->onDelete('cascade');
+        });
+
+        return $this;
+    }
+
+    protected function companyProfiles()
+    {
+        Schema::create('company_profiles', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->string('email');
+            $table->string('name');
+            $table->date('established')->nullable();
+            $table->string('company_registration_no')->nullable();
+            $table->string('tax_id')->nullable();
+            $table->string('vat_no')->nullable();
+            
+            $table->timestamps();
+            $table->softDeletes();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
                 ->onDelete('cascade');
         });
 

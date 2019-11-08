@@ -14,29 +14,26 @@ use Softworx\RocXolid\UserManagement\Models\User;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasUser;
 
 /**
- * rocXolid user profile class.
+ * rocXolid company profile class.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\Admin
  * @version 1.0.0
  */
-class UserProfile extends AbstractCrudModel
+class CompanyProfile extends AbstractCrudModel
 {
     use HasUser;
-    use HasLanguage;
-    use HasNationality;
 
     protected static $can_be_deleted = false;
 
     protected static $title_column = [
-        'first_name',
-        'middle_name',
-        'last_name',
+        'name',
     ];
 
     protected $system = [
         'id',
         'email',
+        'established',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -47,20 +44,11 @@ class UserProfile extends AbstractCrudModel
 
     protected $fillable = [
         'user_id',
-        'legal_entity',
         'name',
-        'first_name',
-        'middle_name',
-        'last_name',
-        'birthdate',
-        'gender',
-        'bank_account_no',
-        'phone_no',
-    ];
-
-    protected $relationships = [
-        'language',
-        'nationality',
+        // 'established',
+        'company_registration_no',
+        'tax_id',
+        'vat_no',
     ];
     
     public function fillCustom($data, $action = null)
@@ -73,11 +61,7 @@ class UserProfile extends AbstractCrudModel
     public function getAttributeViewValue($attribute)
     {
         switch ($attribute) {
-            case 'gender':
-                return $this->getModelViewerComponent()->translate(sprintf('choice.%s.%s', $attribute, $this->$attribute));
-            case 'legal_entity':
-                return $this->getModelViewerComponent()->translate(sprintf('choice.%s.%s', $attribute, $this->$attribute));
-            case 'birthdate':
+            case 'established':
                 return Carbon::make($this->$attribute)->format('j.n.Y');
             default:
                 return $this->$attribute;

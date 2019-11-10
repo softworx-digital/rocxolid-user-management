@@ -52,7 +52,23 @@ class Controller extends AbstractCrudController
         }
         else
         {
-            return parent::successResponse($request, $repository, $form, $order_delivery, $action);
+            return parent::successResponse($request, $repository, $form, $model, $action);
         }
+    }
+
+    // @todo: type hints
+    protected function allowPermissionException($user, $action, $permission, CrudableModel $model = null)
+    {
+        $data = collect(request()->route()->parameters());
+
+        if ($data->has('user')) {
+            return $this->getRepository()->findOrFail($data->get('user'))->is($user);
+        }
+
+        if ($data->has('id')) {
+            return $this->getRepository()->findOrFail($data->get('id'))->is($user);
+        }
+
+        return false;
     }
 }

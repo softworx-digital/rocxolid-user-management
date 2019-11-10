@@ -13,7 +13,7 @@
     <dl class="dl-horizontal margin-top-20">
         <dt>{{ $component->translate('field.company') }}</dt><dd>{{ $component->getModel()->company }}</dd>
         <dt>{{ $component->translate('field.company_registration_number') }}</dt><dd>{{ $component->getModel()->company_registration_number }}</dd>
-        <dt>{{ $component->translate('field.tax_id') }}</dt><dd>{{ $component->getModel()->tax_id }}</dd>
+        <dt>{{ $component->translate('field.tax_no') }}</dt><dd>{{ $component->getModel()->tax_no }}</dd>
         <dt>{{ $component->translate('field.vat_number') }}</dt><dd>{{ $component->getModel()->vat_number }}</dd>
     </dl>
 @endif

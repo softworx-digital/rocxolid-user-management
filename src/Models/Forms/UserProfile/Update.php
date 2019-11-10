@@ -95,6 +95,9 @@ class Update extends RocXolidAbstractCrudForm
                         'date',
                     ],
                 ],
+                'attributes' => [
+                    'placeholder' => '',
+                ],
             ],
         ],
         'gender' => [

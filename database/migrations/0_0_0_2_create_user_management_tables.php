@@ -153,7 +153,7 @@ class CreateUserManagementTables extends Migration
             $table->string('name');
             $table->date('established')->nullable();
             $table->string('company_registration_no')->nullable();
-            $table->string('tax_id')->nullable();
+            $table->string('tax_no')->nullable();
             $table->string('vat_no')->nullable();
             
             $table->timestamps();

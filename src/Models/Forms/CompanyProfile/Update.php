@@ -22,6 +22,7 @@ class Update extends RocXolidAbstractCrudForm
                 ],
                 'validation' => [
                     'rules' => [
+                        'required',
                         'max:255',
                     ],
                 ],
@@ -41,11 +42,11 @@ class Update extends RocXolidAbstractCrudForm
                 ],
             ],
         ],
-        'tax_id' => [
+        'tax_no' => [
             'type' => Input::class,
             'options' => [
                 'label' => [
-                    'title' => 'tax_id',
+                    'title' => 'tax_no',
                 ],
                 'validation' => [
                     'rules' => [

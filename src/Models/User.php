@@ -15,6 +15,8 @@ use Softworx\RocXolid\Components\General\Message;
 use Softworx\RocXolid\Models\Traits\HasTitleColumn;
 // rocXolid model traits
 use Softworx\RocXolid\Models\Traits\Crudable as CrudableTrait;
+// admin controllers
+use Softworx\RocXolid\Admin\Auth\Controllers\ProfileController;
 // common traits
 use Softworx\RocXolid\Common\Models\Traits\HasAddresses;
 // user management traits
@@ -87,6 +89,18 @@ class User extends Authenticatable implements Crudable
 
     protected $extra = [];
 
+    public function getTitle()
+    {
+        return sprintf('%s (%s)', $this->profile()->exists() ? $this->profile->getTitle() : null, $this->email);
+    }
+
+    public function getProfileControllerRoute($method = 'index', $params = []): string
+    {
+        $action = sprintf('\%s@%s', ProfileController::class, $method);
+
+        return action($action, $params);
+    }
+
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = Hash::make($password);
@@ -133,6 +147,12 @@ class User extends Authenticatable implements Crudable
     }
     */
 
+    // @todo: hotfixed
+    public function getAttributeViewValue($attribute)
+    {
+        return $this->$attribute;
+    }
+
     public function applyGroupFilters(&$builder, $column)
     {
         if (!$this->isRoot())
@@ -152,5 +172,15 @@ class User extends Authenticatable implements Crudable
     public function isRoot()
     {
         return ($this->id === static::ROOT_ID);
+    }
+
+    // @todo: type hints
+    protected function allowPermissionException($user, $method_group, $permission)
+    {
+        if (in_array($method_group, ['index', 'authorization'])) {
+            return false;
+        }
+
+        return !$this->user || $this->user->is($user);
     }
 }

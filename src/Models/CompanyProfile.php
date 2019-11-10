@@ -47,7 +47,7 @@ class CompanyProfile extends AbstractCrudModel
         'name',
         // 'established',
         'company_registration_no',
-        'tax_id',
+        'tax_no',
         'vat_no',
     ];
     
@@ -66,5 +66,11 @@ class CompanyProfile extends AbstractCrudModel
             default:
                 return $this->$attribute;
         }
+    }
+
+    // @todo: type hints
+    protected function allowPermissionException($user, $method_group, $permission)
+    {
+        return !$this->exists || $this->user->is($user);
     }
 }

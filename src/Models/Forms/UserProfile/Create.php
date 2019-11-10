@@ -98,6 +98,9 @@ class Create extends RocXolidAbstractCrudForm
                         'date',
                     ],
                 ],
+                'attributes' => [
+                    'placeholder' => '',
+                ],
             ],
         ],
         'gender' => [

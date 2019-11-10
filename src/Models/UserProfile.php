@@ -47,7 +47,9 @@ class UserProfile extends AbstractCrudModel
 
     protected $fillable = [
         'user_id',
+        'language_id',
         'legal_entity',
+        'email',
         'name',
         'first_name',
         'middle_name',
@@ -82,5 +84,11 @@ class UserProfile extends AbstractCrudModel
             default:
                 return $this->$attribute;
         }
+    }
+
+    // @todo: type hints
+    protected function allowPermissionException($user, $method_group, $permission)
+    {
+        return !$this->exists || $this->user->is($user);
     }
 }

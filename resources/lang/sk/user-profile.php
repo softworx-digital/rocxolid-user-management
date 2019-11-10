@@ -31,6 +31,7 @@ return [
             'juridical' => 'Právnická osoba',
         ],
         'gender' => [
+            '' => '<i class="fa fa-question" aria-hidden="true"></i>',
             'm' => 'Muž',
             'f' => 'Žena',
         ],

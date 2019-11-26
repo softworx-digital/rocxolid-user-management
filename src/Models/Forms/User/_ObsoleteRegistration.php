@@ -20,7 +20,7 @@ use Softworx\RocXolid\Common\Models\Region;
 use Softworx\RocXolid\Common\Models\District;
 use Softworx\RocXolid\Common\Models\City;
 
-class Registration extends RocXolidAbstractCrudForm
+class ObsoleteRegistration extends RocXolidAbstractCrudForm
 {
     protected $options = [
         'method' => 'POST',

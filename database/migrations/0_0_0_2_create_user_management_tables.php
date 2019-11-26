@@ -113,11 +113,12 @@ class CreateUserManagementTables extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
-            $table->string('company_name')->nullable();
             $table->date('birthdate')->nullable();
             $table->enum('gender', ['m', 'f'])->nullable();
             $table->string('bank_account_no')->nullable();
             $table->string('phone_no')->nullable();
+            $table->string('id_card_no')->nullable();
+            $table->string('passport_no')->nullable();
             
             $table->timestamps();
             $table->softDeletes();
@@ -149,10 +150,12 @@ class CreateUserManagementTables extends Migration
         Schema::create('company_profiles', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('country_id')->nullable();
             $table->string('email');
             $table->string('name');
             $table->date('established')->nullable();
             $table->string('company_registration_no')->nullable();
+            $table->string('company_insertion_no')->nullable();
             $table->string('tax_no')->nullable();
             $table->string('vat_no')->nullable();
             
@@ -166,6 +169,11 @@ class CreateUserManagementTables extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
+
+            $table->foreign('country_id')
+                ->references('id')
+                ->on('countries')
+                ->onDelete('set null');
         });
 
         return $this;

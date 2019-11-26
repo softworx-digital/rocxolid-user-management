@@ -58,6 +58,8 @@ class UserProfile extends AbstractCrudModel
         'gender',
         'bank_account_no',
         'phone_no',
+        'id_card_no',
+        'passport_no',
     ];
 
     protected $relationships = [
@@ -86,7 +88,7 @@ class UserProfile extends AbstractCrudModel
         }
     }
 
-    // @todo: type hints
+    // @todo: type hint
     protected function allowPermissionException($user, $method_group, $permission)
     {
         return !$this->exists || $this->user->is($user);

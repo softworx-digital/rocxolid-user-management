@@ -9,8 +9,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // rocXolid contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
-// rocXolid components
-use Softworx\RocXolid\Components\General\Message;
 // rocXolid traits
 use Softworx\RocXolid\Models\Traits\HasTitleColumn;
 // rocXolid model traits

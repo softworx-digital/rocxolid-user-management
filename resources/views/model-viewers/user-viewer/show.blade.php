@@ -43,7 +43,7 @@
     </div>
     <div class="x_footer">
     @if ($component->getModel()->userCan('index'))
-        <a class="btn btn-default" href="{{ $component->getController()->getRoute('index') }}"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.back', false) }}</a>
+        <a class="btn btn-default" href="{{ $component->getController()->getRoute('index') }}"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.back') }}</a>
     @endif
         {{-- @todo: button na delete a ine akcie --}}
     </div>

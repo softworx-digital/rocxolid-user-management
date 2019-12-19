@@ -11,7 +11,7 @@ use Softworx\RocXolid\Common\Models\Traits\HasNationality;
 // user management models
 use Softworx\RocXolid\UserManagement\Models\User;
 // user management traits
-use Softworx\RocXolid\UserManagement\Models\Traits\HasUser;
+use Softworx\RocXolid\UserManagement\Models\Traits\BelongsToUser;
 
 /**
  * rocXolid company profile class.
@@ -22,7 +22,7 @@ use Softworx\RocXolid\UserManagement\Models\Traits\HasUser;
  */
 class CompanyProfile extends AbstractCrudModel
 {
-    use HasUser;
+    use BelongsToUser;
 
     protected static $can_be_deleted = false;
 
@@ -50,7 +50,7 @@ class CompanyProfile extends AbstractCrudModel
         'tax_no',
         'vat_no',
     ];
-    
+
     public function fillCustom($data, $action = null)
     {
         $this->email = $this->user->email;

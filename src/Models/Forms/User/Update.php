@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\User;
 
+use Auth;
 use Illuminate\Validation\Rule;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 use Softworx\RocXolid\Forms\Fields\Type\Input;
@@ -73,7 +74,7 @@ class Update extends RocXolidAbstractCrudForm
                     'column' => 'name',
                 ],
             ],
-        ],
+        ],/*
         'permissions' => [
             'type' => CollectionCheckbox::class,
             'options' => [
@@ -86,7 +87,7 @@ class Update extends RocXolidAbstractCrudForm
                     'method' => 'getTitle',
                 ],
             ],
-        ],
+        ],*/
     ];
 
     protected function adjustFieldsDefinition($fields)
@@ -105,6 +106,12 @@ class Update extends RocXolidAbstractCrudForm
                 ],
             ],
         ]);
+
+        if ($user = Auth::guard()->user()) {
+            if ($user == $this->getModel()) {
+                unset($fields['roles']);
+            }
+        }
 
         return $fields;
     }

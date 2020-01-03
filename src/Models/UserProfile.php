@@ -82,7 +82,7 @@ class UserProfile extends AbstractCrudModel
             case 'legal_entity':
                 return $this->getModelViewerComponent()->translate(sprintf('choice.%s.%s', $attribute, $this->$attribute));
             case 'birthdate':
-                return Carbon::make($this->$attribute)->format('j.n.Y');
+                return $this->$attribute ? Carbon::make($this->$attribute)->format('j.n.Y') : null;
             default:
                 return $this->$attribute;
         }

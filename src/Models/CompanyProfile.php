@@ -32,7 +32,6 @@ class CompanyProfile extends AbstractCrudModel
 
     protected $system = [
         'id',
-        'email',
         'established',
         'created_at',
         'updated_at',
@@ -43,9 +42,10 @@ class CompanyProfile extends AbstractCrudModel
     ];
 
     protected $fillable = [
-        'user_id',
+        'email',
+        'user_id', // @todo: needed?
         'name',
-        // 'established',
+        'established',
         'company_registration_no',
         'tax_no',
         'vat_no',

@@ -17,6 +17,7 @@ use Softworx\RocXolid\Models\Traits\Crudable as CrudableTrait;
 use Softworx\RocXolid\Admin\Auth\Controllers\ProfileController;
 // common traits
 use Softworx\RocXolid\Common\Models\Traits\HasAddresses;
+use Softworx\RocXolid\Common\Models\Traits\HasImage;
 // user management traits
 use Softworx\RocXolid\UserManagement\Models\Traits\HasRoles;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasGroups;
@@ -43,6 +44,7 @@ class User extends Authenticatable implements Crudable
     use HasUserProfile;
     use HasCompanyProfile;
     use HasAddresses;
+    use HasImage;
     use ProtectsRoot;
 
     const ROOT_ID = 1;

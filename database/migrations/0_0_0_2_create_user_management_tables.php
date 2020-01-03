@@ -69,7 +69,7 @@ class CreateUserManagementTables extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('guard_name')->default('rocXolid.auth');
+            $table->string('guard_name')->default('rocXolid');
             $table->timestamps();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
@@ -119,7 +119,7 @@ class CreateUserManagementTables extends Migration
             $table->string('phone_no')->nullable();
             $table->string('id_card_no')->nullable();
             $table->string('passport_no')->nullable();
-            
+
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedInteger('created_by')->nullable();
@@ -158,7 +158,7 @@ class CreateUserManagementTables extends Migration
             $table->string('company_insertion_no')->nullable();
             $table->string('tax_no')->nullable();
             $table->string('vat_no')->nullable();
-            
+
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedInteger('created_by')->nullable();
@@ -184,7 +184,7 @@ class CreateUserManagementTables extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('guard_name')->default('rocXolid.auth');
+            $table->string('guard_name')->default('rocXolid');
             $table->string('controller_class')->nullable();
             $table->string('controller_method_group')->nullable();
             $table->string('controller_method')->nullable();

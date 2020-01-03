@@ -31,7 +31,7 @@ class Update extends RocXolidAbstractCrudForm
                 ],
             ],
         ]);*/
-        unset($fields['permissions']);
+        // unset($fields['permissions']);
 
         return $fields;
     }

@@ -4,7 +4,7 @@
 
         <div class="row">
             <div class="col-xl-2 col-md-4 col-xs-12 margin-top-10">
-                {!! $component->render('include.image') !!}
+                {!! $component->render('include.image-upload') !!}
             </div>
             <div class="col-xl-4 col-xl-offset-1 col-md-4 col-xs-12">
                 <div class="row col-xs-12">

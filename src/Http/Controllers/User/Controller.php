@@ -3,6 +3,7 @@
 namespace Softworx\RocXolid\UserManagement\Http\Controllers\User;
 
 use Softworx\RocXolid\Http\Requests\CrudRequest;
+use Softworx\RocXolid\Http\Controllers\Traits\CanUploadImage;
 use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 use Softworx\RocXolid\Repositories\Contracts\Repository as RepositoryContract;
@@ -14,6 +15,8 @@ use Softworx\RocXolid\UserManagement\Components\ModelViewers\UserViewer;
 
 class Controller extends AbstractCrudController
 {
+    use CanUploadImage;
+
     protected static $model_class = User::class;
 
     protected static $repository_class = Repository::class;

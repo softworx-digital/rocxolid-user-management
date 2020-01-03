@@ -91,8 +91,8 @@ class Update extends RocXolidAbstractCrudForm
                 ],
                 'validation' => [
                     'rules' => [
-                        'required',
-                        'date',
+                        // 'required',
+                        // 'date',
                     ],
                 ],
                 'attributes' => [
@@ -123,7 +123,7 @@ class Update extends RocXolidAbstractCrudForm
                 ],
                 'validation' => [
                     'rules' => [
-                        'required',
+                        // 'required',
                     ],
                 ],
             ],
@@ -136,7 +136,7 @@ class Update extends RocXolidAbstractCrudForm
                 ],
                 'validation' => [
                     'rules' => [
-                        'required',
+                        // 'required',
                     ],
                 ],
             ],

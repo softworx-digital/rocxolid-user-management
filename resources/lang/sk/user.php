@@ -21,10 +21,16 @@ return [
         'password' => 'Heslo',
         'password_confirmation' => 'Heslo - potvrdenie',
         'remember_token' => 'Token pre zapamätanie prihlásenia',
+        'email_verified_at' => 'Čas verifikácie e-mailu',
         'groups' => 'Skupiny používateľov',
         'roles' => 'Role používateľov',
         'permissions' => 'Práva',
         'extra_permissions' => 'Extra práva',
+    ],
+    'token' => [
+        'name' => 'Meno',
+        'email' => 'e-mail',
+        'created_at' => 'Čas vytvorenia',
     ],
     'model' => [
         'title' => [

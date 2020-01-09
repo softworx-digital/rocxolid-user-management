@@ -7,18 +7,19 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-// rocXolid contracts
+// rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
-// rocXolid traits
-use Softworx\RocXolid\Models\Traits\HasTitleColumn;
+use Softworx\RocXolid\Models\Contracts\HasTokenablePropertiesMethods;
 // rocXolid model traits
 use Softworx\RocXolid\Models\Traits\Crudable as CrudableTrait;
-// admin controllers
+use Softworx\RocXolid\Models\Traits\HasTitleColumn;
+use Softworx\RocXolid\Models\Traits\HasTokenablePropertiesMethods as HasTokenablePropertiesMethodsTrait;
+// rocXolid admin controllers
 use Softworx\RocXolid\Admin\Auth\Controllers\ProfileController;
-// common traits
+// rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits\HasAddresses;
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
-// user management traits
+// rocXolid user management model traits
 use Softworx\RocXolid\UserManagement\Models\Traits\HasRoles;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasGroups;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasPermissions;
@@ -33,7 +34,7 @@ use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
  * @package Softworx\RocXolid\Admin
  * @version 1.0.0
  */
-class User extends Authenticatable implements Crudable
+class User extends Authenticatable implements Crudable, HasTokenablePropertiesMethods
 {
     use Notifiable;
     use CrudableTrait;
@@ -46,6 +47,7 @@ class User extends Authenticatable implements Crudable
     use HasAddresses;
     use HasImage;
     use ProtectsRoot;
+    use HasTokenablePropertiesMethodsTrait;
 
     const ROOT_ID = 1;
 
@@ -57,6 +59,12 @@ class User extends Authenticatable implements Crudable
     protected static $can_be_deleted = true;
 
     protected static $title_column = 'name';
+
+    protected static $tokenable_properties = [
+        'name',
+        'email',
+        'created_at',
+    ];
 
     protected $system = [
         'password',

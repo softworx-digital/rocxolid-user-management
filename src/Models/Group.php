@@ -10,8 +10,9 @@ use Softworx\RocXolid\Common\Models\Web;
 // commerce scopes
 use Softworx\RocXolid\Common\Models\Scopes\UserGroupAssociating;
 // user management models
-use Softworx\RocXolid\UserManagement\Models\User,
-    Softworx\RocXolid\UserManagement\Models\Traits\HasPermissions;
+use Softworx\RocXolid\UserManagement\Models\User;
+use Softworx\RocXolid\UserManagement\Models\Traits\HasPermissions;
+
 /**
  *
  */

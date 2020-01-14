@@ -33,33 +33,28 @@ trait HasGroups
      */
     public function scopeGroup(Builder $query, $groups): Builder
     {
-        if ($groups instanceof Collection)
-        {
+        if ($groups instanceof Collection) {
             $groups = $groups->toArray();
         }
 
-        if (!is_array($groups))
-        {
+        if (!is_array($groups)) {
             $groups = [$groups];
         }
 
-        $groups = array_map(function ($group)
-        {
-            if ($group instanceof Group)
-            {
-                return $group;
-            }
+        $groups = array_map(
+            function ($group) {
+                if ($group instanceof Group) {
+                    return $group;
+                }
 
-            return app(Group::class)->findByName($group, $this->getDefaultGuardName());
-        },
-        $groups);
+                return app(Group::class)->findByName($group, $this->getDefaultGuardName());
+            },
+            $groups
+        );
 
-        return $query->whereHas('groups', function ($query) use ($groups)
-        {
-            $query->where(function ($query) use ($groups)
-            {
-                foreach ($groups as $group)
-                {
+        return $query->whereHas('groups', function ($query) use ($groups) {
+            $query->where(function ($query) use ($groups) {
+                foreach ($groups as $group) {
                     $query->orWhere('groups.id', $group->id);
                 }
             });
@@ -77,12 +72,10 @@ trait HasGroups
     {
         $groups = collect($groups)
             ->flatten()
-            ->map(function ($group)
-            {
+            ->map(function ($group) {
                 return $this->getStoredGroup($group);
             })
-            ->each(function ($group)
-            {
+            ->each(function ($group) {
                 $this->ensureModelSharesGuard($group);
             })
             ->all();
@@ -127,22 +120,17 @@ trait HasGroups
      */
     public function hasGroup($groups): bool
     {
-        if (is_string($groups))
-        {
+        if (is_string($groups)) {
             return $this->groups->contains('name', $groups);
         }
 
-        if ($groups instanceof Group)
-        {
+        if ($groups instanceof Group) {
             return $this->groups->contains('id', $groups->id);
         }
 
-        if (is_array($groups))
-        {
-            foreach ($groups as $group)
-            {
-                if ($this->hasGroup($group))
-                {
+        if (is_array($groups)) {
+            foreach ($groups as $group) {
+                if ($this->hasGroup($group)) {
                     return true;
                 }
             }
@@ -174,18 +162,15 @@ trait HasGroups
      */
     public function hasAllGroups($groups): bool
     {
-        if (is_string($groups))
-        {
+        if (is_string($groups)) {
             return $this->groups->contains('name', $groups);
         }
 
-        if ($groups instanceof Group)
-        {
+        if ($groups instanceof Group) {
             return $this->groups->contains('id', $groups->id);
         }
 
-        $groups = collect()->make($groups)->map(function ($group)
-        {
+        $groups = collect()->make($groups)->map(function ($group) {
             return $group instanceof Group ? $group->name : $group;
         });
 
@@ -194,8 +179,7 @@ trait HasGroups
 
     protected function getStoredGroup($group): Group
     {
-        if (is_string($group))
-        {
+        if (is_string($group)) {
             return app(Group::class)->findByName($group, $this->getDefaultGuardName());
         }
 

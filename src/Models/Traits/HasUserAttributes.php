@@ -17,33 +17,25 @@ trait HasUserAttributes
     {
         parent::boot();
 
-        if ($user = Auth::guard('rocXolid')->user())
-        {
-            static::creating(function ($model) use ($user)
-            {
-                if (in_array('created_by', $model::$user_attributes))
-                {
+        if ($user = Auth::guard('rocXolid')->user()) {
+            static::creating(function ($model) use ($user) {
+                if (in_array('created_by', $model::$user_attributes)) {
                     $model->created_by = $user->id;
                 }
 
-                if (in_array('updated_by', $model::$user_attributes))
-                {
+                if (in_array('updated_by', $model::$user_attributes)) {
                     $model->updated_by = $user->id;
                 }
             });
 
-            static::updating(function ($model) use ($user)
-            {
-                if (in_array('updated_by', $model::$user_attributes))
-                {
+            static::updating(function ($model) use ($user) {
+                if (in_array('updated_by', $model::$user_attributes)) {
                     $model->created_by = $user->id;
                 }
             });
 
-            static::deleting(function ($model) use ($user)
-            {
-                if (in_array('deleted_by', $model::$user_attributes))
-                {
+            static::deleting(function ($model) use ($user) {
+                if (in_array('deleted_by', $model::$user_attributes)) {
                     $model->deleted_by = $user->id;
                     $model->save();
                 }

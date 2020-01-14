@@ -172,11 +172,10 @@ class User extends Authenticatable implements Crudable, HasTokenablePropertiesMe
 
     public function applyGroupFilters(&$builder, $column)
     {
-        if (!$this->isRoot())
-        {
+        if (!$this->isRoot()) {
             $webs = new Collection();
 
-            $this->load(['groups.websNoneScope' => function($query) use (&$webs) {
+            $this->load(['groups.websNoneScope' => function ($query) use (&$webs) {
                 $webs = $query->get()->unique();
             }]);
 

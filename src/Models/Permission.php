@@ -6,6 +6,7 @@ use Spatie\Permission\Models\Permission as SpatiePermission;
 use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Traits\Crudable as CrudableTrait;
 use Softworx\RocXolid\Models\Traits\HasTitleColumn;
+
 // @todo - odrezat spatie
 class Permission extends SpatiePermission implements Crudable
 {

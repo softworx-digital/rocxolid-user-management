@@ -27,11 +27,11 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->app->register(Providers\ValidationServiceProvider::class);
     }
 
-     /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
+    /**
+    * Bootstrap the application services.
+    *
+    * @return void
+    */
     public function boot()
     {
         $this

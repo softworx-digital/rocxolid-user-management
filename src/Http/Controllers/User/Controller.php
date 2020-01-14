@@ -41,8 +41,7 @@ class Controller extends AbstractCrudController
 
     protected function successResponse(CrudRequest $request, RepositoryContract $repository, AbstractCrudForm $form, CrudableModel $model, string $action)
     {
-        if ($request->ajax() && $request->has('_section'))
-        {
+        if ($request->ajax() && $request->has('_section')) {
             $user_model_viewer_component = $model->getModelViewerComponent();
 
             $template_name = sprintf('include.%s', $request->_section);
@@ -52,9 +51,7 @@ class Controller extends AbstractCrudController
                 ->replace($user_model_viewer_component->getDomId($request->_section), $user_model_viewer_component->fetch($template_name))
                 ->modalClose($user_model_viewer_component->getDomId(sprintf('modal-%s', $action)))
                 ->get();
-        }
-        else
-        {
+        } else {
             return parent::successResponse($request, $repository, $form, $model, $action);
         }
     }

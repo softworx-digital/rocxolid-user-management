@@ -6,5 +6,4 @@ use Softworx\RocXolid\UserManagement\Components\ModelViewers\CrudModelViewer;
 
 class UserViewer extends CrudModelViewer
 {
-    
 }

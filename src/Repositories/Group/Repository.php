@@ -6,6 +6,7 @@ use Softworx\RocXolid\Repositories\AbstractCrudRepository;
 use Softworx\RocXolid\Repositories\Columns\Type\Text;
 use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
 use Softworx\RocXolid\Commerce\Models\Shop;
+
 /**
  *
  */

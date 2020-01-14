@@ -9,8 +9,7 @@ trait ProtectsRoot
 {
     public static function bootProtectsRoot()
     {
-        if (($user = Auth::guard('rocXolid')->user()) && ($user->id != static::ROOT_ID))
-        {
+        if (($user = Auth::guard('rocXolid')->user()) && ($user->id != static::ROOT_ID)) {
             static::addGlobalScope(new ProtectingRoot());
         }
     }

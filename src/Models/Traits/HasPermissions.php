@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Permission\PermissionRegistrar;
 use Spatie\Permission\Exceptions\GuardDoesNotMatch;
 use Softworx\RocXolid\UserManagement\Models\Permission;
+
 // @todo - odrezat spatie
 trait HasPermissions
 {
@@ -29,12 +30,10 @@ trait HasPermissions
     {
         $permissions = collect($permissions)
             ->flatten()
-            ->map(function ($permission)
-            {
+            ->map(function ($permission) {
                 return $this->getStoredPermission($permission);
             })
-            ->each(function ($permission)
-            {
+            ->each(function ($permission) {
                 $this->ensureModelSharesGuard($permission);
             })
             ->all();
@@ -83,13 +82,11 @@ trait HasPermissions
      */
     protected function getStoredPermission($permissions): Permission
     {
-        if (is_string($permissions))
-        {
+        if (is_string($permissions)) {
             return app(Permission::class)->findByName($permissions, $this->getDefaultGuardName());
         }
 
-        if (is_array($permissions))
-        {
+        if (is_array($permissions)) {
             return app(Permission::class)
                 ->whereIn('name', $permissions)
                 ->whereId('guard_name', $this->getGuardNames())
@@ -106,26 +103,22 @@ trait HasPermissions
      */
     protected function ensureModelSharesGuard($roleOrPermission)
     {
-        if (!$this->getGuardNames()->contains($roleOrPermission->guard_name))
-        {
+        if (!$this->getGuardNames()->contains($roleOrPermission->guard_name)) {
             throw GuardDoesNotMatch::create($roleOrPermission->guard_name, $this->getGuardNames());
         }
     }
 
     protected function getGuardNames(): Collection
     {
-        if ($this->guard_name)
-        {
+        if ($this->guard_name) {
             return collect($this->guard_name);
         }
 
         return collect(config('auth.guards'))
-            ->map(function ($guard)
-            {
+            ->map(function ($guard) {
                 return config("auth.providers.{$guard['provider']}.model");
             })
-            ->filter(function ($model)
-            {
+            ->filter(function ($model) {
                 return get_class($this) === $model;
             })
             ->keys();

@@ -10,8 +10,7 @@ trait DetectsUser
 
     public function detectRxUser()
     {
-        if (is_null($this->_rx_user))
-        {
+        if (is_null($this->_rx_user)) {
             $this->_rx_user = Auth::guard('rocXolid')->user() ?: false;
         }
 

@@ -23,8 +23,7 @@ class ValidationServiceProvider extends IlluminateServiceProvider
      */
     public function boot()
     {
-        Validator::extend('euvat', function ($attribute, $value, $parameters, $validator)
-        {
+        Validator::extend('euvat', function ($attribute, $value, $parameters, $validator) {
             return empty($value) || VatValidator::validate($value);
         });
 

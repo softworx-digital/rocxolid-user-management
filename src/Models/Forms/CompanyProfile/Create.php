@@ -83,15 +83,13 @@ class Create extends RocXolidAbstractCrudForm
     {
         $input = new Collection($this->getRequest()->input());
 
-        if (!$input->has(FormField::SINGLE_DATA_PARAM))
-        {
+        if (!$input->has(FormField::SINGLE_DATA_PARAM)) {
             throw new \InvalidArgumentException(sprintf('Undefined [%s] param in request', FormField::SINGLE_DATA_PARAM));
         }
 
         $input = new Collection($input->get(FormField::SINGLE_DATA_PARAM));
 
-        if (!$user = User::find($input->get('user_id')))
-        {
+        if (!$user = User::find($input->get('user_id'))) {
             throw new \InvalidArgumentException(sprintf('Invalid user_id [%s]', $input->get('user_id')));
         }
 

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Notifications\ResetPassword;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\HasTokenablePropertiesMethods;
@@ -16,6 +17,8 @@ use Softworx\RocXolid\Models\Traits\HasTitleColumn;
 use Softworx\RocXolid\Models\Traits\HasTokenablePropertiesMethods as HasTokenablePropertiesMethodsTrait;
 // rocXolid admin controllers
 use Softworx\RocXolid\Admin\Auth\Controllers\ProfileController;
+// rocXolid admin events
+use Softworx\RocXolid\Admin\Auth\Events\UserForgotPassword;
 // rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits\HasAddresses;
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
@@ -66,6 +69,10 @@ class User extends Authenticatable implements Crudable, HasTokenablePropertiesMe
         'created_at',
     ];
 
+    protected static $tokenable_methods = [
+        'resetPasswordUrl',
+    ];
+
     protected $system = [
         'password',
         'email_verified_at',
@@ -94,6 +101,8 @@ class User extends Authenticatable implements Crudable, HasTokenablePropertiesMe
         'roles',
         'permissions',
     ];
+
+    public $password_reset_token;
 
     protected $extra = [];
 
@@ -190,5 +199,33 @@ class User extends Authenticatable implements Crudable, HasTokenablePropertiesMe
         }
 
         return !$this->user || $this->user->is($user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function notify($instance)
+    {
+        if ($instance instanceof ResetPassword) {
+            $this->password_reset_token = $instance->token;
+
+            event(new UserForgotPassword($this));
+        } else {
+            parent::notify($instance);
+        }
+    }
+
+    public function resetPasswordUrl()
+    {
+        // ignore when used eg. in e-mail notification
+        if (!$this->exists) {
+            return null;
+        }
+
+        if (!isset($this->password_reset_token)) {
+            throw new \UnderflowException(sprintf('No password reset token set for user [%s]', $this->email));
+        }
+
+        return route('rocXolid.auth.reset-password', [ 'token' => $this->password_reset_token ]);
     }
 }

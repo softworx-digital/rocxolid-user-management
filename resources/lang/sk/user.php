@@ -16,21 +16,25 @@ return [
     'field' => [
         'name' => 'Meno',
         'email' => 'e-mail',
-        'language' => 'Jazyk',
-        'login' => 'Prihlasovacie meno',
         'password' => 'Heslo',
         'password_confirmation' => 'Heslo - potvrdenie',
         'remember_token' => 'Token pre zapamätanie prihlásenia',
-        'email_verified_at' => 'Čas verifikácie e-mailu',
+        'language' => 'Jazyk',
         'groups' => 'Skupiny používateľov',
         'roles' => 'Role používateľov',
         'permissions' => 'Práva',
         'extra_permissions' => 'Extra práva',
+        'last_action' => 'Posledná aktivita',
+        'status' => 'Stav',
+        'days_first_login' => 'Dnešné prvé prihlásenie',
+        'login' => 'Prihlasovacie meno',
+        'email_verified_at' => 'Čas verifikácie e-mailu',
     ],
     'token' => [
         'name' => 'Meno',
         'email' => 'e-mail',
         'created_at' => 'Čas vytvorenia',
+        'resetPasswordUrl' => 'URL pre reset hesla (aplikovateľné iba pri resete hesla)',
     ],
     'model' => [
         'title' => [

@@ -27,6 +27,14 @@ return [
         'last_action' => 'Last activity',
         'status' => 'Status',
         'days_first_login' => 'First login today',
+        'login' => 'Login',
+        'email_verified_at' => 'E-mail verification time',
+    ],
+    'token' => [
+        'name' => 'Name',
+        'email' => 'e-mail',
+        'created_at' => 'Creation time',
+        'resetPasswordUrl' => 'Password reset URL (appliable only for password reset action)',
     ],
     'model' => [
         'title' => [

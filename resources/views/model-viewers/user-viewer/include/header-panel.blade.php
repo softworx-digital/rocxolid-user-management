@@ -1,4 +1,4 @@
-<div class="x_title">
+<div id="{{ $component->getDomId('header-panel') }}" class="x_title">
 @if ($component->getModel()->exists)
     <h1>
         <i class="fa fa-id-card-o margin-right-5"></i>

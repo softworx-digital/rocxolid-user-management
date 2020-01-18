@@ -12,6 +12,7 @@ return [
         'name' => 'Názov spoločnosti',
         'established' => 'Dátum založenia',
         'company_registration_no' => 'IČO',
+        'company_insertion_no' => 'Číslo vložky v ORSR',
         'tax_no' => 'DIČ',
         'vat_no' => 'IČ DPH',
     ],

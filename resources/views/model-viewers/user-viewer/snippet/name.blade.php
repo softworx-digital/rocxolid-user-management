@@ -1,0 +1,1 @@
+<span id="{{ $component->getDomId('name', $param) }}">{{ $component->getModel()->name }}</span>

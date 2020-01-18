@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\UserManagement\Http\Controllers\CompanyProfile;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
@@ -47,9 +48,8 @@ class Controller extends AbstractCrudController
         }
     }
 
-    // @todo: type hints
     // @todo: hotfixed
-    protected function allowPermissionException($user, $action, $permission, CrudableModel $model = null)
+    protected function allowPermissionException(Authenticatable $user, string $action, string $permission, CrudableModel $model = null)
     {
         $data = collect(request()->get('_data'));
 

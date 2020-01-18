@@ -3,6 +3,7 @@
 namespace Softworx\RocXolid\UserManagement\Models;
 
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Softworx\RocXolid\Models\AbstractCrudModel;
 // common traits
@@ -68,8 +69,7 @@ class CompanyProfile extends AbstractCrudModel
         }
     }
 
-    // @todo: type hints
-    protected function allowPermissionException($user, $method_group, $permission)
+    protected function allowPermissionException(Authenticatable $user, string $method_group, string $permission)
     {
         return !$this->exists || $this->user->is($user);
     }

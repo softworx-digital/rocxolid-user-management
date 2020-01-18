@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\UserManagement\Http\Controllers\UserProfile;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
@@ -36,10 +37,14 @@ class Controller extends AbstractCrudController
     {
         if ($request->ajax()) {
             $model_viewer_component = $model->getModelViewerComponent();
+            $user_model_viewer_component = $model->user->getModelViewerComponent();
 
             return $this->response
                 ->notifySuccess($model_viewer_component->translate('text.updated'))
                 ->replace($model_viewer_component->getDomId(), $model_viewer_component->fetch())
+                ->replace($user_model_viewer_component->getDomId('header-panel'), $user_model_viewer_component->fetch('include.header-panel'))
+                ->replace($user_model_viewer_component->getDomId('name', 'topbar'), $user_model_viewer_component->fetch('snippet.name', [ 'param' => 'topbar' ]))
+                ->replace($user_model_viewer_component->getDomId('name', 'sidebar'), $user_model_viewer_component->fetch('snippet.name', [ 'param' => 'sidebar' ]))
                 ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $action)))
                 ->get();
         } else {
@@ -47,9 +52,8 @@ class Controller extends AbstractCrudController
         }
     }
 
-    // @todo: type hints
     // @todo: hotfixed
-    protected function allowPermissionException($user, $action, $permission, CrudableModel $model = null)
+    protected function allowPermissionException(Authenticatable $user, string $action, string $permission, CrudableModel $model = null)
     {
         $data = collect(request()->get('_data'));
 

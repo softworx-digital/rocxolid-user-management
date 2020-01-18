@@ -3,14 +3,16 @@
 namespace Softworx\RocXolid\UserManagement\Models;
 
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+// rocXolid models
 use Softworx\RocXolid\Models\AbstractCrudModel;
-// common traits
+// rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits\HasLanguage;
 use Softworx\RocXolid\Common\Models\Traits\HasNationality;
-// user management models
+// rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\User;
-// user management traits
+// rocXolid user management model traits
 use Softworx\RocXolid\UserManagement\Models\Traits\BelongsToUser;
 
 /**
@@ -67,9 +69,13 @@ class UserProfile extends AbstractCrudModel
         'nationality',
     ];
 
+    // @todo: ugly
     public function fillCustom($data, $action = null)
     {
         $this->email = $this->user->email;
+
+        $this->user->name = $this->getTitle();
+        $this->user->save();
 
         return $this;
     }
@@ -88,8 +94,7 @@ class UserProfile extends AbstractCrudModel
         }
     }
 
-    // @todo: type hint
-    protected function allowPermissionException($user, $method_group, $permission)
+    protected function allowPermissionException(Authenticatable $user, string $method_group, string $permission)
     {
         return !$this->exists || $this->user->is($user);
     }

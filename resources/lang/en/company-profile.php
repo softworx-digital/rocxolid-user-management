@@ -12,6 +12,7 @@ return [
         'name' => 'Company',
         'established' => 'Established date',
         'company_registration_no' => 'Company registration no.',
+        'company_insertion_no' => 'Company Commerce Chamber no.',
         'tax_no' => 'Tax no.',
         'vat_no' => 'VAT no.',
     ],

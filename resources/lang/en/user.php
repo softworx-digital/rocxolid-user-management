@@ -2,6 +2,7 @@
 
 return [
     'column' => [
+        'image' => '<i class="fa fa-image"></i>',
         'name' => 'Name',
         'email' => 'e-mail',
         'language' => 'Language',

@@ -2,6 +2,8 @@
 
 namespace Softworx\RocXolid\UserManagement\Http\Controllers\User;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
+//
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\Http\Controllers\Traits\Actions\UploadsImage;
 use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
@@ -48,6 +50,7 @@ class Controller extends AbstractCrudController
 
             return $this->response
                 ->notifySuccess($user_model_viewer_component->translate('text.updated'))
+                ->replace($user_model_viewer_component->getDomId('header-panel'), $user_model_viewer_component->fetch('header-panel'))
                 ->replace($user_model_viewer_component->getDomId($request->_section), $user_model_viewer_component->fetch($template_name))
                 ->modalClose($user_model_viewer_component->getDomId(sprintf('modal-%s', $action)))
                 ->get();
@@ -56,8 +59,7 @@ class Controller extends AbstractCrudController
         }
     }
 
-    // @todo: type hints
-    protected function allowPermissionException($user, $action, $permission, CrudableModel $model = null)
+    protected function allowPermissionException(Authenticatable $user, string $action, string $permission, CrudableModel $model = null)
     {
         $data = collect(request()->route()->parameters());
 

@@ -23,7 +23,8 @@ class RouteServiceProvider extends IlluminateServiceProvider
     public function boot()
     {
         $this
-            ->load($this->app->router);
+            ->load($this->app->router)
+            ->mapRouteModels($this->app->router);
 
         return $this;
     }
@@ -50,6 +51,24 @@ class RouteServiceProvider extends IlluminateServiceProvider
             CrudRouterService::create('role', \Role\Controller::class);
             CrudRouterService::create('permission', \Permission\Controller::class);
         });
+
+        return $this;
+    }
+
+    /**
+     * Define the route bindings for URL params.
+     *
+     * @param  \Illuminate\Routing\Router $router Router to be used for routing.
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    private function mapRouteModels(Router $router): IlluminateServiceProvider
+    {
+        $router->model('user', \Softworx\RocXolid\UserManagement\Models\User::class);
+        $router->model('user_profile', \Softworx\RocXolid\UserManagement\Models\UserProfile::class);
+        $router->model('company_profile', \Softworx\RocXolid\UserManagement\Models\CompanyProfile::class);
+        $router->model('group', \Softworx\RocXolid\UserManagement\Models\Group::class);
+        $router->model('permission', \Softworx\RocXolid\UserManagement\Models\Permission::class);
+        $router->model('role', \Softworx\RocXolid\UserManagement\Models\Role::class);
 
         return $this;
     }

@@ -3,11 +3,15 @@
 namespace Softworx\RocXolid\UserManagement\Models;
 
 use Hash;
+use Html;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Notifications\ResetPassword;
+// rocXolid utils
+use Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\HasTokenablePropertiesMethods;
@@ -19,6 +23,8 @@ use Softworx\RocXolid\Models\Traits\HasTokenablePropertiesMethods as HasTokenabl
 use Softworx\RocXolid\Admin\Auth\Controllers\ProfileController;
 // rocXolid admin events
 use Softworx\RocXolid\Admin\Auth\Events\UserForgotPassword;
+// rocXolid common models
+use Softworx\RocXolid\Common\Models\Image;
 // rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits\HasAddresses;
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
@@ -226,5 +232,29 @@ class User extends Authenticatable implements Crudable, HasTokenablePropertiesMe
         }
 
         return route('rocXolid.auth.reset-password', [ 'token' => $this->password_reset_token ]);
+    }
+
+    public function onImageUpload(Image $image, AjaxResponse &$response)
+    {
+        if (Auth::guard('rocXolid')->user()->is($this)) {
+            $response->replace('sidebar-profile-image', Html::image(
+                $this->image->getControllerRoute('get', [ 'size' => 'thumb-square' ]),
+                $this->name,
+                [ 'id' => 'sidebar-profile-image', 'class' => 'img-circle profile_img' ])
+            );
+
+            $response->replace('topbar-profile-image', Html::image(
+                $this->image->getControllerRoute('get', [ 'size' => 'thumb-square' ]),
+                $this->name,
+                [ 'id' => 'topbar-profile-image' ])
+            );
+        }
+
+        return $this;
+    }
+
+    public function deleteImageRedirectPath()
+    {
+        return Auth::guard('rocXolid')->user()->is($this) ? route('rocXolid.auth.profile') : $this->getControllerRoute('show');
     }
 }

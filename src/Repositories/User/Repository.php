@@ -3,13 +3,60 @@
 namespace Softworx\RocXolid\UserManagement\Repositories\User;
 
 use Softworx\RocXolid\Repositories\AbstractCrudRepository;
+// filters
+use Softworx\RocXolid\Repositories\Filters\Type\Text as TextFilter;
+// use Softworx\RocXolid\Repositories\Filters\Type\ModelRelation as ModelRelationFilter;
+// columns
 use Softworx\RocXolid\Repositories\Columns\Type\Text;
 use Softworx\RocXolid\Repositories\Columns\Type\Method;
+use Softworx\RocXolid\Repositories\Columns\Type\ImageRelation;
 use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
 
 class Repository extends AbstractCrudRepository
 {
+    protected $filters = [
+        'name' => [
+            'type' => TextFilter::class,
+            'options' => [
+                'label' => [
+                    'title' => 'name'
+                ],
+                'attributes' => [
+                    'placeholder' => 'name'
+                ],
+            ],
+        ],
+        'email' => [
+            'type' => TextFilter::class,
+            'options' => [
+                'label' => [
+                    'title' => 'email'
+                ],
+                'attributes' => [
+                    'placeholder' => 'email'
+                ],
+            ],
+        ],
+    ];
+
     protected $columns = [
+        'image' => [
+            'type' => ImageRelation::class,
+            'options' => [
+                'label' => [
+                    'title' => 'image'
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
+                'size' => 'thumb',
+                'relation' => [
+                    'name' => 'image',
+                ],
+            ],
+        ],
         'name' => [
             'type' => Text::class,
             'options' => [

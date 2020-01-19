@@ -3,7 +3,7 @@
 namespace Softworx\RocXolid\UserManagement\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-// rocXolid utilities
+// rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
@@ -29,8 +29,8 @@ class CrudPolicy
      */
     public function viewAny(User $user): bool
     {
-        dump(__METHOD__);
-        dump($user);
+        // dump(__METHOD__);
+        // dump($user);
         return true;
     }
 
@@ -43,9 +43,9 @@ class CrudPolicy
      */
     public function view(User $user, Crudable $model): bool
     {
-        dump(__METHOD__);
-        dump($this->request->route()->getController());
-        dd($model);
+        // dump(__METHOD__);
+        // dump($this->request->route()->getController());
+        // dd($model);
         return true;
     }
 
@@ -57,7 +57,7 @@ class CrudPolicy
      */
     public function create(User $user): bool
     {
-        dump(__METHOD__);
+        // dump(__METHOD__);
         return true;
     }
 
@@ -70,7 +70,7 @@ class CrudPolicy
      */
     public function update(User $user, Crudable $model): bool
     {
-        dump(__METHOD__);
+        // dump(__METHOD__);
         return true;
     }
 
@@ -83,7 +83,7 @@ class CrudPolicy
      */
     public function delete(User $user, Crudable $model): bool
     {
-        dump(__METHOD__);
+        // dump(__METHOD__);
         return true;
     }
 }

@@ -40,7 +40,11 @@ class Controller extends AbstractCrudController
         $repository = $this->getRepository($this->getRepositoryParam($request));
         $repository_component = $this->getRepositoryComponent($repository);
 
+        // $permissionable = $this->getPermissionableControllers();
+
         $alert_component = Alert::build($this, $this)
+            ->setController($this)
+            ->setRouteMethod('synchronize')
             ->setType(Alert::TYPE_INFO)
             ->setTextKey('out-of-sync');
 
@@ -57,12 +61,26 @@ class Controller extends AbstractCrudController
         }
     }
 
+    /**
+     * Synchronize persistent permissions with extracted from source code.
+     *
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     */
+    public function synchronize(CrudRequest $request)
+    {
+dd(__METHOD__);
+    }
+
     private function getPermissionableControllers(): Collection
     {
         return collect(ClassFinder::getClassesInNamespace('Softworx\RocXolid', ClassFinder::RECURSIVE_MODE))->filter(function($class) {
             $reflection = new \ReflectionClass($class);
 
             return $reflection->implementsInterface(Permissionable::class) && !$reflection->isAbstract();
-        });
+        })->merge(collect(ClassFinder::getClassesInNamespace('App', ClassFinder::RECURSIVE_MODE))->filter(function($class) {
+            $reflection = new \ReflectionClass($class);
+
+            return $reflection->implementsInterface(Permissionable::class) && !$reflection->isAbstract();
+        }));
     }
 }

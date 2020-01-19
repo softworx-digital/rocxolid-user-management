@@ -49,6 +49,15 @@ class RouteServiceProvider extends IlluminateServiceProvider
             CrudRouterService::create('company-profile', \CompanyProfile\Controller::class);
             CrudRouterService::create('group', \Group\Controller::class);
             CrudRouterService::create('role', \Role\Controller::class);
+
+            $router->group([
+                'namespace' => 'Permission',
+                'prefix' => 'permission',
+                'as' => 'permission.',
+            ], function ($router) {
+                $router->get('synchronize', 'Controller@synchronize')->name('synchronize');
+            });
+
             CrudRouterService::create('permission', \Permission\Controller::class);
         });
 

@@ -145,6 +145,9 @@ return [
         'affiliate' => 'CMS element - Affiliate form',
         'contact' => 'CMS element - Kontakt form',
     ],
+    'button' => [
+        'synchronize' => 'Synchronizovať',
+    ],
     'text' => [
         'out-of-sync' => 'Práva zapísané v databáze nie su zosynchronizované s Controller triedami v zdrojovom kóde.',
     ],

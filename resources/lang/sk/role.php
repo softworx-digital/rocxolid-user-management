@@ -3,12 +3,12 @@
 return [
     'column' => [
         'name' => 'Názov',
-        'guard_name' => 'Guard',
+        'guard' => 'Guard',
         'permissions' => 'Práva',
     ],
     'field' => [
         'name' => 'Názov',
-        'guard_name' => 'Guard',
+        'guard' => 'Guard',
         'permissions' => 'Práva',
     ],
     'model' => [

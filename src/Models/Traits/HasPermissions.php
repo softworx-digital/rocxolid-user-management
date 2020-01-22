@@ -2,57 +2,43 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Traits;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Spatie\Permission\PermissionRegistrar;
-use Spatie\Permission\Exceptions\GuardDoesNotMatch;
+// rocXolid user management contracts
+use Softworx\RocXolid\UserManagement\Models\Contracts\HasPermissions as HasPermissionsContract;
+// rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\Permission;
 
-// @todo - odrezat spatie
+/**
+ * Trait to enable permissions for a model.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
 trait HasPermissions
 {
     /**
-     * A model may have multiple groups.
+     * {@inheritDoc}
      */
     public function permissions(): MorphToMany
     {
-        return $this->morphToMany(Permission::class, 'model', 'model_has_permissions', 'model_id', 'permission_id');
+        return $this->morphToMany(Permission::class, 'model', 'model_has_permissions');
     }
 
     /**
-     * Grant the given permission(s) to a role.
-     *
-     * @param string|array|\Spatie\Permission\Contracts\Permission|\Illuminate\Support\Collection $permissions
-     *
-     * @return $this
+     * {@inheritDoc}
      */
-    public function givePermissionTo(...$permissions)
+    public function givePermission(...$permissions): HasPermissionsContract
     {
-        $permissions = collect($permissions)
-            ->flatten()
-            ->map(function ($permission) {
-                return $this->getStoredPermission($permission);
-            })
-            ->each(function ($permission) {
-                $this->ensureModelSharesGuard($permission);
-            })
-            ->all();
-
         $this->permissions()->saveMany($permissions);
-
-        $this->forgetCachedPermissions();
 
         return $this;
     }
 
     /**
-     * Remove all current permissions and set the given ones.
-     *
-     * @param string|array|\Spatie\Permission\Contracts\Permission|\Illuminate\Support\Collection $permissions
-     *
-     * @return $this
+     * {@inheritDoc}
      */
-    public function syncPermissions(...$permissions)
+    public function syncPermissions(...$permissions): HasPermissionsContract
     {
         $this->permissions()->detach();
 
@@ -60,82 +46,40 @@ trait HasPermissions
     }
 
     /**
-     * Revoke the given permission.
-     *
-     * @param \Spatie\Permission\Contracts\Permission|string $permission
-     *
-     * @return $this
+     * {@inheritDoc}
      */
-    public function revokePermissionTo($permission)
+    public function revokePermission(Permission $permission): HasPermissionsContract
     {
-        $this->permissions()->detach($this->getStoredPermission($permission));
-
-        $this->forgetCachedPermissions();
+        $this->permissions()->detach($permission);
 
         return $this;
     }
 
     /**
-     * @param string|array|\Spatie\Permission\Contracts\Permission|\Illuminate\Support\Collection $permissions
-     *
-     * @return \Spatie\Permission\Contracts\Permission
+     * {@inheritDoc}
      */
-    protected function getStoredPermission($permissions): Permission
+    public function hasPermission(Permission $permission): bool
     {
-        if (is_string($permissions)) {
-            return app(Permission::class)->findByName($permissions, $this->getDefaultGuardName());
-        }
-
-        if (is_array($permissions)) {
-            return app(Permission::class)
-                ->whereIn('name', $permissions)
-                ->whereId('guard_name', $this->getGuardNames())
-                ->get();
-        }
-
-        return $permissions;
+        return $this->permissions->contains($permission);
     }
 
     /**
-     * @param \Spatie\Permission\Contracts\Permission|\Spatie\Permission\Contracts\Role $roleOrPermission
-     *
-     * @throws \Spatie\Permission\Exceptions\GuardMismatch
+     * {@inheritDoc}
      */
-    protected function ensureModelSharesGuard($roleOrPermission)
+    public function hasAnyPermission(...$permissions): bool
     {
-        if (!$this->getGuardNames()->contains($roleOrPermission->guard_name)) {
-            throw GuardDoesNotMatch::create($roleOrPermission->guard_name, $this->getGuardNames());
-        }
-    }
-
-    protected function getGuardNames(): Collection
-    {
-        if ($this->guard_name) {
-            return collect($this->guard_name);
-        }
-
-        return collect(config('auth.guards'))
-            ->map(function ($guard) {
-                return config("auth.providers.{$guard['provider']}.model");
-            })
-            ->filter(function ($model) {
-                return get_class($this) === $model;
-            })
-            ->keys();
-    }
-
-    protected function getDefaultGuardName(): string
-    {
-        $default = config('auth.defaults.guard');
-
-        return $this->getGuardNames()->first() ?: $default;
+        return collect($roles)->filter(function($role) {
+            return $this->hasPermission($role);
+        })->isNotEmpty();
     }
 
     /**
-     * Forget the cached permissions.
+     * {@inheritDoc}
      */
-    public function forgetCachedPermissions()
+    public function hasAllPermissions(...$permissions): bool
     {
-        app(PermissionRegistrar::class)->forgetCachedPermissions();
+        return collect($roles)->filter(function($role) {
+            return !$this->hasPermission($role);
+        })->isEmpty();
     }
 }

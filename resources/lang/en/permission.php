@@ -3,17 +3,19 @@
 return [
     'column' => [
         'name' => 'Name',
-        'guard_name' => 'Guard',
+        'guard' => 'Guard',
+        'package' => 'Package',
         'controller_class' => 'Controller',
-        'controller_method_group' => 'Actions group',
-        'controller_method' => 'Action',
+        'policy_ability_group' => 'Actions group',
+        'policy_ability' => 'Action',
     ],
     'field' => [
         'name' => 'Name',
-        'guard_name' => 'Guard',
+        'guard' => 'Guard',
+        'package' => 'Package',
         'controller_class' => 'Controller',
-        'controller_method_group' => 'Actions group',
-        'controller_method' => 'Action',
+        'policy_ability_group' => 'Actions group',
+        'policy_ability' => 'Action',
     ],
     'model' => [
         'title' => [
@@ -25,8 +27,10 @@ return [
         'read-only' => 'read-only',
         'write' => 'write',
     ],
-    'param' => [
-        'image' => 'Obrázky',
-        'country' => 'Krajiny',
+    'button' => [
+        'synchronize' => 'Synchronize',
+    ],
+    'text' => [
+        'out-of-sync' => 'Persistent permissions data is out of sync with source code permissions.',
     ],
 ];

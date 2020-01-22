@@ -28,10 +28,14 @@ use Softworx\RocXolid\Common\Models\Image;
 // rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits\HasAddresses;
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
+// rocXolid user management model contracts
+use Softworx\RocXolid\UserManagement\Models\Contracts\HasGroups;
+use Softworx\RocXolid\UserManagement\Models\Contracts\HasRoles;
+use Softworx\RocXolid\UserManagement\Models\Contracts\HasPermissions;
 // rocXolid user management model traits
-use Softworx\RocXolid\UserManagement\Models\Traits\HasRoles;
-use Softworx\RocXolid\UserManagement\Models\Traits\HasGroups;
-use Softworx\RocXolid\UserManagement\Models\Traits\HasPermissions;
+use Softworx\RocXolid\UserManagement\Models\Traits\HasGroups as HasGroupsTrait;
+use Softworx\RocXolid\UserManagement\Models\Traits\HasRoles as HasRolesTrait;
+use Softworx\RocXolid\UserManagement\Models\Traits\HasPermissions as HasPermissionsTrait;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasUserProfile;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasCompanyProfile;
 use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
@@ -43,19 +47,19 @@ use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
  * @package Softworx\RocXolid\Admin
  * @version 1.0.0
  */
-class User extends Authenticatable implements Crudable, HasTokenablePropertiesMethods
+class User extends Authenticatable implements Crudable, HasGroups, HasRoles, HasPermissions, HasTokenablePropertiesMethods
 {
+    use ProtectsRoot;
     use Notifiable;
     use CrudableTrait;
     use HasTitleColumn;
-    use HasRoles;
-    use HasGroups;
-    use HasPermissions;
+    use HasGroupsTrait;
+    use HasRolesTrait;
+    use HasPermissionsTrait;
     use HasUserProfile;
     use HasCompanyProfile;
     use HasAddresses;
     use HasImage;
-    use ProtectsRoot;
     use HasTokenablePropertiesMethodsTrait;
 
     const ROOT_ID = 1;
@@ -170,12 +174,13 @@ class User extends Authenticatable implements Crudable, HasTokenablePropertiesMe
     }
     */
 
-    // @todo: hotfixed
+    // @todo: hotfixed, you can do better
     public function getAttributeViewValue($attribute)
     {
         return $this->$attribute;
     }
 
+    // @todo: type hints
     public function applyGroupFilters(&$builder, $column)
     {
         if (!$this->isRoot()) {
@@ -196,10 +201,18 @@ class User extends Authenticatable implements Crudable, HasTokenablePropertiesMe
         return ($this->id === static::ROOT_ID);
     }
 
-    // @todo: type hints
-    protected function allowPermissionException($user, $method_group, $permission)
+    /**
+     * {@inheritDoc}
+     */
+    public function hasPermission(Permission $permission): bool
     {
-        if (in_array($method_group, ['index', 'authorization'])) {
+        return $this->permissions->contains($permission);
+    }
+
+    // @todo: type hints
+    protected function allowPermissionException($user, $policy_ability_group, $permission)
+    {
+        if (in_array($policy_ability_group, ['index', 'authorization'])) {
             return false;
         }
 
@@ -220,7 +233,13 @@ class User extends Authenticatable implements Crudable, HasTokenablePropertiesMe
         }
     }
 
-    public function resetPasswordUrl()
+    /**
+     * Generate password reset URL.
+     *
+     * @return string
+     * @throws \UnderflowException If no password reset token assigned.
+     */
+    public function resetPasswordUrl(): string
     {
         // ignore when used eg. in e-mail notification
         if (!$this->exists) {
@@ -234,7 +253,14 @@ class User extends Authenticatable implements Crudable, HasTokenablePropertiesMe
         return route('rocXolid.auth.reset-password', [ 'token' => $this->password_reset_token ]);
     }
 
-    public function onImageUpload(Image $image, AjaxResponse &$response)
+    /**
+     * Image upload handler.
+     *
+     * @param \Softworx\RocXolid\Common\Models\Image $image Uploaded image reference.
+     * @param \Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse $response Response reference.
+     * @return
+     */
+    public function onImageUpload(Image $image, AjaxResponse &$response): User
     {
         if (Auth::guard('rocXolid')->user()->is($this)) {
             $response->replace('sidebar-profile-image', Html::image(
@@ -253,8 +279,15 @@ class User extends Authenticatable implements Crudable, HasTokenablePropertiesMe
         return $this;
     }
 
-    public function deleteImageRedirectPath()
+    /**
+     * Retrieve path to redirect user after image has been deleted.
+     *
+     * @return string
+     */
+    public function deleteImageRedirectPath(): string
     {
-        return Auth::guard('rocXolid')->user()->is($this) ? route('rocXolid.auth.profile') : $this->getControllerRoute('show');
+        return Auth::guard('rocXolid')->user()->is($this)
+            ? route('rocXolid.auth.profile')
+            : $this->getControllerRoute('show');
     }
 }

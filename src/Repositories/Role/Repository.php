@@ -22,11 +22,11 @@ class Repository extends AbstractCrudRepository
                 ],
             ],
         ],/*
-        'guard_name' => [
+        'guard' => [
             'type' => Text::class,
             'options' => [
                 'label' => [
-                    'title' => 'guard_name'
+                    'title' => 'guard'
                 ],
             ],
         ],

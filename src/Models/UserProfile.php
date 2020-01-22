@@ -94,7 +94,7 @@ class UserProfile extends AbstractCrudModel
         }
     }
 
-    protected function allowPermissionException(Authenticatable $user, string $method_group, string $permission)
+    protected function allowPermissionException(Authenticatable $user, string $policy_ability_group, string $permission)
     {
         return !$this->exists || $this->user->is($user);
     }

@@ -3,6 +3,7 @@
 namespace Softworx\RocXolid\UserManagement\Models\Forms\Role;
 
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+use Softworx\RocXolid\UserManagement\Forms\Fields\Type\PermissionsAssignment;
 
 class Update extends RocXolidAbstractCrudForm
 {
@@ -14,6 +15,12 @@ class Update extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
+        $fields['permissions']['type'] = PermissionsAssignment::class;
+        $fields['permissions']['options'] = [
+            'label' => [
+                'title' => 'permissions',
+            ],
+        ];
         /*
         $fields = array_merge_recursive($fields, [
             'permissions' => [
@@ -32,7 +39,7 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ]);*/
         // unset($fields['permissions']);
-
+// dd($fields);
         return $fields;
     }
 }

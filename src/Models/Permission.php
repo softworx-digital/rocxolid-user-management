@@ -2,27 +2,32 @@
 
 namespace Softworx\RocXolid\UserManagement\Models;
 
-use Spatie\Permission\Models\Permission as SpatiePermission;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+// rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
-use Softworx\RocXolid\Models\Traits\Crudable as CrudableTrait;
-use Softworx\RocXolid\Models\Traits\HasTitleColumn;
+// rocXolid models
+use Softworx\RocXolid\Models\AbstractCrudModel;
+// rocXolid user management models
+use Softworx\RocXolid\UserManagement\Models\Role;
+use Softworx\RocXolid\UserManagement\Models\user;
 
-// @todo - odrezat spatie
-class Permission extends SpatiePermission implements Crudable
+class Permission extends AbstractCrudModel
 {
-    use CrudableTrait;
-    use HasTitleColumn;
+    protected static $can_be_deleted = true;
 
     protected $hidden = [
         'id',
     ];
 
     protected $fillable = [
+        'is_enabled',
         'name',
-        //'guard_name',
+        'guard',
+        'package',
         'controller_class',
-        'controller_method_group',
-        'controller_method',
+        'policy_ability_group',
+        'policy_ability',
     ];
 
     protected $extra = [];
@@ -38,8 +43,26 @@ class Permission extends SpatiePermission implements Crudable
 
     public function getTitle()
     {
-        list($param, $method_group) = explode('.', sprintf('%s.', $this->name));
+        return app($this->controller_class)->translate('model.title.singular');
+    }
 
-        return sprintf('%s - %s', __(sprintf('rocXolid::permission.param.%s', $param)), __(sprintf('rocXolid::permission.method-group.%s', $method_group)));
+    /**
+     * Permission role rolationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Permission belongs user relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function users(): MorphToMany
+    {
+        return $this->morphedByMany(User::class, 'model');
     }
 }

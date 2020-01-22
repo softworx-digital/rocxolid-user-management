@@ -33,6 +33,12 @@
             "providers": [
                 "Softworx\\RocXolid\\UserManagement\\ServiceProvider"
             ]
+        },
+        "rocXolid": {
+            "title": {
+                "en": "User Management",
+                "sk": "Nastavenie používateľov"
+            }
         }
     }
 }

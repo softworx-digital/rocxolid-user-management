@@ -2,7 +2,8 @@
 
 namespace Softworx\RocXolid\UserManagement;
 
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Illuminate\Foundation\AliasLoader;
+use Softworx\RocXolid\AbstractServiceProvider as RocXolidAbstractServiceProvider;
 
 /**
  * rocXolid Authentication, Authorization & User Management package service provider.
@@ -11,7 +12,7 @@ use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
  * @package Softworx\RocXolid\Admin
  * @version 1.0.0
  */
-class ServiceProvider extends IlluminateServiceProvider
+class ServiceProvider extends RocXolidAbstractServiceProvider
 {
     /**
      * Register the application services.
@@ -25,6 +26,10 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->app->register(Providers\RouteServiceProvider::class);
         $this->app->register(Providers\TranslationServiceProvider::class);
         $this->app->register(Providers\ValidationServiceProvider::class);
+        $this->app->register(Providers\FacadeServiceProvider::class);
+
+        $this
+            ->bindAliases(AliasLoader::getInstance());
     }
 
     /**
@@ -41,9 +46,9 @@ class ServiceProvider extends IlluminateServiceProvider
     /**
      * Expose config files and resources to be published.
      *
-     * @return \Illuminate\Support\ServiceProvider
+     * @return \Softworx\RocXolid\AbstractServiceProvider
      */
-    private function publish()
+    private function publish(): RocXolidAbstractServiceProvider
     {
         // config files
         // php artisan vendor:publish --provider="Softworx\RocXolid\UserManagement\ServiceProvider" --tag="config" (--force to overwrite)
@@ -69,6 +74,24 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->publishes([
             __DIR__.'/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
+
+        return $this;
+    }
+
+    /**
+     * Bind aliases, so they don't have to be added to config/app.php.
+     *
+     * Template:
+     *      $loader->alias('<alias>', <Facade/Contract>::class);
+     *
+     * @return \Softworx\RocXolid\AbstractServiceProvider
+     */
+    private function bindAliases(AliasLoader $loader): RocXolidAbstractServiceProvider
+    {
+        // rocXolid
+        $loader->alias('PermissionLoader', Facades\PermissionLoader::class);
+        // third-party
+        // ...
 
         return $this;
     }

@@ -4,41 +4,24 @@ namespace Softworx\RocXolid\UserManagement\Repositories\Permission;
 
 use Softworx\RocXolid\Repositories\AbstractCrudRepository;
 use Softworx\RocXolid\Repositories\Columns\Type\Text;
+use Softworx\RocXolid\Repositories\Columns\Type\Flag;
 use Softworx\RocXolid\Repositories\Columns\Type\Method;
 
 class Repository extends AbstractCrudRepository
 {
     protected $columns = [
-        'name' => [
+        'is_enabled' => [
+            'type' => Flag::class,
+            'options' => [
+                'label' => [
+                    'title' => 'is_enabled'
+                ],
+            ],
+        ],
+        'controller_class' => [
             'type' => Method::class,
             'options' => [
                 'method' => 'getTitle',
-                'label' => [
-                    'title' => 'name'
-                ],
-                'wrapper' => [
-                    'attributes' => [
-                        'class' => 'text-center',
-                    ],
-                ],
-            ],
-        ],/*
-        'guard_name' => [
-            'type' => Text::class,
-            'options' => [
-                'label' => [
-                    'title' => 'guard_name'
-                ],
-                'wrapper' => [
-                    'attributes' => [
-                        'class' => 'text-center',
-                    ],
-                ],
-            ],
-        ],*//*
-        'controller_class' => [
-            'type' => Text::class,
-            'options' => [
                 'label' => [
                     'title' => 'controller_class'
                 ],
@@ -48,12 +31,12 @@ class Repository extends AbstractCrudRepository
                     ],
                 ],
             ],
-        ],*/
-        'controller_method_group' => [
+        ],
+        'policy_ability_group' => [
             'type' => Text::class,
             'options' => [
                 'label' => [
-                    'title' => 'controller_method_group'
+                    'title' => 'policy_ability_group'
                 ],
                 'wrapper' => [
                     'attributes' => [
@@ -61,12 +44,12 @@ class Repository extends AbstractCrudRepository
                     ],
                 ],
             ],
-        ],/*
-        'controller_method' => [
+        ],
+        'policy_ability' => [
             'type' => Text::class,
             'options' => [
                 'label' => [
-                    'title' => 'controller_method'
+                    'title' => 'policy_ability'
                 ],
                 'wrapper' => [
                     'attributes' => [
@@ -74,6 +57,6 @@ class Repository extends AbstractCrudRepository
                     ],
                 ],
             ],
-        ],*/
+        ],
     ];
 }

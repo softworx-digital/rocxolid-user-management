@@ -11,10 +11,10 @@ return [
         'name' => 'Názov',
         'webs' => 'Weby',
         'users' => 'Používatelia administrácie',
-        'guard_name' => 'Guard',
+        'guard' => 'Guard',
         'controller_class' => 'Controller',
-        'controller_method_group' => 'Skupina akcií',
-        'controller_method' => 'Akcia',
+        'policy_ability_group' => 'Skupina akcií',
+        'policy_ability' => 'Akcia',
     ],
     'model' => [
         'title' => [

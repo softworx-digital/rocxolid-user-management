@@ -19,6 +19,7 @@ use Softworx\RocXolid\UserManagement\Models\Permission;
 class PermissionLoaderService
 {
     protected static $sort = [
+        'full' => 0,
         'viewAll' => 1,
         'view' => 2,
         'create' => 3,

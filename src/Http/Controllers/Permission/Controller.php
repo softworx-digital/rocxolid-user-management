@@ -2,16 +2,15 @@
 
 namespace Softworx\RocXolid\UserManagement\Http\Controllers\Permission;
 
-use Str;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 // rocXolid services
-use Softworx\RocXolid\Services\PackageService;
 use Softworx\RocXolid\Services\PermissionReaderService;
 // rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse;
 // rocXolid components
+use Softworx\RocXolid\Components\General\Button;
 use Softworx\RocXolid\Components\General\Alert;
 // rocXolid user management controller contracts
 use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
@@ -29,17 +28,32 @@ use Softworx\RocXolid\UserManagement\Repositories\Permission\Repository;
  */
 class Controller extends AbstractCrudController
 {
+    /**
+     * {@inheritDoc}
+     */
     protected static $model_class = Permission::class;
 
+    /**
+     * {@inheritDoc}
+     */
     protected static $repository_class = Repository::class;
 
-    protected $package_service;
+    /**
+     * @var \Softworx\RocXolid\Services\PermissionReaderService
+     */
+    protected $permission_reader_service;
 
-    public function __construct(AjaxResponse $response, PackageService $package_service, PermissionReaderService $permission_reader_service)
+    /**
+     * Constructor.
+     *
+     * @param \Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse $response
+     * @param \Softworx\RocXolid\Services\PermissionReaderService $permission_reader_service
+     * @return \Softworx\RocXolid\UserManagement\Http\Controllers\Permission\Controller
+     */
+    public function __construct(AjaxResponse $response, PermissionReaderService $permission_reader_service)
     {
         parent::__construct($response);
 
-        $this->package_service = $package_service;
         $this->permission_reader_service = $permission_reader_service;
     }
 
@@ -60,18 +74,10 @@ class Controller extends AbstractCrudController
                 $code_permissions,
                 $saved_permissions
             )) {
-                $alert_component = Alert::build($this, $this)
-                    ->setController($this)
-                    ->setRouteMethod('synchronize')
-                    ->setType(Alert::TYPE_INFO)
-                    ->addTextKey('out-of-sync')
-                    ->addText($saved_permissions->diffRecords($code_permissions)->toJson(), 'pre')
-                    ->addText($code_permissions->diffRecords($saved_permissions)->toJson(), 'pre');
+                $alert_component = $this->getSynchronizeAlertComponent($saved_permissions, $code_permissions);
             }
         } catch (FileNotFoundException $e) {
-            $alert_component = Alert::build($this, $this)
-                ->setType(Alert::TYPE_ERROR)
-                ->addText($e->getMessage());
+            $alert_component = $this->getErrorAlertComponent($e);
         }
 
         if ($request->ajax()) {
@@ -95,8 +101,10 @@ class Controller extends AbstractCrudController
      * Synchronize persistent permissions with extracted from source code.
      *
      * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param string $param
+     * @return mixed
      */
-    public function synchronize(CrudRequest $request)
+    public function synchronize(CrudRequest $request, string $param = null)
     {
         $repository = $this->getRepository($this->getRepositoryParam($request));
         $repository_component = $this->getRepositoryComponent($repository);
@@ -105,23 +113,108 @@ class Controller extends AbstractCrudController
             $code_permissions = $this->permission_reader_service->sourceCodePermissions();
             $saved_permissions = $this->permission_reader_service->persistentPermissions(static::$model_class::make());
 
-            $saved_permissions->diffRecords($code_permissions)->each(function($data) {
-                static::$model_class::where($data)->delete();
-            });
+            if (!$param || ($param === 'delete')) {
+                $saved_permissions->diffRecords($code_permissions)->each(function($data) {
+                    static::$model_class::where($data)->delete();
+                });
+            }
 
-            $code_permissions->diffRecords($saved_permissions)->each(function($data) {
-                static::$model_class::create($data);
-            });
+            if (!$param || ($param === 'insert')) {
+                $code_permissions->diffRecords($saved_permissions)->each(function($data) {
+                    static::$model_class::create($data);
+                });
+            }
         } catch (FileNotFoundException $e) {
             dd($e);
         }
 
         if ($request->ajax()) {
             return $this->response
-                ->replace($repository_component->getDomId(), $repository_component->fetch())
+                // ->replace($repository_component->getDomId(), $repository_component->fetch())
+                ->redirect($this->getRoute('index'))
                 ->get();
         } else {
             return redirect($this->getRoute('index'));
         }
+    }
+
+    /**
+     * Build alert message stating out of sync permissions with corresponding actions.
+     *
+     * @param \Illuminate\Support\Collection $saved_permissions
+     * @param \Illuminate\Support\Collection $code_permissions
+     * @return \Softworx\RocXolid\Components\General\Alert
+     */
+    private function getSynchronizeAlertComponent(Collection $saved_permissions, Collection $code_permissions): Alert
+    {
+        $alert_component = Alert::build($this, $this)
+            ->setType(Alert::TYPE_INFO)
+            ->addTextKey('out-of-sync');
+
+        $alert_component->addButton(Button::build($this, $this)
+                ->setOptions([
+                    'attributes' => [
+                        'class' => 'btn btn-primary col-xs-12',
+                        'data-ajax-url' => $this->getRoute('synchronize'),
+                    ],
+                    'label' => [
+                        'icon' => 'fa fa-refresh',
+                        'title' => $alert_component->translate(sprintf('button.synchronize')),
+                    ],
+                ])
+            );
+
+        // there are some persistent permissions not appliable after source code extraction
+        if ($saved_permissions->diffRecords($code_permissions)->isNotEmpty()) {
+            $alert_component
+                ->addTextKey('out-of-sync-saved-code', 'strong')
+                ->addCollection($saved_permissions->diffRecords($code_permissions)->pluck('name'))
+                ->addButton(Button::build($this, $this)
+                    ->setOptions([
+                        'attributes' => [
+                            'class' => 'btn btn-primary col-xs-12',
+                            'data-ajax-url' => $this->getRoute('synchronize', [ 'param' => 'delete' ]),
+                        ],
+                        'label' => [
+                            'icon' => 'fa fa-trash',
+                            'title' => $alert_component->translate(sprintf('button.synchronize-delete')),
+                        ],
+                    ])
+                );
+        }
+
+        // there are some not persisted source code extracted permissions
+        if ($code_permissions->diffRecords($saved_permissions)->isNotEmpty()) {
+            $alert_component
+                ->addTextKey('out-of-sync-code-saved', 'strong')
+                ->addCollection($code_permissions->diffRecords($saved_permissions)->pluck('name'))
+                ->addButton(Button::build($this, $this)
+                    ->setOptions([
+                        'attributes' => [
+                            'class' => 'btn btn-primary col-xs-12',
+                            'data-ajax-url' => $this->getRoute('synchronize', [ 'param' => 'insert' ]),
+                        ],
+                        'label' => [
+                            'icon' => 'fa fa-save',
+                            'title' => $alert_component->translate(sprintf('button.synchronize-insert')),
+                        ],
+                    ])
+                );
+        }
+
+        return $alert_component;
+    }
+
+    /**
+     * Build error alert message.
+     *
+     * @param \Exception $e
+     * @return \Softworx\RocXolid\Components\General\Alert
+     */
+    private function getErrorAlertComponent(\Exception $e): Alert
+    {
+        return Alert::build($this, $this)
+                ->setType(Alert::TYPE_ERROR)
+                ->addText($e->getMessage());
     }
 }

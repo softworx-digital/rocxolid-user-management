@@ -17,7 +17,6 @@ use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\HasTokenablePropertiesMethods;
 // rocXolid model traits
 use Softworx\RocXolid\Models\Traits\Crudable as CrudableTrait;
-use Softworx\RocXolid\Models\Traits\HasTitleColumn;
 use Softworx\RocXolid\Models\Traits\HasTokenablePropertiesMethods as HasTokenablePropertiesMethodsTrait;
 // rocXolid admin controllers
 use Softworx\RocXolid\Admin\Auth\Controllers\ProfileController;
@@ -52,7 +51,6 @@ class User extends Authenticatable implements Crudable, HasGroups, HasRoles, Has
     use ProtectsRoot;
     use Notifiable;
     use CrudableTrait;
-    use HasTitleColumn;
     use HasGroupsTrait;
     use HasRolesTrait;
     use HasPermissionsTrait;

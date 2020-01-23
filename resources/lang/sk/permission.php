@@ -29,8 +29,12 @@ return [
     ],
     'button' => [
         'synchronize' => 'Synchronizovať',
+        'synchronize-insert' => 'Uložiť zo zdrojového kódu',
+        'synchronize-delete' => 'Vymazať prebytočné',
     ],
     'text' => [
         'out-of-sync' => 'Práva zapísané v databáze nie su zosynchronizované s Controller triedami v zdrojovom kóde.',
+        'out-of-sync-saved-code' => 'Práva zapísané v databáze, ktoré nie sú v zdrojovom kóde:',
+        'out-of-sync-code-saved' => 'Práva v zdrojovom kóde, ktoré nie sú zapísané v databáze:',
     ],
 ];

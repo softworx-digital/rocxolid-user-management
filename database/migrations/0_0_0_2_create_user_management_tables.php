@@ -215,6 +215,7 @@ class CreateUserManagementTables extends Migration
         Schema::create('role_has_permissions', function (Blueprint $table) {
             $table->unsignedInteger('permission_id');
             $table->unsignedInteger('role_id');
+            $table->string('scope_type')->nullable();
 
             $table->foreign('permission_id')
                 ->references('id')
@@ -254,6 +255,7 @@ class CreateUserManagementTables extends Migration
         Schema::create('model_has_permissions', function (Blueprint $table) {
             $table->unsignedInteger('permission_id');
             $table->morphs('model');
+            $table->string('scope_type')->nullable();
 
             $table->foreign('permission_id')
                 ->references('id')

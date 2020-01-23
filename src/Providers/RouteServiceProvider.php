@@ -55,7 +55,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
                 'prefix' => 'permission',
                 'as' => 'permission.',
             ], function ($router) {
-                $router->get('synchronize', 'Controller@synchronize')->name('synchronize');
+                $router->get('synchronize/{param?}', 'Controller@synchronize')->name('synchronize');
             });
 
             CrudRouterService::create('permission', \Permission\Controller::class);

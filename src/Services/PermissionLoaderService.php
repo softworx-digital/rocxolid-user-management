@@ -50,7 +50,10 @@ class PermissionLoaderService
      */
     public function packageHasPermissions(string $package): bool
     {
-        return Permission::where('is_enabled', 1)->where('package', $package::getPackageKey())->count() > 0;
+        return Permission::where('is_enabled', 1)
+            ->where('package', $package::getPackageKey())
+            ->whereNull('attribute')
+            ->count() > 0;
     }
 
     /**
@@ -61,7 +64,11 @@ class PermissionLoaderService
      */
     public function packagePermissions(string $package): Collection
     {
-        return Permission::where('is_enabled', 1)->where('package', $package::getPackageKey())->get()->groupBy('controller_class');
+        return Permission::where('is_enabled', 1)
+            ->where('package', $package::getPackageKey())
+            ->whereNull('attribute')
+            ->groupBy('controller_class')
+            ->get();
     }
 
     /**

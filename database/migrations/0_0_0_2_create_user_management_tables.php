@@ -188,8 +188,11 @@ class CreateUserManagementTables extends Migration
             $table->string('guard')->default('rocXolid');
             $table->string('package');
             $table->string('controller_class')->nullable();
+            $table->string('model_class')->nullable();
+            $table->string('attribute')->nullable();
             $table->string('policy_ability_group')->nullable();
             $table->string('policy_ability')->nullable();
+            $table->json('scopes')->nullable();
             $table->timestamps();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
@@ -215,6 +218,8 @@ class CreateUserManagementTables extends Migration
         Schema::create('role_has_permissions', function (Blueprint $table) {
             $table->unsignedInteger('permission_id');
             $table->unsignedInteger('role_id');
+            $table->enum('directive', ['allow', 'deny'])->default('allow');
+            // $table->json('scope_type')->nullable();
             $table->string('scope_type')->nullable();
 
             $table->foreign('permission_id')
@@ -255,6 +260,8 @@ class CreateUserManagementTables extends Migration
         Schema::create('model_has_permissions', function (Blueprint $table) {
             $table->unsignedInteger('permission_id');
             $table->morphs('model');
+            $table->enum('directive', ['allow', 'deny'])->default('allow');
+            // $table->json('scope_type')->nullable();
             $table->string('scope_type')->nullable();
 
             $table->foreign('permission_id')

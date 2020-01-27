@@ -16,8 +16,6 @@ class Update extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-
-
         $fields['permissions']['type'] = PermissionsAssignment::class;
         $fields['permissions']['options'] = [
             'collection' => PermissionLoader::get(),
@@ -25,25 +23,7 @@ class Update extends RocXolidAbstractCrudForm
                 'title' => 'permissions',
             ],
         ];
-        /*
-        $fields = array_merge_recursive($fields, [
-            'permissions' => [
-                'options' => [
-                    'collection' => [
-                        'method' => 'getTitle',
-                    ],
-                    'label' => [
-                        'collection' => [
-                            'attributes' => [
-                                'class' => 'label-fit-height margin-left-5 margin-right-5 col-xs-4'
-                            ]
-                        ],
-                    ],
-                ],
-            ],
-        ]);*/
-        // unset($fields['permissions']);
-// dd($fields);
+
         return $fields;
     }
 }

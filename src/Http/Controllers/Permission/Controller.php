@@ -5,7 +5,7 @@ namespace Softworx\RocXolid\UserManagement\Http\Controllers\Permission;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 // rocXolid services
-use Softworx\RocXolid\Services\PermissionReaderService;
+use Softworx\RocXolid\Services\PermissionScannerService;
 // rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse;
@@ -39,7 +39,7 @@ class Controller extends AbstractCrudController
     protected static $repository_class = Repository::class;
 
     /**
-     * @var \Softworx\RocXolid\Services\PermissionReaderService
+     * @var \Softworx\RocXolid\Services\PermissionScannerService
      */
     protected $permission_reader_service;
 
@@ -47,10 +47,10 @@ class Controller extends AbstractCrudController
      * Constructor.
      *
      * @param \Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse $response
-     * @param \Softworx\RocXolid\Services\PermissionReaderService $permission_reader_service
+     * @param \Softworx\RocXolid\Services\PermissionScannerService $permission_reader_service
      * @return \Softworx\RocXolid\UserManagement\Http\Controllers\Permission\Controller
      */
-    public function __construct(AjaxResponse $response, PermissionReaderService $permission_reader_service)
+    public function __construct(AjaxResponse $response, PermissionScannerService $permission_reader_service)
     {
         parent::__construct($response);
 
@@ -59,7 +59,7 @@ class Controller extends AbstractCrudController
 
     /**
      * {@inheritDoc}
-     * @Softworx\RocXolid\Annotations\AuthorizedAction(policy_ability_group="read-only",policy_ability="viewAll")
+     * @Softworx\RocXolid\Annotations\AuthorizedAction(policy_ability_group="read-only",policy_ability="viewAll",scopes="['policy.scope.all','policy.scope.owned']")
      */
     public function index(CrudRequest $request)//: View
     {
@@ -100,6 +100,7 @@ class Controller extends AbstractCrudController
     /**
      * Synchronize persistent permissions with extracted from source code.
      *
+     * @Softworx\RocXolid\Annotations\AuthorizedAction(policy_ability_group="execute",policy_ability="synchronize")
      * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
      * @param string $param
      * @return mixed

@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\UserManagement\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 // rocXolid model contracts
@@ -26,13 +27,24 @@ class Permission extends AbstractCrudModel
         'guard',
         'package',
         'controller_class',
+        'model_class',
+        'attribute',
         'policy_ability_group',
         'policy_ability',
+        'scopes',
     ];
 
     protected $extra = [];
 
     protected $system = [
+        'guard',
+        'package',
+        'controller_class',
+        'model_class',
+        'attribute',
+        'policy_ability_group',
+        'policy_ability',
+        'scopes',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -41,9 +53,22 @@ class Permission extends AbstractCrudModel
         'deleted_by',
     ];
 
+    protected $casts = [
+        'scopes' => 'array'
+    ];
+
     public function getTitle()
     {
-        return app($this->controller_class)->translate('model.title.singular');
+        return $this->name;
+        /*
+        if ($this->controller_class) {
+            return sprintf(
+                '%s - %s',
+                app($this->controller_class)->translate('model.title.singular'),
+                $this->getCrudController()->translate(sprintf('permissions.%s', $this->policy_ability))
+            );
+        }
+        */
     }
 
     /**
@@ -64,5 +89,25 @@ class Permission extends AbstractCrudModel
     public function users(): MorphToMany
     {
         return $this->morphedByMany(User::class, 'model');
+    }
+
+    /**
+     * Check if some scopes can apply to the permission.
+     *
+     * @return bool
+     */
+    public function hasScopes(): bool
+    {
+        return !empty($this->scopes);
+    }
+
+    /**
+     * Get scopes that can apply for permission.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getScopes(): Collection
+    {
+        return collect($this->scopes);
     }
 }

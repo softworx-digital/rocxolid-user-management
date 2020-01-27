@@ -28,6 +28,9 @@ class ServiceProvider extends RocXolidAbstractServiceProvider
         $this->app->register(Providers\ValidationServiceProvider::class);
         $this->app->register(Providers\FacadeServiceProvider::class);
 
+        $this->app->bind('policy.scope.all', Policies\Scopes\All::class);
+        $this->app->bind('policy.scope.owned', Policies\Scopes\Owned::class);
+
         $this
             ->bindAliases(AliasLoader::getInstance());
     }

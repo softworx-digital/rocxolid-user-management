@@ -25,7 +25,7 @@ use Softworx\RocXolid\Admin\Auth\Events\UserForgotPassword;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Image;
 // rocXolid common model traits
-use Softworx\RocXolid\Common\Models\Traits\HasAddresses;
+use Softworx\RocXolid\Common\Models\Traits\HasAddress;
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
 // rocXolid user management model contracts
 use Softworx\RocXolid\UserManagement\Models\Contracts\HasGroups;
@@ -56,7 +56,7 @@ class User extends Authenticatable implements Crudable, HasGroups, HasRoles, Has
     use HasPermissionsTrait;
     use HasUserProfile;
     use HasCompanyProfile;
-    use HasAddresses;
+    use HasAddress;
     use HasImage;
     use HasTokenablePropertiesMethodsTrait;
 
@@ -257,6 +257,7 @@ class User extends Authenticatable implements Crudable, HasGroups, HasRoles, Has
      * @param \Softworx\RocXolid\Common\Models\Image $image Uploaded image reference.
      * @param \Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse $response Response reference.
      * @return
+     * @todo: events?
      */
     public function onImageUpload(Image $image, AjaxResponse &$response): User
     {

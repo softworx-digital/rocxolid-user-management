@@ -27,7 +27,7 @@
                 @if ($component->getModel()->address()->exists())
                     {!! $component->getModel()->address->getModelViewerComponent()->render() !!}
                 @else
-                    {!! $component->getModel()->makeAddress()->getModelViewerComponent()->render('unavailable', [ 'model' => $component->getModel() ]) !!}
+                    {!! $component->getModel()->address()->make()->getModelViewerComponent()->render('unavailable', [ 'model' => $component->getModel() ]) !!}
                 @endif
                 </div>
                 <div class="row col-xs-12">

@@ -9,6 +9,7 @@ class RolePermission extends Pivot
     protected $table = 'role_has_permissions';
 
     protected $fillable = [
+        // 'directive',
         'scope_type',
     ];
 }

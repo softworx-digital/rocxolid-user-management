@@ -50,7 +50,7 @@ class Controller extends AbstractCrudController
 
             return $this->response
                 ->notifySuccess($user_model_viewer_component->translate('text.updated'))
-                ->replace($user_model_viewer_component->getDomId('header-panel'), $user_model_viewer_component->fetch('header-panel'))
+                ->replace($user_model_viewer_component->getDomId('header-panel'), $user_model_viewer_component->fetch('include.header-panel'))
                 ->replace($user_model_viewer_component->getDomId($request->_section), $user_model_viewer_component->fetch($template_name))
                 ->modalClose($user_model_viewer_component->getDomId(sprintf('modal-%s', $action)))
                 ->get();

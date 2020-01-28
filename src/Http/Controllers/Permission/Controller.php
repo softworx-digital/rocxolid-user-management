@@ -59,7 +59,7 @@ class Controller extends AbstractCrudController
 
     /**
      * {@inheritDoc}
-     * @Softworx\RocXolid\Annotations\AuthorizedAction(policy_ability_group="read-only",policy_ability="viewAll",scopes="['policy.scope.all','policy.scope.owned']")
+     * @Softworx\RocXolid\Annotations\AuthorizedAction(policy_ability_group="read-only",policy_ability="viewAny",scopes="['policy.scope.all','policy.scope.owned']")
      */
     public function index(CrudRequest $request)//: View
     {

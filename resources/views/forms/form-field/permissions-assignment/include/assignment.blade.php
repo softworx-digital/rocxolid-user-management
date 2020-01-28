@@ -1,5 +1,5 @@
 {{-- @todo: hotfixed --}}
-@if ($permission->policy_ability === 'viewAll')
+@if ($permission->policy_ability === 'viewAny')
 <i class="fa fa-list" title="{{ $controller->translate(sprintf('permissions.%s', $permission->policy_ability)) }}"></i>
 @elseif ($permission->policy_ability === 'view')
 <i class="fa fa-eye" title="{{ $controller->translate(sprintf('permissions.%s', $permission->policy_ability)) }}"></i>
@@ -9,6 +9,8 @@
 <i class="fa fa-edit" title="{{ $controller->translate(sprintf('permissions.%s', $permission->policy_ability)) }}"></i>
 @elseif ($permission->policy_ability === 'delete')
 <i class="fa fa-trash" title="{{ $controller->translate(sprintf('permissions.%s', $permission->policy_ability)) }}"></i>
+@elseif ($permission->policy_ability === 'assign')
+<i class="fa fa-external-link" title="{{ $controller->translate(sprintf('permissions.%s', $permission->policy_ability)) }}"></i>
 @else
 <small>{{ $controller->translate(sprintf('permissions.%s', $permission->policy_ability)) }}</small>
 @endif

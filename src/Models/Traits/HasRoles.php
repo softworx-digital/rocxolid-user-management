@@ -14,10 +14,11 @@ trait HasRoles
 {
     /**
      * {@inheritDoc}
+     * @Softworx\RocXolid\Annotations\AuthorizedRelation(policy_abilities="['assign']")
      */
     public function roles(): MorphToMany
     {
-        return $this->morphToMany(Role::class, 'model', 'model_has_roles');
+        return $this->morphToMany(Role::class, 'model', 'model_has_roles')->withoutGlobalScopes();
     }
 
     /**
@@ -67,7 +68,7 @@ trait HasRoles
     /**
      * {@inheritDoc}
      */
-    public function hasRole($role): bool
+    public function hasRole(Role $role): bool
     {
         return $this->roles->contains($role);
     }

@@ -28,7 +28,7 @@ class PermissionsAssignment extends CollectionRadioList
         ],
     ];
 
-    public function getPermissionFieldName(Permission $permission, int $index = 0)
+    public function getPermissionFieldName(Permission $permission, int $index = 0): string
     {
         if ($this->isArray()) {
             return sprintf('%s[%s][%s][%s][%s]', self::ARRAY_DATA_PARAM, $index, $this->name, $permission->getKeyName(), $permission->getKey());
@@ -37,12 +37,11 @@ class PermissionsAssignment extends CollectionRadioList
         }
     }
 
-    public function getPermissionPivotFieldName(Permission $permission, string $attribute, int $index = 0)
+    public function getPermissionPivotFieldName(Permission $permission, string $attribute, int $index = 0): string
     {
         // @todo: awkward
         $relation = $this->getForm()->getController()->getModel()->{$this->name}();
 
-        // @todo: naively assuming model has "permissions" relationship
         if ($this->isArray()) {
             return sprintf('%s[%s][%s][%s][%s][%s]', self::ARRAY_DATA_PARAM, $index, $this->name, $relation->getPivotAccessor(), $permission->getKey(), $attribute);
         } else {
@@ -71,6 +70,7 @@ class PermissionsAssignment extends CollectionRadioList
             //      ...
             // ];
             // and set it to pivot data to be passed correctly by getFinalValue().
+            $this->setPivotData(collect());
             $value->each(function($related_key) use ($data, $value, $relation) {
                 if ($value->contains($related_key)) {
                     $pivot_data = collect($data[$relation->getPivotAccessor()] ?? [])->get($related_key);
@@ -86,12 +86,12 @@ class PermissionsAssignment extends CollectionRadioList
         return parent::setValue($value, $index);
     }
 
-    public function getFinalValue()
+    public function getFinalValue(): array
     {
         return $this->getPivotData()->toArray();
     }
 
-    public function isFieldValue($value, $index = 0)
+    public function isFieldValue($value, $index = 0): bool
     {
         return $this->getFieldValue($index)->contains($value);
     }

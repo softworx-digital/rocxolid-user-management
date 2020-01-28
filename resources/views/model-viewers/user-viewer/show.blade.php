@@ -1,4 +1,4 @@
-<div id="{{ ViewHelper::domId($component, 'customer') }}" class="x_panel ajax-overlay">
+<div id="{{ $component->getDomId('show', $component->getModel()->id) }}" class="x_panel ajax-overlay">
     <div class="x_content">
         {!! $component->render('include.header-panel') !!}
 
@@ -33,18 +33,17 @@
                 <div class="row col-xs-12">
                     {!! $component->render('include.authentication-data') !!}
                 </div>
-                @if ($component->getModel()->userCan('authorization'))
+            todo data.blade
                 <div class="row col-xs-12">
                     {!! $component->render('include.authorization-data') !!}
                 </div>
-                @endif
             </div>
         </div>
     </div>
     <div class="x_footer">
-    @if ($component->getModel()->userCan('index'))
+    todo data.blade
         <a class="btn btn-default" href="{{ $component->getController()->getRoute('index') }}"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.back') }}</a>
-    @endif
+
         {{-- @todo: button na delete a ine akcie --}}
     </div>
 </div>

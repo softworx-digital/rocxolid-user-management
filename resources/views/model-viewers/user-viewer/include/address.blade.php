@@ -1,9 +1,9 @@
 <div id="{{ $component->getDomId('address') }}">
     <h2>
         {{ $component->translate('text.address') }}
-    @if ($component->getModel()->userCan('write'))
+    todo data.blade
         <a data-ajax-url="{{ $component->getController()->getRoute('edit', $component->getModel(), ['_section' => 'address']) }}" class="margin-left-5"><i class="fa fa-pencil"></i></a>
-    @endif
+
     </h2>
     <address>
         {!! $component->getModel()->getAddressLabel(true, true) !!}<br />

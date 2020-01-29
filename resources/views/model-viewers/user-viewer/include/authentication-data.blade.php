@@ -1,9 +1,9 @@
 <div id="{{ $component->getDomId('authentication-data') }}">
     <h2>
         {{ $component->translate('text.authentication-data') }}
-    todo data.blade
+    @can('update', $component->getModel())
         <a data-ajax-url="{{ $component->getController()->getRoute('edit', $component->getModel(), ['_section' => 'authentication-data']) }}" class="margin-left-5"><i class="fa fa-pencil"></i></a>
-
+    @endcan
     </h2>
     <div>
         <dl class="dl-horizontal">

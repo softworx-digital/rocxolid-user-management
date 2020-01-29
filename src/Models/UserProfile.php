@@ -48,7 +48,7 @@ class UserProfile extends AbstractCrudModel
     ];
 
     protected $fillable = [
-        'user_id',
+        'user_id', // @todo: make it not needed in fillable
         'language_id',
         'legal_entity',
         'email',
@@ -92,10 +92,5 @@ class UserProfile extends AbstractCrudModel
             default:
                 return $this->$attribute;
         }
-    }
-
-    protected function allowPermissionException(Authenticatable $user, string $policy_ability_group, string $permission)
-    {
-        return !$this->exists || $this->user->is($user);
     }
 }

@@ -20,6 +20,8 @@ return [
         'password' => 'Password',
         'password_confirmation' => 'Password confirmation',
         'remember_token' => 'Login remember token',
+        'profile' => 'Profile',
+        'company' => 'Company',
         'language' => 'Language',
         'groups' => 'Groups',
         'roles' => 'Roles',

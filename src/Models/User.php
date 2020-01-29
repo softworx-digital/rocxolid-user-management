@@ -214,16 +214,6 @@ class User extends Authenticatable implements
         return ($this->id === static::ROOT_ID);
     }
 
-    // @todo: type hints
-    protected function allowPermissionException($user, $policy_ability_group, $permission)
-    {
-        if (in_array($policy_ability_group, ['index', 'authorization'])) {
-            return false;
-        }
-
-        return !$this->user || $this->user->is($user);
-    }
-
     /**
      * {@inheritDoc}
      */

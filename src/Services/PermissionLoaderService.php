@@ -2,7 +2,7 @@
 
 namespace Softworx\RocXolid\UserManagement\Services;
 
-use Str;
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 // rocXolid scopes
 use Softworx\RocXolid\Models\Scopes\IsEnabled;

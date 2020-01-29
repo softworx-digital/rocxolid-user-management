@@ -2,11 +2,15 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\CompanyProfile;
 
-use Illuminate\Support\Collection;
+// rocXolid form contracts
 use Softworx\RocXolid\Forms\Contracts\FormField;
+// rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+// rocXolid form field types
 use Softworx\RocXolid\Forms\Fields\Type\Hidden;
 use Softworx\RocXolid\Forms\Fields\Type\Input;
+use Softworx\RocXolid\Forms\Fields\Type\Email;
+// rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\User;
 
 class Create extends RocXolidAbstractCrudForm
@@ -18,6 +22,18 @@ class Create extends RocXolidAbstractCrudForm
     ];
 
     protected $fields = [
+        'relation' => [
+            'type' => Hidden::class,
+            'options' => [
+                'validation' => 'required',
+            ],
+        ],
+        'model_attribute' => [
+            'type' => Hidden::class,
+            'options' => [
+                'validation' => 'required',
+            ],
+        ],
         'user_id' => [
             'type' => Hidden::class,
         ],
@@ -35,6 +51,20 @@ class Create extends RocXolidAbstractCrudForm
                 ],
             ],
         ],
+        'email' => [
+            'type' => Email::class,
+            'options' => [
+                'label' => [
+                    'title' => 'email',
+                ],
+                'validation' => [
+                    'rules' => [
+                        'required',
+                        'email',
+                    ],
+                ],
+            ],
+        ],
         'company_registration_no' => [
             'type' => Input::class,
             'options' => [
@@ -44,6 +74,19 @@ class Create extends RocXolidAbstractCrudForm
                 'validation' => [
                     'rules' => [
                         'required',
+                        'max:255',
+                    ],
+                ],
+            ],
+        ],
+        'company_insertion_no' => [
+            'type' => Input::class,
+            'options' => [
+                'label' => [
+                    'title' => 'company_insertion_no',
+                ],
+                'validation' => [
+                    'rules' => [
                         'max:255',
                     ],
                 ],
@@ -81,19 +124,9 @@ class Create extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-        $input = new Collection($this->getRequest()->input());
-
-        if (!$input->has(FormField::SINGLE_DATA_PARAM)) {
-            throw new \InvalidArgumentException(sprintf('Undefined [%s] param in request', FormField::SINGLE_DATA_PARAM));
-        }
-
-        $input = new Collection($input->get(FormField::SINGLE_DATA_PARAM));
-
-        if (!$user = User::find($input->get('user_id'))) {
-            throw new \InvalidArgumentException(sprintf('Invalid user_id [%s]', $input->get('user_id')));
-        }
-
-        $fields['user_id']['options']['value'] = $user->id;
+        $fields['user_id']['options']['value'] = $this->getInputFieldValue('user_id');
+        $fields['relation']['options']['value'] = $this->getInputFieldValue('relation');
+        $fields['model_attribute']['options']['value'] = $this->getInputFieldValue('model_attribute');
 
         return $fields;
     }

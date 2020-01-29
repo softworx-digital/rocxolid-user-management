@@ -13,7 +13,7 @@ trait AllowRootAccess
      * @param string $ability
      * @return bool|void
      */
-    public function before(Authorizable $user, string $ability): ?bool
+    public function checkAllowRootAccess(Authorizable $user, string $ability): ?bool
     {
         if (!config('rocXolid.admin.auth.check_permissions_root', false) && $user->isRoot()) {
             return true;

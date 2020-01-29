@@ -58,19 +58,4 @@ class Controller extends AbstractCrudController
             return parent::successResponse($request, $repository, $form, $model, $action);
         }
     }
-
-    protected function allowPermissionException(Authenticatable $user, string $action, string $permission, CrudableModel $model = null)
-    {
-        $data = collect(request()->route()->parameters());
-
-        if ($data->has('user')) {
-            return $this->getRepository()->findOrFail($data->get('user'))->is($user);
-        }
-
-        if ($data->has('id')) {
-            return $this->getRepository()->findOrFail($data->get('id'))->is($user);
-        }
-
-        return false;
-    }
 }

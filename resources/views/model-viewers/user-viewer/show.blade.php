@@ -9,25 +9,25 @@
             <div class="col-xl-4 col-xl-offset-1 col-md-4 col-xs-12">
                 <div class="row col-xs-12">
                 @if ($component->getModel()->profile()->exists())
-                    {!! $component->getModel()->profile->getModelViewerComponent()->render() !!}
+                    {!! $component->getModel()->profile->getModelViewerComponent()->render('related.show', [ 'attribute' => 'profile', 'relation' => 'user' ]) !!}
                 @else
-                    {!! $component->getModel()->makeUserProfile()->getModelViewerComponent()->render('unavailable', [ 'model' => $component->getModel() ]) !!}
+                    {!! $component->getModel()->profile()->make()->getModelViewerComponent()->render('related.unavailable', [ 'attribute' => 'profile', 'relation' => 'user', 'related' => $component->getModel() ]) !!}
                 @endif
                 </div>
                 <div class="row col-xs-12">
                 @if ($component->getModel()->company()->exists())
-                    {!! $component->getModel()->company->getModelViewerComponent()->render() !!}
+                    {!! $component->getModel()->company->getModelViewerComponent()->render('related.show', [ 'attribute' => 'company', 'relation' => 'user' ]) !!}
                 @else
-                    {!! $component->getModel()->makeCompanyProfile()->getModelViewerComponent()->render('unavailable', [ 'model' => $component->getModel() ]) !!}
+                    {!! $component->getModel()->company()->make()->getModelViewerComponent()->render('related.unavailable', [ 'attribute' => 'company', 'relation' => 'user', 'related' => $component->getModel() ]) !!}
                 @endif
                 </div>
             </div>
             <div class="col-xl-4 col-xl-offset-1 col-md-4 col-xs-12">
                 <div class="row col-xs-12">
                 @if ($component->getModel()->address()->exists())
-                    {!! $component->getModel()->address->getModelViewerComponent()->render() !!}
+                    {!! $component->getModel()->address->getModelViewerComponent()->render('related.show', [ 'attribute' => 'address', 'relation' => 'parent' ]) !!}
                 @else
-                    {!! $component->getModel()->address()->make()->getModelViewerComponent()->render('unavailable', [ 'model' => $component->getModel() ]) !!}
+                    {!! $component->getModel()->address()->make()->getModelViewerComponent()->render('related.unavailable', [ 'attribute' => 'address', 'relation' => 'parent', 'related' => $component->getModel() ]) !!}
                 @endif
                 </div>
                 <div class="row col-xs-12">

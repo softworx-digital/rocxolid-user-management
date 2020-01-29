@@ -31,9 +31,20 @@ class CompanyProfile extends AbstractCrudModel
         'name',
     ];
 
+    protected $fillable = [
+        'user_id', // @todo: make it not needed in fillable
+        'name',
+        'email',
+        'established',
+        'company_registration_no',
+        'company_insertion_no',
+        'tax_no',
+        'vat_no',
+    ];
+
     protected $system = [
         'id',
-        'established',
+        'established', // @todo: so far
         'created_at',
         'updated_at',
         'deleted_at',
@@ -41,23 +52,6 @@ class CompanyProfile extends AbstractCrudModel
         'updated_by',
         'deleted_by',
     ];
-
-    protected $fillable = [
-        'email',
-        'user_id', // @todo: needed?
-        'name',
-        'established',
-        'company_registration_no',
-        'tax_no',
-        'vat_no',
-    ];
-
-    public function fillCustom($data, $action = null)
-    {
-        $this->email = $this->user->email;
-
-        return $this;
-    }
 
     public function getAttributeViewValue($attribute)
     {
@@ -67,10 +61,5 @@ class CompanyProfile extends AbstractCrudModel
             default:
                 return $this->$attribute;
         }
-    }
-
-    protected function allowPermissionException(Authenticatable $user, string $policy_ability_group, string $permission)
-    {
-        return !$this->exists || $this->user->is($user);
     }
 }

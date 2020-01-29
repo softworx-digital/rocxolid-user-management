@@ -2,8 +2,14 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\CompanyProfile;
 
+// rocXolid form contracts
+use Softworx\RocXolid\Forms\Contracts\FormField;
+// rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+// rocXolid form field types
+use Softworx\RocXolid\Forms\Fields\Type\Hidden;
 use Softworx\RocXolid\Forms\Fields\Type\Input;
+use Softworx\RocXolid\Forms\Fields\Type\Email;
 
 class Update extends RocXolidAbstractCrudForm
 {
@@ -14,6 +20,18 @@ class Update extends RocXolidAbstractCrudForm
     ];
 
     protected $fields = [
+        'relation' => [
+            'type' => Hidden::class,
+            'options' => [
+                'validation' => 'required',
+            ],
+        ],
+        'model_attribute' => [
+            'type' => Hidden::class,
+            'options' => [
+                'validation' => 'required',
+            ],
+        ],
         'name' => [
             'type' => Input::class,
             'options' => [
@@ -28,6 +46,20 @@ class Update extends RocXolidAbstractCrudForm
                 ],
             ],
         ],
+        'email' => [
+            'type' => Email::class,
+            'options' => [
+                'label' => [
+                    'title' => 'email',
+                ],
+                'validation' => [
+                    'rules' => [
+                        'required',
+                        'email',
+                    ],
+                ],
+            ],
+        ],
         'company_registration_no' => [
             'type' => Input::class,
             'options' => [
@@ -37,6 +69,19 @@ class Update extends RocXolidAbstractCrudForm
                 'validation' => [
                     'rules' => [
                         'required',
+                        'max:255',
+                    ],
+                ],
+            ],
+        ],
+        'company_insertion_no' => [
+            'type' => Input::class,
+            'options' => [
+                'label' => [
+                    'title' => 'company_insertion_no',
+                ],
+                'validation' => [
+                    'rules' => [
                         'max:255',
                     ],
                 ],
@@ -71,4 +116,12 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
     ];
+
+    protected function adjustFieldsDefinition($fields)
+    {
+        $fields['relation']['options']['value'] = $this->getInputFieldValue('relation');
+        $fields['model_attribute']['options']['value'] = $this->getInputFieldValue('model_attribute');
+
+        return $fields;
+    }
 }

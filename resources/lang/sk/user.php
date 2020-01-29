@@ -20,6 +20,8 @@ return [
         'password' => 'Heslo',
         'password_confirmation' => 'Heslo - potvrdenie',
         'remember_token' => 'Token pre zapamätanie prihlásenia',
+        'profile' => 'Profil',
+        'company' => 'Údaje o spoločnosti',
         'language' => 'Jazyk',
         'groups' => 'Skupiny používateľov',
         'roles' => 'Role používateľov',

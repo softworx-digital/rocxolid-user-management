@@ -41,7 +41,10 @@ class Controller extends AbstractCrudController
 
             return $this->response
                 ->notifySuccess($model_viewer_component->translate('text.updated'))
-                ->replace($model_viewer_component->getDomId(), $model_viewer_component->fetch())
+                ->replace($model_viewer_component->getDomId(), $model_viewer_component->fetch('related.show', [
+                    'attribute' => 'profile',
+                    'relation' => 'user'
+                ])) // @todo: hardcoded, ugly
                 ->replace($user_model_viewer_component->getDomId('header-panel'), $user_model_viewer_component->fetch('include.header-panel'))
                 ->replace($user_model_viewer_component->getDomId('name', 'topbar'), $user_model_viewer_component->fetch('snippet.name', [ 'param' => 'topbar' ]))
                 ->replace($user_model_viewer_component->getDomId('name', 'sidebar'), $user_model_viewer_component->fetch('snippet.name', [ 'param' => 'sidebar' ]))
@@ -50,27 +53,5 @@ class Controller extends AbstractCrudController
         } else {
             return parent::successResponse($request, $repository, $form, $model, $action);
         }
-    }
-
-    // @todo: hotfixed
-    protected function allowPermissionException(Authenticatable $user, string $action, string $permission, CrudableModel $model = null)
-    {
-        $data = collect(request()->get('_data'));
-
-        if ($data->has('user_id')) {
-            return $data->get('user_id') == $user->id;
-        }
-
-        $data = collect(request()->route()->parameters());
-
-        if ($data->has('user_profile')) {
-            return $this->getRepository()->findOrFail($data->get('user_profile'))->user->is($user);
-        }
-
-        if ($data->has('id')) {
-            return $this->getRepository()->findOrFail($data->get('id'))->user->is($user);
-        }
-
-        return false;
     }
 }

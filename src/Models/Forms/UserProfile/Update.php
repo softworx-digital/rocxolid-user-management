@@ -2,17 +2,22 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\UserProfile;
 
-use Illuminate\Support\Collection;
+// rocXolid model scopes
+use Softworx\RocXolid\Models\Scopes\Owned as OwnedScope;
+// rocXolid form contracts
 use Softworx\RocXolid\Forms\Contracts\FormField;
+// rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+// rocXolid form field types
 use Softworx\RocXolid\Forms\Fields\Type\Hidden;
 use Softworx\RocXolid\Forms\Fields\Type\Input;
-use Softworx\RocXolid\Forms\Fields\Type\Email;
 use Softworx\RocXolid\Forms\Fields\Type\Select;
 use Softworx\RocXolid\Forms\Fields\Type\Datepicker;
 use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
+// rocXolid common models
 use Softworx\RocXolid\Common\Models\Language;
 use Softworx\RocXolid\Common\Models\Nationality;
+// rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\User;
 
 class Update extends RocXolidAbstractCrudForm
@@ -24,6 +29,18 @@ class Update extends RocXolidAbstractCrudForm
     ];
 
     protected $fields = [
+        'relation' => [
+            'type' => Hidden::class,
+            'options' => [
+                'validation' => 'required',
+            ],
+        ],
+        'model_attribute' => [
+            'type' => Hidden::class,
+            'options' => [
+                'validation' => 'required',
+            ],
+        ],
         'legal_entity' => [
             'type' => Select::class,
             'options' => [
@@ -145,6 +162,9 @@ class Update extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
+        $fields['relation']['options']['value'] = $this->getInputFieldValue('relation');
+        $fields['model_attribute']['options']['value'] = $this->getInputFieldValue('model_attribute');
+
         $fields['legal_entity']['options']['choices'] = [
             'natural' => __('rocXolid:user-management::user-profile.choice.legal_entity.natural'),
             'juridical' => __('rocXolid:user-management::user-profile.choice.legal_entity.juridical'),
@@ -155,8 +175,8 @@ class Update extends RocXolidAbstractCrudForm
             'f' => __('rocXolid:user-management::user-profile.choice.gender.f'),
         ];
 
-        $fields['nationality_id']['options']['collection'] = Nationality::pluck('name', 'id');
-        $fields['language_id']['options']['collection'] = Language::where('is_admin_available', 1)->pluck('name', 'id');
+        $fields['nationality_id']['options']['collection'] = Nationality::withoutGlobalScope(app(OwnedScope::class))->pluck('name', 'id');
+        $fields['language_id']['options']['collection'] = Language::withoutGlobalScope(app(OwnedScope::class))->where('is_admin_available', 1)->pluck('name', 'id');
 
         return $fields;
     }

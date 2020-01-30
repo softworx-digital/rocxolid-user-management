@@ -29,15 +29,11 @@ use Softworx\RocXolid\Common\Models\Image;
 use Softworx\RocXolid\Common\Models\Traits\HasAddress;
 use Softworx\RocXolid\Common\Models\Traits\HasImage;
 // rocXolid user management model contracts
+use Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization;
 use Softworx\RocXolid\UserManagement\Models\Contracts\HasGroups;
-use Softworx\RocXolid\UserManagement\Models\Contracts\HasRoles;
-use Softworx\RocXolid\UserManagement\Models\Contracts\HasPermissions;
-use Softworx\RocXolid\UserManagement\Models\Contracts\HasRolePermissions;
 // rocXolid user management model traits
+use Softworx\RocXolid\UserManagement\Models\Traits\HasAuthorization as HasAuthorizationTrait;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasGroups as HasGroupsTrait;
-use Softworx\RocXolid\UserManagement\Models\Traits\HasRoles as HasRolesTrait;
-use Softworx\RocXolid\UserManagement\Models\Traits\HasRolePermissions as HasRolePermissionsTrait;
-use Softworx\RocXolid\UserManagement\Models\Traits\HasPermissions as HasPermissionsTrait;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasUserProfile;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasCompanyProfile;
 use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
@@ -51,19 +47,15 @@ use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
  */
 class User extends Authenticatable implements
     Crudable,
+    HasAuthorization,
     HasGroups,
-    HasRoles,
-    HasPermissions,
-    HasRolePermissions,
     HasTokenablePropertiesMethods
 {
     use ProtectsRoot;
     use Notifiable;
     use CrudableTrait;
+    use HasAuthorizationTrait;
     use HasGroupsTrait;
-    use HasRolesTrait;
-    use HasPermissionsTrait;
-    use HasRolePermissionsTrait;
     use HasUserProfile;
     use HasCompanyProfile;
     use HasAddress;
@@ -129,6 +121,9 @@ class User extends Authenticatable implements
         return sprintf('%s (%s)', $this->profile()->exists() ? $this->profile->getTitle() : null, $this->email);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function isOwnership(Authorizable $user): bool
     {
         return $this->is($user);

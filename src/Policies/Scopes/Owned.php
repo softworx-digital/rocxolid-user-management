@@ -2,9 +2,10 @@
 
 namespace Softworx\RocXolid\UserManagement\Policies\Scopes;
 
-use Illuminate\Contracts\Auth\Access\Authorizable;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
+// rocXolid user management contracts
+use Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization;
 
 /**
  * Owned resource permission scope.
@@ -20,12 +21,11 @@ class Owned
     /**
      * Check if permission with this scope allows ability for user.
      *
-     * @param \Illuminate\Contracts\Auth\Access\Authorizable $user
+     * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param string $ability
-     * @param string $model_class
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
      */
-    public function allows(Authorizable $user, string $ability, string $model_class, ?Crudable $model = null): bool
+    public function allows(HasAuthorization $user, string $ability, ?Crudable $model = null): bool
     {
         return $model && $model->isOwnership($user);
     }

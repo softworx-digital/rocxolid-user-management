@@ -58,10 +58,14 @@ trait AllowRelation
                 $relation = $model->{$input->get('relation')}();
 
                 if ($relation instanceof MorphTo) {
-                    $related = app($model->resolvePolymorphType($input->only([
+                    if ($type = $model->resolvePolymorphType($input->only([
                         $relation->getMorphType(),
                         $relation->getForeignKeyName(),
-                    ])));
+                    ]))) {
+                        $related = app($type);
+                    } else {
+                        return false;
+                    }
                 } elseif ($relation instanceof MorphToMany) {
 dd(__METHOD__, 'TODO');
                 } elseif ($relation instanceof BelongsTo) {

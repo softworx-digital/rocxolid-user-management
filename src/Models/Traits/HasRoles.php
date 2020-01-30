@@ -18,7 +18,7 @@ trait HasRoles
      */
     public function roles(): MorphToMany
     {
-        return $this->morphToMany(Role::class, 'model', 'model_has_roles')->withoutGlobalScopes();
+        return $this->morphToMany(Role::class, 'model', 'model_has_roles');
     }
 
     /**

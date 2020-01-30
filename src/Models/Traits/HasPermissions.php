@@ -22,7 +22,7 @@ trait HasPermissions
      */
     public function permissions(): MorphToMany
     {
-        return $this->morphToMany(Permission::class, 'model', 'model_has_permissions')->withoutGlobalScopes();
+        return $this->morphToMany(Permission::class, 'model', 'model_has_permissions');
     }
 
     /**

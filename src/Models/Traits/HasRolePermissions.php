@@ -33,6 +33,6 @@ trait HasRolePermissions
             ->withPivot('role_has_permissions', [
                 'directive',
                 'scope_type',
-            ])->withoutGlobalScopes();
+            ]);
     }
 }

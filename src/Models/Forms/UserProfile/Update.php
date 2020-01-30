@@ -175,8 +175,8 @@ class Update extends RocXolidAbstractCrudForm
             'f' => __('rocXolid:user-management::user-profile.choice.gender.f'),
         ];
 
-        $fields['nationality_id']['options']['collection'] = Nationality::withoutGlobalScope(app(OwnedScope::class))->pluck('name', 'id');
-        $fields['language_id']['options']['collection'] = Language::withoutGlobalScope(app(OwnedScope::class))->where('is_admin_available', 1)->pluck('name', 'id');
+        $fields['nationality_id']['options']['collection'] = Nationality::pluck('name', 'id');
+        $fields['language_id']['options']['collection'] = Language::where('is_admin_available', 1)->pluck('name', 'id');
 
         return $fields;
     }

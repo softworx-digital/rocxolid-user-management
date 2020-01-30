@@ -34,12 +34,12 @@ class Group extends AbstractCrudModel
 
     public function webs()
     {
-        return $this->hasMany(Web::class, 'user_group_id');//->withoutGlobalScope(UserGroupAssociating::class);
+        return $this->hasMany(Web::class, 'user_group_id');
     }
 
     public function websNoneScope()
     {
-        return $this->hasMany(Web::class, 'user_group_id')->withoutGlobalScope(UserGroupAssociating::class);
+        return $this->hasMany(Web::class, 'user_group_id');
     }
 
     public function users(): MorphToMany

@@ -17,7 +17,7 @@ trait HasGroups
      */
     public function groups(): MorphToMany
     {
-        return $this->morphToMany(Group::class, 'model', 'model_has_groups')->withoutGlobalScopes();
+        return $this->morphToMany(Group::class, 'model', 'model_has_groups');
     }
 
     /**

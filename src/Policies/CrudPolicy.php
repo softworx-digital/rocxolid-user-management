@@ -73,11 +73,24 @@ class CrudPolicy
      * @param string $forced_scope_type
      * @return bool
      */
-    public function viewAny(HasAuthorization $user, ?string $model_class = null, ?string $forced_scope_type = null): bool
+    public function viewAny(HasAuthorization $user, ?string $model_class = null): bool
     {
         $model_class = $model_class ?? $this->controller->getModelClass();
 
-        return $this->checkPermissions($user, 'viewAny', $model_class, null, $forced_scope_type);
+        return $this->checkPermissions($user, 'viewAny', $model_class);
+    }
+
+    /**
+     * Determine whether the user can view all resources.
+     *
+     * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
+     * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
+     * @param string $forced_scope_type
+     * @return bool
+     */
+    public function viewAnyAll(HasAuthorization $user, Crudable $model): bool
+    {
+        return $this->checkPermissions($user, 'viewAny', get_class($model), $model, 'policy.scope.all');
     }
 
     /**

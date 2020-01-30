@@ -9,6 +9,8 @@ use Softworx\RocXolid\UserManagement\Forms\Fields\Type\PermissionsAssignment;
 use Softworx\RocXolid\UserManagement\Models\Group;
 use Softworx\RocXolid\UserManagement\Models\Role;
 use Softworx\RocXolid\UserManagement\Models\Permission;
+// filters
+use Softworx\RocXolid\UserManagement\Filters\ExceptRole;
 
 class UpdateAuthorization extends RocXolidAbstractCrudForm
 {
@@ -56,6 +58,15 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
+        if (($user = auth('rocXolid')->user()) && $user->is($this->getModel())) {
+            $fields['roles']['options']['collection']['filters'] = [
+                [
+                    'class' => ExceptRole::class,
+                    'data' => Role::findOrFail(config('rocXolid.admin.auth.admin_role_id')), // @todo: hotfixed
+                ],
+            ];
+        }
+
         $fields['permissions']['options'] = [
             'collection' => PermissionLoader::get(),
             'label' => [
@@ -63,7 +74,7 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
             ],
         ];
 
-        unset($fields['permissions']); // @todo: for now
+        unset($fields['permissions']); // @todo: hotfix for now
 
         return $fields;
     }

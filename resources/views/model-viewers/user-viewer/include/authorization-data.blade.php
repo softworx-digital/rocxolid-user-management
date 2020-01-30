@@ -1,24 +1,28 @@
-todo data.blade
+@if ($user->can('assign', [ $component->getModel(), 'groups' ]) || $user->can('assign', [ $component->getModel(), 'roles' ]) || $user->can('assign', [ $component->getModel(), 'permissions' ]))
 <div id="{{ $component->getDomId('authorization-data') }}">
     <h2>
         {{ $component->translate('text.authorization-data') }}
-    todo data.blade
+    @can('update', $component->getModel())
         <a data-ajax-url="{{ $component->getController()->getRoute('edit', $component->getModel(), ['_section' => 'authorization-data']) }}" class="margin-left-5"><i class="fa fa-pencil"></i></a>
-
+    @endcan
     </h2>
     <div>
         <dl class="dl-horizontal">
         @foreach ($component->getModel()->getRelationshipMethods() as $method)
+        @can('assign', [ $component->getModel(), $method ])
             <dt>{{ $component->translate(sprintf('field.%s', $method)) }}</dt>
             <dd>
             @foreach ($component->getModel()->$method()->get() as $item)
-            todo data.blade
+                @can('update', $item)
                     <a class="label label-info" data-ajax-url="{{ $item->getControllerRoute() }}">{{ $item->getTitle() }}</a>
-
+                @elsecan('view', $item)
                     <span class="label label-info">{{ $item->getTitle() }}</span>
+                @endcan
             @endforeach
             </dd>
+        @endcan
         @endforeach
         </dl>
     </div>
 </div>
+@endif

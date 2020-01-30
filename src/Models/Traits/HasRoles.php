@@ -10,6 +10,13 @@ use Softworx\RocXolid\UserManagement\Models\Contracts\HasRoles as HasRolesContra
 // rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\Role;
 
+/**
+ * Trait to enable roles for a model.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
 trait HasRoles
 {
     /**
@@ -91,5 +98,16 @@ trait HasRoles
         return collect($roles)->filter(function($role) {
             return !$this->hasRole($role);
         })->isEmpty();
+    }
+
+    // @todo: hotfixed
+    // should be in permissions
+    public function isAdmin()
+    {
+        try {
+            return $this->hasRole(Role::findOrFail(config('rocXolid.admin.auth.admin_role_id')));
+        } catch (\Exception $e) {
+            dd('Setup Admin role ID in rocXolid.admin.auth.admin_role_id');
+        }
     }
 }

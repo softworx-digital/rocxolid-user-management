@@ -118,7 +118,7 @@ class User extends Authenticatable implements
 
     public function getTitle()
     {
-        return sprintf('%s (%s)', $this->profile()->exists() ? $this->profile->getTitle() : null, $this->email);
+        return sprintf('%s (%s)', $this->profile()->exists() ? $this->profile->getTitle() : $this->name, $this->email);
     }
 
     /**

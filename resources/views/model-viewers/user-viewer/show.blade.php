@@ -4,7 +4,10 @@
 
         <div class="row">
             <div class="col-xl-2 col-md-4 col-xs-12 margin-top-10">
-                {!! $component->render('include.image-upload') !!}
+            {{-- @todo ugly --}}
+            @can('update', [ $component->getModel(), 'image' ])
+                {!! $component->render('include.image-upload', [ 'attribute' => 'image', 'relation' => 'parent', 'related' => $component->getModel() ]) !!}
+            @endcan
             </div>
             <div class="col-xl-4 col-xl-offset-1 col-md-4 col-xs-12">
                 <div class="row col-xs-12">
@@ -33,7 +36,6 @@
                 <div class="row col-xs-12">
                     {!! $component->render('include.authentication-data') !!}
                 </div>
-            todo data.blade
                 <div class="row col-xs-12">
                     {!! $component->render('include.authorization-data') !!}
                 </div>
@@ -41,9 +43,9 @@
         </div>
     </div>
     <div class="x_footer">
-    todo data.blade
+    @can ('backAny', $component->getModel())
         <a class="btn btn-default" href="{{ $component->getController()->getRoute('index') }}"><i class="fa fa-chevron-left margin-right-10"></i>{{ $component->translate('button.back') }}</a>
-
+    @endcan
         {{-- @todo: button na delete a ine akcie --}}
     </div>
 </div>

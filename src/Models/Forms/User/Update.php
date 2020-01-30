@@ -50,7 +50,7 @@ class Update extends RocXolidAbstractCrudForm
                     ],
                 ],
             ],
-        ],
+        ],/*
         'groups' => [
             'type' => CollectionCheckbox::class,
             'options' => [
@@ -62,7 +62,7 @@ class Update extends RocXolidAbstractCrudForm
                     'column' => 'name',
                 ],
             ],
-        ],
+        ],*/
         'roles' => [
             'type' => CollectionCheckbox::class,
             'options' => [
@@ -92,6 +92,10 @@ class Update extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
+        // @todo: hotfix
+        return [];
+
+
         $rule = Rule::unique('users', 'email')
             ->ignore($this->getModel()->id);
 
@@ -107,8 +111,8 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ]);
 
-        if ($user = Auth::guard()->user()) {
-            if ($user == $this->getModel()) {
+        if ($user = Auth::guard('rocXolid')->user()) {
+            if ($user->is($this->getModel())) {
                 unset($fields['roles']);
             }
         }

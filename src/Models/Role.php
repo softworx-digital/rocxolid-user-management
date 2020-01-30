@@ -35,6 +35,9 @@ class Role extends AbstractCrudModel
         'permissions',
     ];
 
+    /**
+     * @Softworx\RocXolid\Annotations\AuthorizedRelation(policy_abilities="['assign']")
+     */
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class, 'role_has_permissions')

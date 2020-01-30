@@ -128,7 +128,7 @@ class Repository extends AbstractCrudRepository
                     ],
                 ],
             ],
-        ],*/
+        ],*//*
         'days_first_login' => [
             'type' => Method::class,
             'options' => [
@@ -142,7 +142,7 @@ class Repository extends AbstractCrudRepository
                     ],
                 ],
             ],
-        ],
+        ],*//*
         'groups' => [
             'type' => ModelRelation::class,
             'options' => [
@@ -155,7 +155,7 @@ class Repository extends AbstractCrudRepository
                     'column' => 'name',
                 ],
             ],
-        ],
+        ],*/
         'roles' => [
             'type' => ModelRelation::class,
             'options' => [
@@ -182,4 +182,12 @@ class Repository extends AbstractCrudRepository
             ],
         ],*/
     ];
+
+    protected function getButtonsDefinition()
+    {
+        unset($this->buttons['show-modal']);
+        unset($this->buttons['edit']);
+
+        return $this->buttons;
+    }
 }

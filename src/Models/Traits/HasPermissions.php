@@ -19,6 +19,7 @@ trait HasPermissions
 {
     /**
      * {@inheritDoc}
+     * @Softworx\RocXolid\Annotations\AuthorizedRelation(policy_abilities="['assign']")
      */
     public function permissions(): MorphToMany
     {

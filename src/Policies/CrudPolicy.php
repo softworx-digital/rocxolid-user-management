@@ -94,6 +94,19 @@ class CrudPolicy
     }
 
     /**
+     * Shorthand for view any.
+     *
+     * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
+     * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
+     * @param string $forced_scope_type
+     * @return bool
+     */
+    public function backAny(HasAuthorization $user, Crudable $model): bool
+    {
+        return $this->checkPermissions($user, 'viewAny', get_class($model));
+    }
+
+    /**
      * Determine whether the user can view the resource.
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
@@ -124,7 +137,7 @@ class CrudPolicy
             return $this->checkAttributePermissions($user, 'create', $model, $attribute);
         }
 
-        $model_class = $model_class ?? $this->controller->getModelClass();
+        $model_class = $model ? get_class($model) : $this->controller->getModelClass();
 
         return $this->checkPermissions($user, 'create', $model_class);
     }

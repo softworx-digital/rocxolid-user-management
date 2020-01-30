@@ -2,8 +2,10 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\User;
 
+use PermissionLoader;
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 use Softworx\RocXolid\Forms\Fields\Type\CollectionCheckbox;
+use Softworx\RocXolid\UserManagement\Forms\Fields\Type\PermissionsAssignment;
 use Softworx\RocXolid\UserManagement\Models\Group;
 use Softworx\RocXolid\UserManagement\Models\Role;
 use Softworx\RocXolid\UserManagement\Models\Permission;
@@ -17,7 +19,7 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
         'section' => 'authorization-data',
     ];
 
-    protected $fields = [
+    protected $fields = [/*
         'groups' => [
             'type' => CollectionCheckbox::class,
             'options' => [
@@ -29,7 +31,7 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
                     'column' => 'name',
                 ],
             ],
-        ],
+        ],*/
         'roles' => [
             'type' => CollectionCheckbox::class,
             'options' => [
@@ -43,17 +45,26 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
             ],
         ],
         'permissions' => [
-            'type' => CollectionCheckbox::class,
+            'type' => PermissionsAssignment::class,
             'options' => [
                 'label' => [
                     'title' => 'extra_permissions',
                 ],
-                'collection' => [
-                    'model' => Permission::class,
-                    'column' => 'name',
-                    'method' => 'getTitle',
-                ],
             ],
         ],
     ];
+
+    protected function adjustFieldsDefinition($fields)
+    {
+        $fields['permissions']['options'] = [
+            'collection' => PermissionLoader::get(),
+            'label' => [
+                'title' => 'permissions',
+            ],
+        ];
+
+        unset($fields['permissions']); // @todo: for now
+
+        return $fields;
+    }
 }

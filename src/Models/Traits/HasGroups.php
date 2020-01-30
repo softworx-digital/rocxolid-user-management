@@ -10,10 +10,18 @@ use Softworx\RocXolid\UserManagement\Models\Contracts\HasGroups as HasGroupsCont
 // rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\Group;
 
+/**
+ * Trait to enable groups for a model.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
 trait HasGroups
 {
     /**
      * {@inheritDoc}
+     * @Softworx\RocXolid\Annotations\AuthorizedRelation(policy_abilities="['assign']")
      */
     public function groups(): MorphToMany
     {

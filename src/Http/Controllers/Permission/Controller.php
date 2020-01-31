@@ -212,7 +212,7 @@ class Controller extends AbstractCrudController
      * @param \Exception $e
      * @return \Softworx\RocXolid\Components\General\Alert
      */
-    private function getErrorAlertComponent(\Exception $e): Alert
+    private function getErrorAlertComponent(\Throwable $e): Alert
     {
         return Alert::build($this, $this)
                 ->setType(Alert::TYPE_ERROR)

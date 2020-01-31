@@ -21,6 +21,7 @@ class Update extends RocXolidAbstractCrudForm
             'collection' => PermissionLoader::get(),
             'label' => [
                 'title' => 'permissions',
+                'hint' => 'hint.permissions',
             ],
         ];
 

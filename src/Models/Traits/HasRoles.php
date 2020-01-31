@@ -106,7 +106,7 @@ trait HasRoles
     {
         try {
             return $this->hasRole(Role::findOrFail(config('rocXolid.admin.auth.admin_role_id')));
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             dd('Setup Admin role ID in rocXolid.admin.auth.admin_role_id');
         }
     }

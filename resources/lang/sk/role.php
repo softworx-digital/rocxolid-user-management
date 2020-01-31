@@ -10,6 +10,9 @@ return [
         'name' => 'Názov',
         'guard' => 'Guard',
         'permissions' => 'Práva',
+        'hint' => [
+            'permissions' => '@todo',
+        ],
     ],
     'model' => [
         'title' => [

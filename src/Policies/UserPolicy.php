@@ -6,9 +6,11 @@ namespace Softworx\RocXolid\UserManagement\Policies;
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid user management contracts
 use Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization;
+// rocXolid user management policies
+use Softworx\RocXolid\UserManagement\Policies\CrudPolicy;
 
 /**
- * User policy for CRUDable controllers/models.
+ * User controller/model policy.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\UserManagement

@@ -22,11 +22,13 @@ class ServiceProvider extends RocXolidAbstractServiceProvider
     public function register()
     {
         $this->app->register(Providers\ConfigurationServiceProvider::class);
+        $this->app->register(Providers\AuthServiceProvider::class);
         $this->app->register(Providers\ViewServiceProvider::class);
         $this->app->register(Providers\RouteServiceProvider::class);
         $this->app->register(Providers\TranslationServiceProvider::class);
         $this->app->register(Providers\ValidationServiceProvider::class);
         $this->app->register(Providers\FacadeServiceProvider::class);
+        $this->app->register(Providers\FactoryServiceProvider::class);
 
         $this->app->bind('policy.scope.all', Policies\Scopes\All::class);
         $this->app->bind('policy.scope.owned', Policies\Scopes\Owned::class);

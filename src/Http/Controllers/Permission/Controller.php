@@ -107,6 +107,8 @@ class Controller extends AbstractCrudController
      */
     public function synchronize(CrudRequest $request, string $param = null)
     {
+        $this->authorize('synchronize', $this->getModelClass());
+
         $repository = $this->getRepository($this->getRepositoryParam($request));
         $repository_component = $this->getRepositoryComponent($repository);
 

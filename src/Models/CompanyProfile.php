@@ -53,7 +53,7 @@ class CompanyProfile extends AbstractCrudModel
         'deleted_by',
     ];
 
-    public function getAttributeViewValue($attribute)
+    public function getAttributeViewValue(string $attribute)
     {
         switch ($attribute) {
             case 'established':

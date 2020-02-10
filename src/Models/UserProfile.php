@@ -80,7 +80,7 @@ class UserProfile extends AbstractCrudModel
         return $this;
     }
 
-    public function getAttributeViewValue($attribute)
+    public function getAttributeViewValue(string $attribute)
     {
         switch ($attribute) {
             case 'gender':

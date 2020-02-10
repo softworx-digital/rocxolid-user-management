@@ -4,9 +4,9 @@ namespace Softworx\RocXolid\UserManagement\Models;
 
 use Hash;
 use Html;
-use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -116,6 +116,23 @@ class User extends Authenticatable implements
 
     protected $extra = [];
 
+    /**
+     * Get route for profile controller.
+     *
+     * @param string $method Controller method.
+     * @param array $params Additional route parameters.
+     * @return string
+     */
+    public function getProfileControllerRoute($method = 'index', $params = []): string
+    {
+        $action = sprintf('\%s@%s', ProfileController::class, $method);
+
+        return action($action, $params);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getTitle()
     {
         return sprintf('%s (%s)', $this->profile()->exists() ? $this->profile->getTitle() : $this->name, $this->email);
@@ -127,86 +144,6 @@ class User extends Authenticatable implements
     public function isOwnership(Authorizable $user): bool
     {
         return $this->is($user);
-    }
-
-    public function getProfileControllerRoute($method = 'index', $params = []): string
-    {
-        $action = sprintf('\%s@%s', ProfileController::class, $method);
-
-        return action($action, $params);
-    }
-
-    public function setPasswordAttribute($password)
-    {
-        $this->attributes['password'] = Hash::make($password);
-    }
-
-    public function getLastAction()
-    {
-        return null;
-    }
-
-    public function getStatus($seconds = 3600)
-    {
-        return null;
-    }
-
-    public function getDaysFirstLogin()
-    {
-        return null;
-    }
-
-    /*
-    public function getLastAction()
-    {
-        return Carbon::parse($this->last_action)->format('j.n.Y H:i:s');
-    }
-
-    public function getDaysFirstLogin()
-    {
-        if (!is_null($this->days_first_login) && Carbon::parse($this->days_first_login)->isToday())
-        {
-            return Carbon::parse($this->days_first_login)->format('H:i');
-        }
-        else
-        {
-            return __('rocXolid::user.text.not-yet');
-        }
-    }
-
-    public function getStatus($seconds = 3600)
-    {
-        $logged = is_null($this->logged_out) && Carbon::parse($this->last_action)->gt(Carbon::now()->subSeconds($seconds));
-
-        return (new Message())->fetch(sprintf('status.%s', $logged ? 'on' : 'off'));
-    }
-    */
-
-    // @todo: hotfixed, you can do better
-    public function getAttributeViewValue($attribute)
-    {
-        return $this->$attribute;
-    }
-
-    // @todo: type hints
-    public function applyGroupFilters(&$builder, $column)
-    {
-        if (!$this->isRoot()) {
-            $webs = new Collection();
-
-            $this->load(['groups.websNoneScope' => function ($query) use (&$webs) {
-                $webs = $query->get()->unique();
-            }]);
-
-            $builder->whereIn($column, $webs->pluck('id'));
-        }
-
-        return $this;
-    }
-
-    public function isRoot()
-    {
-        return ($this->id === static::ROOT_ID);
     }
 
     /**
@@ -224,12 +161,110 @@ class User extends Authenticatable implements
     }
 
     /**
-     * Generate password reset URL.
+     * Hash password before storing.
+     *
+     * @param string $password Unhashed password.
+     * @return \Softworx\RocXolid\UserManagement\Models\User
+     */
+    public function setPasswordAttribute(string $password): User
+    {
+        $this->attributes['password'] = Hash::make($password);
+
+        return $this;
+    }
+
+    /**
+     * Get last user's action time.
      *
      * @return string
+     */
+    public function getLastAction(): string
+    {
+        // return Carbon::parse($this->last_action)->format('j.n.Y H:i:s');
+        return '';
+    }
+
+    /**
+     * Get user's online status.
+     *
+     * @return string
+     */
+    public function getStatus($seconds = 3600): string
+    {
+        // @todo: check against session timeout in app configuration
+        /*
+        $logged = is_null($this->logged_out) && Carbon::parse($this->last_action)->gt(Carbon::now()->subSeconds($seconds));
+
+        return (new Message())->fetch(sprintf('status.%s', $logged ? 'on' : 'off'));
+        */
+        return '';
+    }
+
+    /**
+     * Get the time user first logged in for current day.
+     *
+     * @return string
+     */
+    public function getDaysFirstLogin(): string
+    {
+        /*
+        if (!is_null($this->days_first_login) && Carbon::parse($this->days_first_login)->isToday())
+        {
+            return Carbon::parse($this->days_first_login)->format('H:i');
+        }
+        else
+        {
+            return __('rocXolid::user.text.not-yet');
+        }
+        */
+        return '';
+    }
+
+    // @todo: hotfixed, you can do better
+    public function getAttributeViewValue(string $attribute)
+    {
+        return $this->$attribute;
+    }
+
+    /**
+     * Apply scope for objects according to assigned groups.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param string $column
+     * @return \Softworx\RocXolid\UserManagement\Models\User
+     */
+    public function applyGroupFilters(Builder &$builder, string $column): User
+    {
+        if (!$this->isRoot()) {
+            $webs = collect();
+
+            $this->load(['groups.websNoneScope' => function ($query) use (&$webs) {
+                $webs = $query->get()->unique();
+            }]);
+
+            $builder->whereIn($column, $webs->pluck('id'));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Check if user is Root.
+     *
+     * @return bool
+     */
+    public function isRoot(): bool
+    {
+        return ($this->id === static::ROOT_ID);
+    }
+
+    /**
+     * Generate password reset URL.
+     *
+     * @return string|null
      * @throws \UnderflowException If no password reset token assigned.
      */
-    public function resetPasswordUrl(): string
+    public function resetPasswordUrl(): ?string
     {
         // ignore when used eg. in e-mail notification
         if (!$this->exists) {
@@ -248,12 +283,12 @@ class User extends Authenticatable implements
      *
      * @param \Softworx\RocXolid\Common\Models\Image $image Uploaded image reference.
      * @param \Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse $response Response reference.
-     * @return
+     * @return \Softworx\RocXolid\UserManagement\Models\User
      * @todo: events?
      */
     public function onImageUpload(Image $image, AjaxResponse &$response): User
     {
-        if (Auth::guard('rocXolid')->user()->is($this)) {
+        if (auth('rocXolid')->user()->is($this)) {
             $response->replace('sidebar-profile-image', Html::image(
                 $this->image->getControllerRoute('get', [ 'size' => 'thumb-square' ]),
                 $this->name,
@@ -277,7 +312,7 @@ class User extends Authenticatable implements
      */
     public function deleteImageRedirectPath(): string
     {
-        return Auth::guard('rocXolid')->user()->is($this)
+        return auth('rocXolid')->user()->is($this)
             ? route('rocXolid.auth.profile')
             : $this->getControllerRoute('show');
     }

@@ -21,7 +21,7 @@ class ConfigurationServiceProvider extends IlluminateServiceProvider
     ];
 
     /**
-     * Extend the default request validator.
+     * Boot configuration.
      *
      * @return \Illuminate\Support\ServiceProvider
      */

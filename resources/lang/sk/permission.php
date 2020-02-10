@@ -36,7 +36,6 @@ return [
         'synchronize' => 'Synchronizácia',
     ],
     'text' => [
-        'more-permissions' => 'Viac',
         'out-of-sync' => 'Práva zapísané v databáze nie su zosynchronizované s Controller triedami v zdrojovom kóde.',
         'out-of-sync-saved-code' => 'Práva zapísané v databáze, ktoré nie sú v zdrojovom kóde alebo boli upravené:',
         'out-of-sync-code-saved' => 'Práva v zdrojovom kóde, ktoré nie sú zapísané v databáze alebo boli upravené:',

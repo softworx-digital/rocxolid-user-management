@@ -226,6 +226,26 @@ class User extends Authenticatable implements
         return $this->$attribute;
     }
 
+    // @todo: kinda hotfixed, would be better with permission constraints (can (un)assign specific role)
+    public function fillRoles(array $data): Crudable
+    {
+        // updating self
+        if (array_key_exists('roles', $data)
+            && ($user = auth('rocXolid')->user())
+            && $user->is($this)) {
+
+            $roles = collect($data['roles'])
+                ->diff($this->getSelfNonAssignableRoles()->pluck('id'))
+                ->merge($this->roles->where('is_self_unassignable', 0)->pluck('id'));
+
+            $this->roles()->sync($roles);
+
+            return $this;
+        } else {
+            return $this->fillBelongsToMany('roles', $data);
+        }
+    }
+
     /**
      * Apply scope for objects according to assigned groups.
      *

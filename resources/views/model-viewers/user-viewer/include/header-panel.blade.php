@@ -7,7 +7,7 @@
     @elseif ($component->getModel()->getTitle())
         <span class="text-big">{!! $component->getModel()->getTitle() !!}</span>
     @endif
-        <small class="pull-right margin-top-20"><i class="fa fa-star margin-right-10" title="{{ $component->translate('field.created_at') }}"></i>{{ \Carbon\Carbon::parse($component->getModel()->created_at)->format('j.n.Y H:i:s') }}</small>
+        <small class="pull-right margin-top-20 hidden-xs"><i class="fa fa-star margin-right-10" title="{{ $component->translate('field.created_at') }}"></i>{{ \Carbon\Carbon::parse($component->getModel()->created_at)->format('j.n.Y H:i:s') }}</small>
     </h1>
 @else
     <h2>

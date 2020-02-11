@@ -4,6 +4,7 @@ namespace Softworx\RocXolid\UserManagement\Repositories\Role;
 
 use Softworx\RocXolid\Repositories\AbstractCrudRepository;
 use Softworx\RocXolid\Repositories\Columns\Type\Text;
+use Softworx\RocXolid\Repositories\Columns\Type\Flag;
 use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
 
 class Repository extends AbstractCrudRepository
@@ -19,6 +20,22 @@ class Repository extends AbstractCrudRepository
                     'attributes' => [
                         'class' => 'text-center',
                     ],
+                ],
+            ],
+        ],
+        'is_self_assignable' => [
+            'type' => Flag::class,
+            'options' => [
+                'label' => [
+                    'title' => 'is_self_assignable'
+                ],
+            ],
+        ],
+        'is_self_unassignable' => [
+            'type' => Flag::class,
+            'options' => [
+                'label' => [
+                    'title' => 'is_self_unassignable'
                 ],
             ],
         ],/*

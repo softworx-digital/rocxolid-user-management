@@ -28,6 +28,11 @@ trait HasRoles
         return $this->morphToMany(Role::class, 'model', 'model_has_roles');
     }
 
+    public static function getSelfNonAssignableRoles()
+    {
+        return Role::where('is_self_assignable', 0)->get();
+    }
+
     /**
      * {@inheritDoc}
      */

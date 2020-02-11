@@ -3,14 +3,18 @@
 namespace Softworx\RocXolid\UserManagement\Models\Forms\User;
 
 use PermissionLoader;
+// rocXolid filters
+use Softworx\RocXolid\Filters\Except;
+// rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+// rocXolid form fields
 use Softworx\RocXolid\Forms\Fields\Type\CollectionCheckbox;
+// rocXolid user management form fields
 use Softworx\RocXolid\UserManagement\Forms\Fields\Type\PermissionsAssignment;
+// rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\Group;
 use Softworx\RocXolid\UserManagement\Models\Role;
 use Softworx\RocXolid\UserManagement\Models\Permission;
-// filters
-use Softworx\RocXolid\UserManagement\Filters\ExceptRole;
 
 class UpdateAuthorization extends RocXolidAbstractCrudForm
 {
@@ -58,11 +62,17 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
+        // updating self
+        // @todo: kinda hotfixed
         if (($user = auth('rocXolid')->user()) && $user->is($this->getModel())) {
+            $except = $user->roles
+                ->where('is_self_unassignable', 0)
+                ->merge($user->getSelfNonAssignableRoles());
+
             $fields['roles']['options']['collection']['filters'] = [
                 [
-                    'class' => ExceptRole::class,
-                    'data' => Role::findOrFail(config('rocXolid.admin.auth.admin_role_id')), // @todo: hotfixed
+                    'class' => Except::class,
+                    'data' => $except,
                 ],
             ];
         }
@@ -74,7 +84,7 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
             ],
         ];
 
-        unset($fields['permissions']); // @todo: hotfix for now
+        unset($fields['permissions']); // @todo: hotfixed for now
 
         return $fields;
     }

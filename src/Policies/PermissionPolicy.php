@@ -21,6 +21,19 @@ use Softworx\RocXolid\UserManagement\Models\Permission;
 class PermissionPolicy extends CrudPolicy
 {
     /**
+     * {@inheritDoc}
+     */
+    public function before(HasAuthorization $user, string $ability): ?bool
+    {
+        switch ($ability) {
+            case 'create':
+                return false;
+        }
+
+        return parent::before($user, $ability);
+    }
+
+    /**
      * Determine whether the user can do permission synchronization.
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user

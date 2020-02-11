@@ -28,6 +28,8 @@ class Role extends AbstractCrudModel
 
     protected $fillable = [
         'name',
+        'is_self_assignable',
+        'is_self_unassignable',
         //'guard',
     ];
 

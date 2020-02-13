@@ -34,6 +34,7 @@ return [
         'synchronize' => 'Synchronization',
     ],
     'text' => [
+        'composer-dump-autoload' => 'Composer dump-autoload must be up to date to scan through code correctly.',
         'out-of-sync' => 'Persistent permissions data is out of sync with source code permissions.',
         'out-of-sync-saved-code' => 'Persisted permissions not in source code or were modified:',
         'out-of-sync-code-saved' => 'Source code permissions not persisted or were modified:',

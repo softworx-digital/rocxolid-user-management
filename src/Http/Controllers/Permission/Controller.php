@@ -89,6 +89,10 @@ class Controller extends AbstractCrudController
                 ->getDashboard()
                 ->setRepositoryComponent($repository_component);
 
+            $dashboard->addAlertComponent(Alert::build($this, $this)
+                ->setType(Alert::TYPE_WARNING)
+                ->addText('text.composer-dump-autoload'));
+
             if (isset($alert_component)) {
                 $dashboard->addAlertComponent($alert_component);
             }

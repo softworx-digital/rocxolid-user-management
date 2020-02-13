@@ -5,13 +5,14 @@ namespace Softworx\RocXolid\UserManagement\Repositories\Permission;
 use Softworx\RocXolid\Repositories\AbstractCrudRepository;
 use Softworx\RocXolid\Repositories\Columns\Type\Text;
 use Softworx\RocXolid\Repositories\Columns\Type\Flag;
+use Softworx\RocXolid\Repositories\Columns\Type\SwitchFlag;
 use Softworx\RocXolid\Repositories\Columns\Type\Method;
 
 class Repository extends AbstractCrudRepository
 {
     protected $columns = [
         'is_enabled' => [
-            'type' => Flag::class,
+            'type' => SwitchFlag::class,
             'options' => [
                 'label' => [
                     'title' => 'is_enabled'

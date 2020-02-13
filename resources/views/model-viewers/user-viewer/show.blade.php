@@ -1,4 +1,4 @@
-<div id="{{ $component->getDomId('show', $component->getModel()->id) }}" class="x_panel ajax-overlay">
+<div id="{{ $component->getDomId('show', $component->getModel()->getKey()) }}" class="x_panel ajax-overlay">
     <div class="x_content">
         {!! $component->render('include.header-panel') !!}
 

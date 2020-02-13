@@ -41,7 +41,7 @@ trait HasRoles
         return $query->whereHas('roles', function ($query) use ($roles) {
             $query->where(function ($query) use ($roles) {
                 $roles->each(function ($role) use (&$query) {
-                    $query->orWhere(sprintf('%s.%s', $role->getTable(), $role->getKeyName()), $role->id);
+                    $query->orWhere(sprintf('%s.%s', $role->getTable(), $role->getKeyName()), $role->getKey());
                 });
             });
         });

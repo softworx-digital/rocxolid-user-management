@@ -36,7 +36,7 @@ trait HasGroups
         return $query->whereHas('groups', function ($query) use ($groups) {
             $query->where(function ($query) use ($groups) {
                 $roles->each(function ($group) use (&$query) {
-                    $query->orWhere(sprintf('%s.%s', $group->getTable(), $group->getKeyName()), $group->id);
+                    $query->orWhere(sprintf('%s.%s', $group->getTable(), $group->getKeyName()), $group->getKey());
                 });
             });
         });

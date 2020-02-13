@@ -97,7 +97,7 @@ class Update extends RocXolidAbstractCrudForm
 
 
         $rule = Rule::unique('users', 'email')
-            ->ignore($this->getModel()->id);
+            ->ignore($this->getModel()->getKey());
 
         $fields = array_merge_recursive($fields, [
             'email' => [

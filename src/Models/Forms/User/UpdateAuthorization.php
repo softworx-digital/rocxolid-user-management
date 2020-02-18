@@ -63,7 +63,7 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
     protected function adjustFieldsDefinition($fields)
     {
         // updating self
-        // @todo: kinda hotfixed
+        // @todo: kinda "hotfixed"
         if (($user = auth('rocXolid')->user()) && $user->is($this->getModel())) {
             $except = $user->roles
                 ->where('is_self_unassignable', 0)
@@ -84,7 +84,7 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
             ],
         ];
 
-        unset($fields['permissions']); // @todo: hotfixed for now
+        unset($fields['permissions']); // @todo: "hotfixed" for now
 
         return $fields;
     }

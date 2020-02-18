@@ -275,7 +275,7 @@ class User extends Authenticatable implements
      */
     public function isRoot(): bool
     {
-        return ($this->getKey() === static::ROOT_ID);
+        return ($this->id === static::ROOT_ID);
     }
 
     /**

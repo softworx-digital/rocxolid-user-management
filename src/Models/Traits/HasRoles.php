@@ -105,7 +105,7 @@ trait HasRoles
         })->isEmpty();
     }
 
-    // @todo: hotfixed
+    // @todo: "hotfixed"
     // should be in permissions
     public function isAdmin()
     {

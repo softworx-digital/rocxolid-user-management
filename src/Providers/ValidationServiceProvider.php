@@ -27,6 +27,18 @@ class ValidationServiceProvider extends IlluminateServiceProvider
             return empty($value) || VatValidator::validate($value);
         });
 
+        Validator::extend('ratio', function ($attribute, $value, $parameters, $validator) {
+            $match = preg_match('/^([0-9]+)\/?([0-9]+)$/', $value, $matches);
+
+            if (!$match) {
+                return false;
+            }
+
+            list($m, $numerator, $denominator) = $matches;
+
+            return $match && (($numerator < $denominator) || (((int)$numerator === 1) && ((int)$denominator === 1)));
+        });
+
         return $this;
     }
 }

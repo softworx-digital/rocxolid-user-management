@@ -201,6 +201,8 @@ class CrudPolicy
      */
     protected function checkPermissions(HasAuthorization $user, string $ability, string $model_class, ?Crudable $model = null, ?string $forced_scope_type = null): bool
     {
+        debug(sprintf('Checking permission for user [%s], ability [%s], model [%s], scope type [%s]', $user->getKey(), $ability, $model_class, $forced_scope_type));
+
         return ($permission = $user->getPermissionFor($ability, $model_class))
             && (!$model || $user->allowPermission($permission, $ability, $model, $forced_scope_type));
     }
@@ -216,6 +218,8 @@ class CrudPolicy
      */
     protected function checkAttributePermissions(HasAuthorization $user, string $ability, Crudable $model, string $attribute): bool
     {
+        debug(sprintf('Checking permission for user [%s], ability [%s], model [%s], attribute [%s]', $user->getKey(), $ability, get_class($model), $attribute));
+
         return filled($user->getPermissionFor($ability, get_class($model), $attribute));
     }
 }

@@ -42,7 +42,7 @@ use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
  * rocXolid user class.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid\Admin
+ * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
 class User extends Authenticatable implements

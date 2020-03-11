@@ -220,12 +220,6 @@ class User extends Authenticatable implements
         return '';
     }
 
-    // @todo: hotfixed, you can do better
-    public function getAttributeViewValue(string $attribute)
-    {
-        return $this->$attribute;
-    }
-
     // @todo: kinda hotfixed, would be better with permission constraints (can (un)assign specific role)
     public function fillRoles(array $data): Crudable
     {

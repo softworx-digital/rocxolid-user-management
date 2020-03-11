@@ -2,35 +2,37 @@
 
 namespace Softworx\RocXolid\UserManagement\Models;
 
-use Carbon\Carbon;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+// rocXolid models
 use Softworx\RocXolid\Models\AbstractCrudModel;
-// common traits
-use Softworx\RocXolid\Common\Models\Traits\HasLanguage;
-use Softworx\RocXolid\Common\Models\Traits\HasNationality;
-// user management models
-use Softworx\RocXolid\UserManagement\Models\User;
-// user management traits
+// rocXolid user management model traits
 use Softworx\RocXolid\UserManagement\Models\Traits\BelongsToUser;
 
 /**
  * rocXolid company profile class.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid\Admin
+ * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
 class CompanyProfile extends AbstractCrudModel
 {
     use BelongsToUser;
 
+    /**
+     * {@inheritDoc}
+     */
     protected static $can_be_deleted = false;
 
+    /**
+     * {@inheritDoc}
+     */
     protected static $title_column = [
         'name',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $fillable = [
         'user_id', // @todo: make it not needed in fillable
         'name',
@@ -42,6 +44,9 @@ class CompanyProfile extends AbstractCrudModel
         'vat_no',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $system = [
         'id',
         'established', // @todo: so far
@@ -53,13 +58,13 @@ class CompanyProfile extends AbstractCrudModel
         'deleted_by',
     ];
 
-    public function getAttributeViewValue(string $attribute)
-    {
-        switch ($attribute) {
-            case 'established':
-                return Carbon::make($this->$attribute)->format('j.n.Y');
-            default:
-                return $this->$attribute;
-        }
-    }
+    /**
+     * {@inheritDoc}
+     */
+    protected $dates = [
+        'established',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 }

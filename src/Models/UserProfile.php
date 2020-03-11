@@ -2,16 +2,11 @@
 
 namespace Softworx\RocXolid\UserManagement\Models;
 
-use Carbon\Carbon;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 // rocXolid models
 use Softworx\RocXolid\Models\AbstractCrudModel;
 // rocXolid common model traits
 use Softworx\RocXolid\Common\Models\Traits\HasLanguage;
 use Softworx\RocXolid\Common\Models\Traits\HasNationality;
-// rocXolid user management models
-use Softworx\RocXolid\UserManagement\Models\User;
 // rocXolid user management model traits
 use Softworx\RocXolid\UserManagement\Models\Traits\BelongsToUser;
 
@@ -19,7 +14,7 @@ use Softworx\RocXolid\UserManagement\Models\Traits\BelongsToUser;
  * rocXolid user profile class.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid\Admin
+ * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
 class UserProfile extends AbstractCrudModel
@@ -28,14 +23,23 @@ class UserProfile extends AbstractCrudModel
     use HasLanguage;
     use HasNationality;
 
+    /**
+     * {@inheritDoc}
+     */
     protected static $can_be_deleted = false;
 
+    /**
+     * {@inheritDoc}
+     */
     protected static $title_column = [
         'first_name',
         'middle_name',
         'last_name',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $system = [
         'id',
         'email',
@@ -47,6 +51,9 @@ class UserProfile extends AbstractCrudModel
         'deleted_by',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $fillable = [
         'user_id', // @todo: make it not needed in fillable
         'language_id',
@@ -64,12 +71,36 @@ class UserProfile extends AbstractCrudModel
         'passport_no',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $relationships = [
         'language',
         'nationality',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
+    protected $dates = [
+        'birthdate',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $enums = [
+        'gender',
+        'legal_entity',
+    ];
+
     // @todo: ugly
+    /**
+     * {@inheritDoc}
+     */
     public function fillCustom($data, $action = null)
     {
         $this->email = $this->user->email;
@@ -78,19 +109,5 @@ class UserProfile extends AbstractCrudModel
         $this->user->save();
 
         return $this;
-    }
-
-    public function getAttributeViewValue(string $attribute)
-    {
-        switch ($attribute) {
-            case 'gender':
-                return $this->getModelViewerComponent()->translate(sprintf('choice.%s.%s', $attribute, $this->$attribute));
-            case 'legal_entity':
-                return $this->getModelViewerComponent()->translate(sprintf('choice.%s.%s', $attribute, $this->$attribute));
-            case 'birthdate':
-                return $this->$attribute ? Carbon::make($this->$attribute)->format('j.n.Y') : null;
-            default:
-                return $this->$attribute;
-        }
     }
 }

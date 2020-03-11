@@ -58,6 +58,8 @@ class CrudPolicy
             return $allow;
         }
 
+        // the purpose of this is to handle authorization of model attributes when doing requests
+        // the problem is that authorizeResource() doesn't take attribute into consideration
         if (!is_null($allow = $this->checkAllowRelation($user, $ability))) {
             return $allow;
         }

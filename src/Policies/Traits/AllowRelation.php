@@ -39,13 +39,38 @@ trait AllowRelation
         return null;
     }
 
-    private function checkRelationPermission(Authorizable $user, string $ability)
+    /**
+     * Check if user is allowed to do some ability with model that is related, eg. image of an article.
+     * The method first retrieves the model class based on called controller.
+     * The method first retrieves the 'abilitied' model's RELATED MODEL according to model_attribute and relation, if provided.
+     * Then the RELATED MODEL is queried if user can do the ability with the model, which is the RELATED MODEL's attribute.
+     *
+     * @param \Illuminate\Contracts\Auth\Access\Authorizable $user
+     * @param string $ability
+     * @return bool|null
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
+    private function checkRelationPermission(Authorizable $user, string $ability): ?bool
     {
+
         $input = collect($this->request->input());
+
+        /*
+
+        (child) model ------- relation ------> related (parent)
+                      <--- model_attribute --- related
+
+        or
+            model x relation = related
+            model = related x attribute
+
+        */
 
         if ($input->has(FormField::SINGLE_DATA_PARAM)) {
             $input = collect($input->get(FormField::SINGLE_DATA_PARAM));
 
+            // model_attribute is the name of the related relation to the model that is being 'abilitied'
             if ($input->has('model_attribute')) {
                 $attribute = $input->get('model_attribute');
 

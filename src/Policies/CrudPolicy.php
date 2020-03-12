@@ -2,9 +2,12 @@
 
 namespace Softworx\RocXolid\UserManagement\Policies;
 
+
 use Illuminate\Auth\Access\HandlesAuthorization;
 // rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
+// rocXolid traits
+use Softworx\RocXolid\Traits\Loggable;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid user management contracts
@@ -19,9 +22,15 @@ use Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization;
  */
 class CrudPolicy
 {
+    use Loggable;
     use HandlesAuthorization;
     use Traits\AllowRootAccess;
     use Traits\AllowRelation;
+
+    /**
+     * @var bool Switch to turn logging on / off.
+     */
+    protected $log = false;
 
     /**
      * @var \Softworx\RocXolid\Http\Requests\CrudRequest
@@ -203,10 +212,16 @@ class CrudPolicy
      */
     protected function checkPermissions(HasAuthorization $user, string $ability, string $model_class, ?Crudable $model = null, ?string $forced_scope_type = null): bool
     {
-        debug(sprintf('Checking permission for user [%s], ability [%s], model [%s], scope type [%s]', $user->getKey(), $ability, $model_class, $forced_scope_type));
+        $message = sprintf('Checking permission for user [%s], ability [%s], model [%s], scope type [%s]', $user->getKey(), $ability, $model_class, $forced_scope_type);
 
-        return ($permission = $user->getPermissionFor($ability, $model_class))
-            && (!$model || $user->allowPermission($permission, $ability, $model, $forced_scope_type));
+        $allowed = ($permission = $user->getPermissionFor($ability, $model_class))
+                && (!$model || $user->allowPermission($permission, $ability, $model, $forced_scope_type));
+
+        debug(sprintf('%s: %s', $message, ($allowed ? 'OK' : '-')));
+
+        $this->log(sprintf('%s: %s', $message, ($allowed ? 'OK' : '-')));
+
+        return $allowed;
     }
 
     /**
@@ -220,8 +235,14 @@ class CrudPolicy
      */
     protected function checkAttributePermissions(HasAuthorization $user, string $ability, Crudable $model, string $attribute): bool
     {
-        debug(sprintf('Checking permission for user [%s], ability [%s], model [%s], attribute [%s]', $user->getKey(), $ability, get_class($model), $attribute));
+        $message = sprintf('Checking permission for user [%s], ability [%s], model [%s], attribute [%s]', $user->getKey(), $ability, get_class($model), $attribute);
 
-        return filled($user->getPermissionFor($ability, get_class($model), $attribute));
+        $allowed = filled($user->getPermissionFor($ability, get_class($model), $attribute));
+
+        debug(sprintf('%s: %s', $message, ($allowed ? 'OK' : '-')));
+
+        $this->log(sprintf('%s: %s', $message, ($allowed ? 'OK' : '-')));
+
+        return $allowed;
     }
 }

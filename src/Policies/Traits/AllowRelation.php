@@ -89,6 +89,8 @@ trait AllowRelation
                     ]))) {
                         $related = app($type);
                     } else {
+                        $this->log(sprintf('Checking request relation: [%s] <--- %s - %s ---> [%s]: -', $model_class, $relation, $attribute, get_class($relation->getRelated())));
+
                         return false;
                     }
                 } elseif ($relation instanceof MorphToMany) {
@@ -104,7 +106,11 @@ dd(__METHOD__, 'TODO');
                     ));
                 }
 
-                return $this->checkAttributePermissions($user, $ability, $related, $attribute);
+                $allowed = $this->checkAttributePermissions($user, $ability, $related, $attribute);
+
+                $this->log(sprintf('Checking request relation: [%s] <--- %s - %s ---> [%s]: %s', $model_class, $relation, $attribute, get_class($relation->getRelated()), ($allowed ? 'OK' : '-')));
+
+                return $allowed;
             }
         }
 

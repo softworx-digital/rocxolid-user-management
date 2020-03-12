@@ -4,10 +4,7 @@
 
         <div class="row">
             <div class="col-xl-3 col-md-4 col-xs-12 margin-top-10">
-            {{-- @todo: "hotfixed" --}}
-            @can('update', [ $component->getModel(), 'image' ])
                 {!! $component->render('include.image-upload', [ 'attribute' => 'image', 'relation' => 'parent', 'related' => $component->getModel() ]) !!}
-            @endcan
             </div>
             <div class="col-xl-5 col-md-4 col-xs-12">
                 <div class="row">

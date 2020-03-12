@@ -41,7 +41,7 @@ class Controller extends AbstractCrudController
             return $this->response
                 ->notifySuccess($model_viewer_component->translate('text.updated'))
                 ->replace($model_viewer_component->getDomId(), $model_viewer_component->fetch('related.show', [
-                    'attribute' => 'profile',
+                    'attribute' => 'company',
                     'relation' => 'user'
                 ])) // @todo: hardcoded, ugly
                 ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $action)))

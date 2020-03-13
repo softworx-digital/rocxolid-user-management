@@ -13,6 +13,16 @@ return [
         'last_action' => 'Posledná aktivita',
         'status' => 'Stav',
         'days_first_login' => 'Dnešné prvé prihlásenie',
+        'activity' => [
+            'time' => 'Čas',
+            'ip' => 'IP',
+            'url' => 'URL',
+            'status' => [
+                'heading' => 'Stav',
+                'online' => 'Online',
+                'offline' => 'Offline',
+            ],
+        ],
     ],
     'field' => [
         'name' => 'Meno',
@@ -39,6 +49,16 @@ return [
         'created_at' => 'Čas vytvorenia',
         'resetPasswordUrl' => 'URL pre reset hesla (aplikovateľné iba pri resete hesla)',
     ],
+    'activity' => [
+        'time' => 'Čas',
+        'ip' => 'IP',
+        'url' => 'URL',
+        'status' => [
+            'heading' => 'Stav',
+            'online' => 'Online',
+            'offline' => 'Offline',
+        ],
+    ],
     'model' => [
         'title' => [
             'singular' => 'Používateľ administrácie',
@@ -48,6 +68,7 @@ return [
     'text' => [
         'authentication-data' => 'Prihlasovacie údaje',
         'authorization-data' => 'Autorizačné údaje',
+        'activity-data' => 'Aktivita',
         'profile-data' => 'Osobné údaje',
         'profile-data-unavailable' => 'Osobné údaje ešte nie sú vyplnené',
     ],

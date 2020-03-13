@@ -6,6 +6,7 @@ use Hash;
 use Html;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,9 +20,13 @@ use Softworx\RocXolid\Models\Contracts\HasTokenablePropertiesMethods;
 // rocXolid model traits
 use Softworx\RocXolid\Models\Traits\Crudable as CrudableTrait;
 use Softworx\RocXolid\Models\Traits\HasTokenablePropertiesMethods as HasTokenablePropertiesMethodsTrait;
-// rocXolid admin controllers
-use Softworx\RocXolid\Admin\Auth\Controllers\ProfileController;
-// rocXolid admin events
+// rocXolid admin auth services
+use Softworx\RocXolid\Admin\Auth\Services\UserActivityService;
+// rocXolid admin auth data holders
+use Softworx\RocXolid\Admin\Auth\DataHolders\AbstractUserActivity;
+// rocXolid admin auth controllers
+use Softworx\RocXolid\Admin\Auth\Http\Controllers\ProfileController;
+// rocXolid admin auth events
 use Softworx\RocXolid\Admin\Auth\Events\UserForgotPassword;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Image;
@@ -117,6 +122,16 @@ class User extends Authenticatable implements
     protected $extra = [];
 
     /**
+     * Check if user is Root.
+     *
+     * @return bool
+     */
+    public function isRoot(): bool
+    {
+        return ($this->getKey() === static::ROOT_ID);
+    }
+
+    /**
      * Get route for profile controller.
      *
      * @param string $method Controller method.
@@ -135,7 +150,7 @@ class User extends Authenticatable implements
      */
     public function getTitle()
     {
-        return sprintf('%s (%s)', $this->profile()->exists() ? $this->profile->getTitle() : $this->name, $this->email);
+        return $this->profile()->exists() ? $this->profile->getTitle() : $this->name;
     }
 
     /**
@@ -174,50 +189,23 @@ class User extends Authenticatable implements
     }
 
     /**
-     * Get last user's action time.
+     * Generate password reset URL.
      *
-     * @return string
+     * @return string|null
+     * @throws \UnderflowException If no password reset token assigned.
      */
-    public function getLastAction(): string
+    public function resetPasswordUrl(): ?string
     {
-        // return Carbon::parse($this->last_action)->format('j.n.Y H:i:s');
-        return '';
-    }
-
-    /**
-     * Get user's online status.
-     *
-     * @return string
-     */
-    public function getStatus($seconds = 3600): string
-    {
-        // @todo: check against session timeout in app configuration
-        /*
-        $logged = is_null($this->logged_out) && Carbon::parse($this->last_action)->gt(Carbon::now()->subSeconds($seconds));
-
-        return (new Message())->fetch(sprintf('status.%s', $logged ? 'on' : 'off'));
-        */
-        return '';
-    }
-
-    /**
-     * Get the time user first logged in for current day.
-     *
-     * @return string
-     */
-    public function getDaysFirstLogin(): string
-    {
-        /*
-        if (!is_null($this->days_first_login) && Carbon::parse($this->days_first_login)->isToday())
-        {
-            return Carbon::parse($this->days_first_login)->format('H:i');
+        // ignore when used eg. in e-mail notification
+        if (!$this->exists) {
+            return null;
         }
-        else
-        {
-            return __('rocXolid::user.text.not-yet');
+
+        if (!isset($this->password_reset_token)) {
+            throw new \UnderflowException(sprintf('No password reset token set for user [%s]', $this->email));
         }
-        */
-        return '';
+
+        return route('rocXolid.auth.reset-password', [ 'token' => $this->password_reset_token ]);
     }
 
     // @todo: kinda hotfixed, would be better with permission constraints (can (un)assign specific role)
@@ -263,33 +251,23 @@ class User extends Authenticatable implements
     }
 
     /**
-     * Check if user is Root.
+     * Get last user's activity.
      *
-     * @return bool
+     * @return \Softworx\RocXolid\Admin\Auth\DataHolders\AbstractUserActivity|null
      */
-    public function isRoot(): bool
+    public function getLastActivity(): ?AbstractUserActivity
     {
-        return ($this->id === static::ROOT_ID);
+        return app(UserActivityService::class)->getUserActivity($this);
     }
 
     /**
-     * Generate password reset URL.
+     * Check if user is currently online.
      *
-     * @return string|null
-     * @throws \UnderflowException If no password reset token assigned.
+     * @return bool
      */
-    public function resetPasswordUrl(): ?string
+    public function isOnline(): bool
     {
-        // ignore when used eg. in e-mail notification
-        if (!$this->exists) {
-            return null;
-        }
-
-        if (!isset($this->password_reset_token)) {
-            throw new \UnderflowException(sprintf('No password reset token set for user [%s]', $this->email));
-        }
-
-        return route('rocXolid.auth.reset-password', [ 'token' => $this->password_reset_token ]);
+        return app(UserActivityService::class)->isOnline($this);
     }
 
     /**

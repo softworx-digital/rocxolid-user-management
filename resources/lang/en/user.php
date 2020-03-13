@@ -13,6 +13,16 @@ return [
         'last_action' => 'Last activity',
         'status' => 'Status',
         'days_first_login' => 'First login today',
+        'activity' => [
+            'time' => 'Time',
+            'ip' => 'IP',
+            'url' => 'URL',
+            'status' => [
+                'heading' => 'Status',
+                'online' => 'Online',
+                'offline' => 'Offline',
+            ],
+        ],
     ],
     'field' => [
         'name' => 'Name',
@@ -39,6 +49,16 @@ return [
         'created_at' => 'Creation time',
         'resetPasswordUrl' => 'Password reset URL (appliable only for password reset action)',
     ],
+    'activity' => [
+        'time' => 'Time',
+        'ip' => 'IP',
+        'url' => 'URL',
+        'status' => [
+            'heading' => 'Status',
+            'online' => 'Online',
+            'offline' => 'Offline',
+        ],
+    ],
     'model' => [
         'title' => [
             'singular' => 'User',
@@ -48,6 +68,7 @@ return [
     'text' => [
         'authentication-data' => 'Authentication data',
         'authorization-data' => 'Authorization data',
+        'activity-data' => 'Activity',
         'profile-data' => 'Profile data',
         'profile-data-unavailable' => 'Profile data unavailable',
     ],

@@ -3,14 +3,16 @@
 namespace Softworx\RocXolid\UserManagement\Repositories\User;
 
 use Softworx\RocXolid\Repositories\AbstractCrudRepository;
-// filters
+// rocXolid filters
 use Softworx\RocXolid\Repositories\Filters\Type\Text as TextFilter;
 // use Softworx\RocXolid\Repositories\Filters\Type\ModelRelation as ModelRelationFilter;
-// columns
+// rocXolid columns
 use Softworx\RocXolid\Repositories\Columns\Type\Text;
 use Softworx\RocXolid\Repositories\Columns\Type\Method;
 use Softworx\RocXolid\Repositories\Columns\Type\ImageRelation;
 use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
+// rocXolid user management columns
+use Softworx\RocXolid\UserManagement\Repositories\User\Columns\Type\IsOnline;
 
 class Repository extends AbstractCrudRepository
 {
@@ -54,6 +56,19 @@ class Repository extends AbstractCrudRepository
                 'size' => 'thumb',
                 'relation' => [
                     'name' => 'image',
+                ],
+            ],
+        ],
+        'status' => [
+            'type' => IsOnline::class,
+            'options' => [
+                'label' => [
+                    'title' => 'status'
+                ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
                 ],
             ],
         ],
@@ -107,7 +122,7 @@ class Repository extends AbstractCrudRepository
                 'label' => [
                     'title' => 'last_action'
                 ],
-                'method' => 'getLastAction',
+                'method' => 'getLastActivity',
                 'wrapper' => [
                     'attributes' => [
                         'class' => 'text-center',
@@ -115,20 +130,7 @@ class Repository extends AbstractCrudRepository
                 ],
             ],
         ],
-        'status' => [
-            'type' => Method::class,
-            'options' => [
-                'label' => [
-                    'title' => 'status'
-                ],
-                'method' => 'getStatus',
-                'wrapper' => [
-                    'attributes' => [
-                        'class' => 'text-center',
-                    ],
-                ],
-            ],
-        ],*//*
+        *//*
         'days_first_login' => [
             'type' => Method::class,
             'options' => [

@@ -4,7 +4,14 @@
 
         <div class="row">
             <div class="col-xl-3 col-md-4 col-xs-12 margin-top-10">
-                {!! $component->render('include.image-upload', [ 'attribute' => 'image', 'relation' => 'parent', 'related' => $component->getModel() ]) !!}
+                <div class="row">
+                    <div class="col-xs-12">
+                        {!! $component->render('include.image-upload', [ 'attribute' => 'image', 'relation' => 'parent', 'related' => $component->getModel() ]) !!}
+                    </div>
+                    <div class="col-xs-12">
+                        {!! $component->render('include.activity-data') !!}
+                    </div>
+                </div>
             </div>
             <div class="col-xl-5 col-md-4 col-xs-12">
                 <div class="row">

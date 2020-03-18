@@ -80,7 +80,8 @@ trait AllowRelation
 
                 $model_class = $model_class ?? $this->controller->getModelClass();
                 $model = app($model_class);
-                $relation = $model->{$input->get('relation')}();
+                $relation_name = $input->get('relation');
+                $relation = $model->{$relation_name}();
 
                 if ($relation instanceof MorphTo) {
                     if ($type = $model->resolvePolymorphType($input->only([
@@ -89,7 +90,7 @@ trait AllowRelation
                     ]))) {
                         $related = app($type);
                     } else {
-                        $this->log(sprintf('Checking request relation: [%s] <--- %s - %s ---> [%s]: -', $model_class, $relation, $attribute, get_class($relation->getRelated())));
+                        $this->log(sprintf('Checking request relation: [%s] <--- %s - %s ---> [%s]: -', $model_class, $relation_name, $attribute, get_class($relation->getRelated())));
 
                         return false;
                     }
@@ -108,7 +109,7 @@ dd(__METHOD__, 'TODO');
 
                 $allowed = $this->checkAttributePermissions($user, $ability, $related, $attribute);
 
-                $this->log(sprintf('Checking request relation: [%s] <--- %s - %s ---> [%s]: %s', $model_class, $relation, $attribute, get_class($relation->getRelated()), ($allowed ? 'OK' : '-')));
+                $this->log(sprintf('Checking request relation: [%s] <--- %s - %s ---> [%s]: %s', $model_class, $relation_name, $attribute, get_class($relation->getRelated()), ($allowed ? 'OK' : '-')));
 
                 return $allowed;
             }

@@ -12,8 +12,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Contracts\Auth\Access\Authorizable;
-// rocXolid utils
-use Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse;
+// rocXolid controller contracts
+use Softworx\RocXolid\Http\Controllers\Contracts\Crudable as CrudableController;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 use Softworx\RocXolid\Models\Contracts\HasTokenablePropertiesMethods;
@@ -274,22 +274,21 @@ class User extends Authenticatable implements
      * Image upload handler.
      *
      * @param \Softworx\RocXolid\Common\Models\Image $image Uploaded image reference.
-     * @param \Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse $response Response reference.
+     * @param \Softworx\RocXolid\Http\Controllers\Contracts\Crudable $controller Active controller reference.
      * @return \Softworx\RocXolid\UserManagement\Models\User
-     * @todo: events?
      */
-    public function onImageUpload(Image $image, AjaxResponse &$response): User
+    public function onImageUpload(Image $image, CrudableController $controller): User
     {
         if (auth('rocXolid')->user()->is($this)) {
-            $response->replace('sidebar-profile-image', Html::image(
-                $this->image->getControllerRoute('get', [ 'size' => 'thumb-square' ]),
-                $this->name,
+            $controller->getResponse()->replace('sidebar-profile-image', Html::image(
+                $image->getControllerRoute('get', [ 'size' => 'thumb-square' ]),
+                $image->name,
                 [ 'id' => 'sidebar-profile-image', 'class' => 'img-circle profile_img' ])
             );
 
-            $response->replace('topbar-profile-image', Html::image(
-                $this->image->getControllerRoute('get', [ 'size' => 'thumb-square' ]),
-                $this->name,
+            $controller->getResponse()->replace('topbar-profile-image', Html::image(
+                $image->getControllerRoute('get', [ 'size' => 'thumb-square' ]),
+                $image->name,
                 [ 'id' => 'topbar-profile-image' ])
             );
         }

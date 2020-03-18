@@ -3,10 +3,19 @@
         {!! $component->render('include.header-panel') !!}
 
         <div class="row">
-            <div class="col-xl-3 col-md-4 col-xs-12 margin-top-10">
+            <div class="col-xl-3 col-md-4 col-xs-12">
                 <div class="row">
                     <div class="col-xs-12">
-                        {!! $component->render('include.image-upload', [ 'attribute' => 'image', 'relation' => 'parent', 'related' => $component->getModel() ]) !!}
+                    @if ($component->getModel()->image()->exists())
+                        {!! $component->getModel()->image->getModelViewerComponent()->render('related.show', [ 'attribute' => 'image', 'relation' => 'parent' ]) !!}
+                    @else
+                        {!! $component->getModel()->image()->make()->getModelViewerComponent()->render('related.unavailable', [
+                            'attribute' => 'image',
+                            'relation' => 'parent',
+                            'related' => $component->getModel(),
+                            'placeholder' => 'user-placeholder',
+                        ]) !!}
+                    @endif
                     </div>
                     <div class="col-xs-12">
                         {!! $component->render('include.activity-data') !!}

@@ -11,6 +11,6 @@ class ProtectingRoot implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('id', '!=', $model::ROOT_ID);
+        $builder->where($model->getQualifiedKeyName(), '!=', $model::ROOT_ID);
     }
 }

@@ -1,1 +1,1 @@
-<span id="{{ $component->getDomId('name', $param) }}">{{ $component->getModel()->getTitle() }}</span>
+<span id="{{ $component->getDomId('name', $param) }}" class="text-overflow d-block">{{ $component->getModel()->getTitle() }}</span>

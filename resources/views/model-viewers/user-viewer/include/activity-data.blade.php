@@ -1,4 +1,4 @@
-@can('viewAny', $component->getModel())
+@can ('viewAny', $component->getModel())
 <div id="{{ $component->getDomId('activity-data') }}" class="panel panel-info">
     <div class="panel-heading">
         <h3 class="panel-title text-center">{{ $component->translate('text.activity-data') }}</h3>

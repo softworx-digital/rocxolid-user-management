@@ -28,6 +28,11 @@ class CrudPolicy
     use Traits\AllowRelation;
 
     /**
+     * @var bool Switch to turn debugging on / off.
+     */
+    protected $debug = false;
+
+    /**
      * @var bool Switch to turn logging on / off.
      */
     protected $log = false;
@@ -212,14 +217,16 @@ class CrudPolicy
      */
     protected function checkPermissions(HasAuthorization $user, string $ability, string $model_class, ?Crudable $model = null, ?string $forced_scope_type = null): bool
     {
-        $message = sprintf('Checking permission for user [%s], ability [%s], model [%s], scope type [%s]', $user->getKey(), $ability, $model_class, $forced_scope_type);
+        if ($model) {
+            $message = sprintf('Checking permission for user [%s], ability [%s], model [%s]:[%s], scope type [%s]', $user->getKey(), $ability, get_class($model), $model->getKey(), $forced_scope_type);
+        } else {
+            $message = sprintf('Checking permission for user [%s], ability [%s], model [%s], scope type [%s]', $user->getKey(), $ability, $model_class, $forced_scope_type);
+        }
 
         $allowed = ($permission = $user->getPermissionFor($ability, $model_class))
                 && (!$model || $user->allowPermission($permission, $ability, $model, $forced_scope_type));
 
-        debug(sprintf('%s: %s', $message, ($allowed ? 'OK' : '-')));
-
-        $this->log(sprintf('%s: %s', $message, ($allowed ? 'OK' : '-')));
+        $this->debug($message, $allowed);
 
         return $allowed;
     }
@@ -235,14 +242,36 @@ class CrudPolicy
      */
     protected function checkAttributePermissions(HasAuthorization $user, string $ability, Crudable $model, string $attribute): bool
     {
-        $message = sprintf('Checking permission for user [%s], ability [%s], model [%s], attribute [%s]', $user->getKey(), $ability, get_class($model), $attribute);
+        $message = sprintf('Checking permission for user [%s], ability [%s], model [%s]:[%s], attribute [%s]', $user->getKey(), $ability, get_class($model), $model->getKey(), $attribute);
 
         $allowed = filled($user->getPermissionFor($ability, get_class($model), $attribute));
 
-        debug(sprintf('%s: %s', $message, ($allowed ? 'OK' : '-')));
-
-        $this->log(sprintf('%s: %s', $message, ($allowed ? 'OK' : '-')));
+        $this->debug($message, $allowed);
 
         return $allowed;
+    }
+
+    /**
+     * Debug logging.
+     *
+     * @param string $message
+     * @param string $allowed
+     * @return \Softworx\RocXolid\UserManagement\Policies\CrudPolicy
+     */
+    private function debug(string $message, string $allowed, $depth = 20): CrudPolicy
+    {
+        if ($this->debug) {
+            debug(sprintf('%s %s', ($allowed ? '✅' : '❌'), $message));
+
+            if (!$allowed) {
+                for ($i = $depth; $i >= 0; $i--) {
+                    debug(sprintf('%s::%s', debug_backtrace()[$i]['class'] ?? debug_backtrace()[$i]['file'], debug_backtrace()[$i]['function']));
+                }
+            }
+        }
+
+        $this->log(sprintf('%s: %s', $message, ($allowed ? '✅' : '❌')));
+
+        return $this;
     }
 }

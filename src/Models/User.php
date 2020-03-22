@@ -280,10 +280,11 @@ class User extends Authenticatable implements
     public function onImageUpload(Image $image, CrudableController $controller): User
     {
         if (auth('rocXolid')->user()->is($this)) {
-            $controller->getResponse()->replace('sidebar-profile-image', Html::image(
-                $image->getControllerRoute('get', [ 'size' => 'thumb-square' ]),
-                $image->name,
-                [ 'id' => 'sidebar-profile-image', 'class' => 'img-circle profile_img' ])
+            $user_model_viewer = $this->getModelViewerComponent();
+
+            $controller->getResponse()->replace(
+                $user_model_viewer->getDomId('avatar', 'sidebar'),
+                $user_model_viewer->fetch('snippet.avatar', [ 'param' => 'sidebar' ])
             );
 
             $controller->getResponse()->replace('topbar-profile-image', Html::image(

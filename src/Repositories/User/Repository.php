@@ -57,6 +57,7 @@ class Repository extends AbstractCrudRepository
                 'relation' => [
                     'name' => 'image',
                 ],
+                'width' => 64,
             ],
         ],
         'status' => [

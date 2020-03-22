@@ -13,7 +13,6 @@
                             'attribute' => 'image',
                             'relation' => 'parent',
                             'related' => $component->getModel(),
-                            'placeholder' => 'user-placeholder',
                         ]) !!}
                     @endif
                     </div>

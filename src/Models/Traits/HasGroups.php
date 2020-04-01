@@ -85,7 +85,7 @@ trait HasGroups
      */
     public function hasAnyGroup(...$groups): bool
     {
-        return collect($groups)->filter(function($group) {
+        return collect($groups)->filter(function ($group) {
             return $this->hasGroup($group);
         })->isNotEmpty();
     }
@@ -95,7 +95,7 @@ trait HasGroups
      */
     public function hasAllGroups(...$groups): bool
     {
-        return collect($groups)->filter(function($group) {
+        return collect($groups)->filter(function ($group) {
             return !$this->hasGroup($group);
         })->isEmpty();
     }

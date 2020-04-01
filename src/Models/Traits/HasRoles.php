@@ -90,7 +90,7 @@ trait HasRoles
      */
     public function hasAnyRole(...$roles): bool
     {
-        return collect($roles)->filter(function($role) {
+        return collect($roles)->filter(function ($role) {
             return $this->hasRole($role);
         })->isNotEmpty();
     }
@@ -100,7 +100,7 @@ trait HasRoles
      */
     public function hasAllRoles(...$roles): bool
     {
-        return collect($roles)->filter(function($role) {
+        return collect($roles)->filter(function ($role) {
             return !$this->hasRole($role);
         })->isEmpty();
     }

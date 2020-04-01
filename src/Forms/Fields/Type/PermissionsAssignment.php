@@ -71,7 +71,7 @@ class PermissionsAssignment extends CollectionRadioList
             // ];
             // and set it to pivot data to be passed correctly by getFinalValue().
             $this->setPivotData(collect());
-            $value->each(function($related_key) use ($data, $value, $relation) {
+            $value->each(function ($related_key) use ($data, $value, $relation) {
                 if ($value->contains($related_key)) {
                     $pivot_data = collect($data[$relation->getPivotAccessor()] ?? [])->get($related_key);
 

@@ -121,13 +121,13 @@ class Controller extends AbstractCrudController
             $saved_permissions = $this->permission_reader_service->persistentPermissions(static::$model_class::make());
 
             if (!$param || ($param === 'delete')) {
-                $saved_permissions->diffRecords($code_permissions)->each(function($data) {
+                $saved_permissions->diffRecords($code_permissions)->each(function ($data) {
                     static::$model_class::where($data)->delete();
                 });
             }
 
             if (!$param || ($param === 'insert')) {
-                $code_permissions->diffRecords($saved_permissions)->each(function($data) {
+                $code_permissions->diffRecords($saved_permissions)->each(function ($data) {
                     static::$model_class::create($data);
                 });
             }

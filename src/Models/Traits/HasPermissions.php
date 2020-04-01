@@ -69,7 +69,7 @@ trait HasPermissions
      */
     public function hasAnyPermission(...$permissions): bool
     {
-        return collect($roles)->filter(function($role) {
+        return collect($roles)->filter(function ($role) {
             return $this->hasPermission($role);
         })->isNotEmpty();
     }
@@ -79,7 +79,7 @@ trait HasPermissions
      */
     public function hasAllPermissions(...$permissions): bool
     {
-        return collect($roles)->filter(function($role) {
+        return collect($roles)->filter(function ($role) {
             return !$this->hasPermission($role);
         })->isEmpty();
     }

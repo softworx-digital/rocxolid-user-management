@@ -23,7 +23,7 @@ class FacadeServiceProvider extends IlluminateServiceProvider
      */
     public function register(): IlluminateServiceProvider
     {
-        $this->app->bind('permission.loader', function() {
+        $this->app->bind('permission.loader', function () {
             return $this->app->make(PermissionLoaderService::class);
         });
 

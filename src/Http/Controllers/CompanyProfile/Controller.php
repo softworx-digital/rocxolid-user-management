@@ -15,7 +15,7 @@ use Softworx\RocXolid\UserManagement\Components\ModelViewers\CompanyProfileViewe
 
 class Controller extends AbstractCrudController
 {
-    protected static $model_class = CompanyProfile::class;
+
 
     protected static $repository_class = Repository::class;
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Repositories\Permission;
+namespace Softworx\RocXolid\UserManagement\Models\Tables\Permission;
 
-use Softworx\RocXolid\Repositories\AbstractCrudRepository;
-use Softworx\RocXolid\Repositories\Columns\Type\Text;
-use Softworx\RocXolid\Repositories\Columns\Type\Flag;
-use Softworx\RocXolid\Repositories\Columns\Type\SwitchFlag;
-use Softworx\RocXolid\Repositories\Columns\Type\Method;
+use Softworx\RocXolid\Tables\AbstractCrudTable;
+use Softworx\RocXolid\Tables\Columns\Type\Text;
+use Softworx\RocXolid\Tables\Columns\Type\Flag;
+use Softworx\RocXolid\Tables\Columns\Type\SwitchFlag;
+use Softworx\RocXolid\Tables\Columns\Type\Method;
 
-class Repository extends AbstractCrudRepository
+class Index extends AbstractCrudTable
 {
     protected $columns = [
         'is_enabled' => [

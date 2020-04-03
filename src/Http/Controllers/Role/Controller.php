@@ -8,7 +8,7 @@ use Softworx\RocXolid\UserManagement\Repositories\Role\Repository;
 
 class Controller extends AbstractCrudController
 {
-    protected static $model_class = Role::class;
+
 
     protected static $repository_class = Repository::class;
 }

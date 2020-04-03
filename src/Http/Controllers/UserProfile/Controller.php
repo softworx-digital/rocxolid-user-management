@@ -15,7 +15,7 @@ use Softworx\RocXolid\UserManagement\Components\ModelViewers\UserProfileViewer;
 
 class Controller extends AbstractCrudController
 {
-    protected static $model_class = UserProfile::class;
+
 
     protected static $repository_class = Repository::class;
 

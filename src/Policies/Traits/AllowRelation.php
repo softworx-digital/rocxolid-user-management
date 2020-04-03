@@ -78,7 +78,7 @@ trait AllowRelation
                     throw new \InvalidArgumentException(sprintf('Undefined [%s] param in request', 'relation'));
                 }
 
-                $model_class = $model_class ?? $this->controller->getModelClass();
+                $model_class = $model_class ?? $this->controller->getModelType();
                 $model = app($model_class);
                 $relation_name = $input->get('relation');
                 $relation = $model->{$relation_name}();

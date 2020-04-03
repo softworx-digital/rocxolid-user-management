@@ -1,20 +1,25 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Repositories\User;
+namespace Softworx\RocXolid\UserManagement\Models\Tables\User;
 
-use Softworx\RocXolid\Repositories\AbstractCrudRepository;
+use Softworx\RocXolid\Tables\AbstractCrudTable;
 // rocXolid filters
-use Softworx\RocXolid\Repositories\Filters\Type\Text as TextFilter;
-// use Softworx\RocXolid\Repositories\Filters\Type\ModelRelation as ModelRelationFilter;
+use Softworx\RocXolid\Tables\Filters\Type\Text as TextFilter;
+// use Softworx\RocXolid\Tables\Filters\Type\ModelRelation as ModelRelationFilter;
 // rocXolid columns
-use Softworx\RocXolid\Repositories\Columns\Type\Text;
-use Softworx\RocXolid\Repositories\Columns\Type\Method;
-use Softworx\RocXolid\Repositories\Columns\Type\ImageRelation;
-use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
-// rocXolid user management columns
-use Softworx\RocXolid\UserManagement\Repositories\User\Columns\Type\IsOnline;
+use Softworx\RocXolid\Tables\Columns\Type\Text;
+use Softworx\RocXolid\Tables\Columns\Type\Method;
+use Softworx\RocXolid\Tables\Columns\Type\ImageRelation;
+use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
 
-class Repository extends AbstractCrudRepository
+/**
+ * Default user model table.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid
+ * @version 1.0.0
+ */
+class Index extends AbstractCrudTable
 {
     protected $filters = [
         'name' => [
@@ -61,7 +66,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'status' => [
-            'type' => IsOnline::class,
+            'type' => Columns\Type\IsOnline::class,
             'options' => [
                 'label' => [
                     'title' => 'status'

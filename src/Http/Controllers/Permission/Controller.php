@@ -31,7 +31,7 @@ class Controller extends AbstractCrudController
     /**
      * {@inheritDoc}
      */
-    protected static $model_class = Permission::class;
+
 
     /**
      * {@inheritDoc}
@@ -39,23 +39,11 @@ class Controller extends AbstractCrudController
     protected static $repository_class = Repository::class;
 
     /**
-     * @var \Softworx\RocXolid\Services\PermissionScannerService
+     * {@inheritDoc}
      */
-    protected $permission_reader_service;
-
-    /**
-     * Constructor.
-     *
-     * @param \Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse $response
-     * @param \Softworx\RocXolid\Services\PermissionScannerService $permission_reader_service
-     * @return \Softworx\RocXolid\UserManagement\Http\Controllers\Permission\Controller
-     */
-    public function __construct(AjaxResponse $response, PermissionScannerService $permission_reader_service)
-    {
-        parent::__construct($response);
-
-        $this->permission_reader_service = $permission_reader_service;
-    }
+    protected $extra_services = [
+        PermissionScannerService::class,
+    ];
 
     /**
      * {@inheritDoc}
@@ -64,13 +52,13 @@ class Controller extends AbstractCrudController
     public function index(CrudRequest $request)//: View
     {
         $repository = $this->getRepository($this->getRepositoryParam($request));
-        $repository_component = $this->getRepositoryComponent($repository);
+        $table_component = $this->getTableComponent($repository);
 
         try {
-            $code_permissions = $this->permission_reader_service->sourceCodePermissions();
-            $saved_permissions = $this->permission_reader_service->persistentPermissions(static::$model_class::make());
+            $code_permissions = $this->permissionReaderService()->sourceCodePermissions();
+            $saved_permissions = $this->permissionReaderService()->persistentPermissions(static::$model_class::make());
 
-            if (!$this->permission_reader_service->isSynchronized(
+            if (!$this->permissionReaderService()->isSynchronized(
                 $code_permissions,
                 $saved_permissions
             )) {
@@ -82,12 +70,12 @@ class Controller extends AbstractCrudController
 
         if ($request->ajax()) {
             return $this->response
-                ->replace($repository_component->getDomId(), $repository_component->fetch())
+                ->replace($table_component->getDomId(), $table_component->fetch())
                 ->get();
         } else {
             $dashboard = $this
                 ->getDashboard()
-                ->setRepositoryComponent($repository_component);
+                ->setTableComponent($table_component);
 
             $dashboard->addAlertComponent(Alert::build($this, $this)
                 ->setType(Alert::TYPE_WARNING)
@@ -111,14 +99,14 @@ class Controller extends AbstractCrudController
      */
     public function synchronize(CrudRequest $request, string $param = null)
     {
-        $this->authorize('synchronize', $this->getModelClass());
+        $this->authorize('synchronize', $this->getModelType());
 
         $repository = $this->getRepository($this->getRepositoryParam($request));
-        $repository_component = $this->getRepositoryComponent($repository);
+        $table_component = $this->getTableComponent($repository);
 
         try {
-            $code_permissions = $this->permission_reader_service->sourceCodePermissions();
-            $saved_permissions = $this->permission_reader_service->persistentPermissions(static::$model_class::make());
+            $code_permissions = $this->permissionReaderService()->sourceCodePermissions();
+            $saved_permissions = $this->permissionReaderService()->persistentPermissions(static::$model_class::make());
 
             if (!$param || ($param === 'delete')) {
                 $saved_permissions->diffRecords($code_permissions)->each(function ($data) {
@@ -137,7 +125,7 @@ class Controller extends AbstractCrudController
 
         if ($request->ajax()) {
             return $this->response
-                // ->replace($repository_component->getDomId(), $repository_component->fetch())
+                // ->replace($table_component->getDomId(), $table_component->fetch())
                 ->redirect($this->getRoute('index'))
                 ->get();
         } else {

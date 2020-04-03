@@ -1,16 +1,16 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Repositories\Group;
+namespace Softworx\RocXolid\UserManagement\Models\Tables\Group;
 
-use Softworx\RocXolid\Repositories\AbstractCrudRepository;
-use Softworx\RocXolid\Repositories\Columns\Type\Text;
-use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
+use Softworx\RocXolid\Tables\AbstractCrudTable;
+use Softworx\RocXolid\Tables\Columns\Type\Text;
+use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
 use Softworx\RocXolid\Commerce\Models\Shop;
 
 /**
  *
  */
-class Repository extends AbstractCrudRepository
+class Index extends AbstractCrudTable
 {
     protected $columns = [
         'name' => [

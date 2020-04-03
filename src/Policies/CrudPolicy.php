@@ -91,7 +91,7 @@ class CrudPolicy
      */
     public function viewAny(HasAuthorization $user, ?string $model_class = null): bool
     {
-        $model_class = $model_class ?? $this->controller->getModelClass();
+        $model_class = $model_class ?? $this->controller->getModelType();
 
         return $this->checkPermissions($user, 'viewAny', $model_class);
     }
@@ -153,7 +153,7 @@ class CrudPolicy
             return $this->checkAttributePermissions($user, 'create', $model, $attribute);
         }
 
-        $model_class = $model ? get_class($model) : $this->controller->getModelClass();
+        $model_class = $model ? get_class($model) : $this->controller->getModelType();
 
         return $this->checkPermissions($user, 'create', $model_class);
     }

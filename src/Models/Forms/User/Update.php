@@ -95,7 +95,6 @@ class Update extends RocXolidAbstractCrudForm
         // @todo: hotfix
         return [];
 
-
         $rule = Rule::unique('users', 'email')
             ->ignore($this->getModel()->getKey());
 

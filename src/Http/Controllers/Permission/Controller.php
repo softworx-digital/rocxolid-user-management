@@ -16,8 +16,6 @@ use Softworx\RocXolid\Components\General\Alert;
 use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
 // rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\Permission;
-// rocXolid user management repositories
-use Softworx\RocXolid\UserManagement\Repositories\Permission\Repository;
 
 /**
  * CRUDable permission controller.
@@ -28,16 +26,6 @@ use Softworx\RocXolid\UserManagement\Repositories\Permission\Repository;
  */
 class Controller extends AbstractCrudController
 {
-    /**
-     * {@inheritDoc}
-     */
-
-
-    /**
-     * {@inheritDoc}
-     */
-    protected static $repository_class = Repository::class;
-
     /**
      * {@inheritDoc}
      */

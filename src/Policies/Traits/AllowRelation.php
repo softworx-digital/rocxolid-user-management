@@ -53,7 +53,6 @@ trait AllowRelation
      */
     private function checkRelationPermission(Authorizable $user, string $ability): ?bool
     {
-
         $input = collect($this->request->input());
 
         /*

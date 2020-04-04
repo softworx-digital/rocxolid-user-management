@@ -2,7 +2,6 @@
 
 namespace Softworx\RocXolid\UserManagement\Policies;
 
-
 use Illuminate\Auth\Access\HandlesAuthorization;
 // rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;

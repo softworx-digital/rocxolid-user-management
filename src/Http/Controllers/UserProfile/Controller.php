@@ -10,15 +10,10 @@ use Softworx\RocXolid\Repositories\Contracts\Repository as RepositoryContract;
 use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
 use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
 use Softworx\RocXolid\UserManagement\Models\UserProfile;
-use Softworx\RocXolid\UserManagement\Repositories\UserProfile\Repository;
 use Softworx\RocXolid\UserManagement\Components\ModelViewers\UserProfileViewer;
 
 class Controller extends AbstractCrudController
 {
-
-
-    protected static $repository_class = Repository::class;
-
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',

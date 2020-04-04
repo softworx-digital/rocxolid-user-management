@@ -81,6 +81,7 @@ class Index extends AbstractCrudTable
         'name' => [
             'type' => Text::class,
             'options' => [
+                'orderable' => true,
                 'label' => [
                     'title' => 'name'
                 ],

@@ -14,19 +14,14 @@ use Softworx\RocXolid\UserManagement\Components\ModelViewers\CompanyProfileViewe
 
 class Controller extends AbstractCrudController
 {
+    protected static $model_viewer_type = CompanyProfileViewer::class;
+
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',
         'edit' => 'update',
         'update' => 'update',
     ];
-
-    public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
-    {
-        return CompanyProfileViewer::build($this, $this)
-            ->setModel($model)
-            ->setController($this);
-    }
 
     protected function successResponse(CrudRequest $request, RepositoryContract $repository, AbstractCrudForm $form, CrudableModel $model, string $action)
     {

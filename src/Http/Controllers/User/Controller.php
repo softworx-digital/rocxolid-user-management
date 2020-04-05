@@ -8,13 +8,14 @@ use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 use Softworx\RocXolid\Repositories\Contracts\Repository as RepositoryContract;
-use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
 use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
 use Softworx\RocXolid\UserManagement\Models\User;
 use Softworx\RocXolid\UserManagement\Components\ModelViewers\UserViewer;
 
 class Controller extends AbstractCrudController
 {
+    protected static $model_viewer_type = UserViewer::class;
+
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',
@@ -25,13 +26,6 @@ class Controller extends AbstractCrudController
         'edit.authorization-data' => 'update-authorization',
         'update.authorization-data' => 'update-authorization',
     ];
-
-    public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
-    {
-        return UserViewer::build($this, $this)
-            ->setModel($model)
-            ->setController($this);
-    }
 
     protected function successResponse(CrudRequest $request, RepositoryContract $repository, AbstractCrudForm $form, CrudableModel $model, string $action)
     {

@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
-use Softworx\RocXolid\Repositories\Contracts\Repository as RepositoryContract;
 use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
 use Softworx\RocXolid\UserManagement\Models\User;
 use Softworx\RocXolid\UserManagement\Components\ModelViewers\UserViewer;
@@ -27,7 +26,7 @@ class Controller extends AbstractCrudController
         'update.authorization-data' => 'update-authorization',
     ];
 
-    protected function successResponse(CrudRequest $request, RepositoryContract $repository, AbstractCrudForm $form, CrudableModel $model, string $action)
+    protected function successResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form, string $action)
     {
         if ($request->ajax() && $request->has('_section')) {
             $user_model_viewer_component = $model->getModelViewerComponent();
@@ -41,7 +40,7 @@ class Controller extends AbstractCrudController
                 ->modalClose($user_model_viewer_component->getDomId(sprintf('modal-%s', $action)))
                 ->get();
         } else {
-            return parent::successResponse($request, $repository, $form, $model, $action);
+            return parent::successResponse($request, $model, $form, $action);
         }
     }
 }

@@ -81,7 +81,7 @@ class Controller extends AbstractCrudController
      * Synchronize persistent permissions with extracted from source code.
      *
      * @Softworx\RocXolid\Annotations\AuthorizedAction(policy_ability_group="execute",policy_ability="synchronize")
-     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request Incoming request.
      * @param string $param
      * @return mixed
      */

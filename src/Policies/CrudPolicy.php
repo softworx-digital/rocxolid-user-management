@@ -49,7 +49,7 @@ class CrudPolicy
     /**
      * Constructor.
      *
-     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request Incoming request.
      * @return \Softworx\RocXolid\UserManagement\Policies\CrudPolicy
      */
     public function __construct(CrudRequest $request)

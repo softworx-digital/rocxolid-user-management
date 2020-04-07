@@ -168,6 +168,7 @@ class Index extends AbstractCrudTable
         'roles' => [
             'type' => ModelRelation::class,
             'options' => [
+                'ajax' => true,
                 'label' => [
                     'title' => 'roles'
                 ],

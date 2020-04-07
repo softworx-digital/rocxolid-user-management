@@ -6,7 +6,7 @@ use Hash;
 use Html;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -68,13 +68,6 @@ class User extends Authenticatable implements
     use HasTokenablePropertiesMethodsTrait;
 
     const ROOT_ID = 1;
-
-    /**
-     * Flag if model instances can be user deleted.
-     *
-     * @var boolean
-     */
-    protected static $can_be_deleted = true;
 
     protected static $title_column = 'name';
 
@@ -307,5 +300,13 @@ class User extends Authenticatable implements
         return auth('rocXolid')->user()->is($this)
             ? route('rocXolid.auth.profile')
             : $this->getControllerRoute('show');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function canBeDeleted(Request $request): bool
+    {
+        return !$this->isRoot();
     }
 }

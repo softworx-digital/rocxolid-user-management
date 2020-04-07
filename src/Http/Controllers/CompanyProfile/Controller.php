@@ -22,21 +22,18 @@ class Controller extends AbstractCrudController
         'update' => 'update',
     ];
 
-    protected function successResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form, string $action)
+    protected function successAjaxResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form)
     {
-        if ($request->ajax()) {
-            $model_viewer_component = $model->getModelViewerComponent();
+        $model_viewer_component = $model->getModelViewerComponent();
+        $user_model_viewer_component = $model->user->getModelViewerComponent();
 
-            return $this->response
-                ->notifySuccess($model_viewer_component->translate('text.updated'))
-                ->replace($model_viewer_component->getDomId(), $model_viewer_component->fetch('related.show', [
-                    'attribute' => 'company',
-                    'relation' => 'user'
-                ])) // @todo: hardcoded, ugly
-                ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $action)))
-                ->get();
-        } else {
-            return parent::successResponse($request, $model, $form, $action);
-        }
+        return $this->response
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
+            ->replace($model_viewer_component->getDomId(), $model_viewer_component->fetch('related.show', [
+                'attribute' => 'company',
+                'relation' => 'user'
+            ])) // @todo: hardcoded, ugly
+            ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam()))) // @todo: "hotfixed", modal dom id creation refactoring needed
+            ->get();
     }
 }

@@ -22,25 +22,21 @@ class Controller extends AbstractCrudController
         'update' => 'update',
     ];
 
-    protected function successResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form, string $action)
+    protected function successAjaxResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form)
     {
-        if ($request->ajax()) {
-            $model_viewer_component = $model->getModelViewerComponent();
-            $user_model_viewer_component = $model->user->getModelViewerComponent();
+        $model_viewer_component = $model->getModelViewerComponent();
+        $user_model_viewer_component = $model->user->getModelViewerComponent();
 
-            return $this->response
-                ->notifySuccess($model_viewer_component->translate('text.updated'))
-                ->replace($model_viewer_component->getDomId(), $model_viewer_component->fetch('related.show', [
-                    'attribute' => 'profile',
-                    'relation' => 'user'
-                ])) // @todo: hardcoded, ugly
-                ->replace($user_model_viewer_component->getDomId('header-panel'), $user_model_viewer_component->fetch('include.header-panel'))
-                ->replace($user_model_viewer_component->getDomId('name', 'topbar'), $user_model_viewer_component->fetch('snippet.name', [ 'param' => 'topbar' ]))
-                ->replace($user_model_viewer_component->getDomId('name', 'sidebar'), $user_model_viewer_component->fetch('snippet.name', [ 'param' => 'sidebar' ]))
-                ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $action)))
-                ->get();
-        } else {
-            return parent::successResponse($request, $model, $form, $action);
-        }
+        return $this->response
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
+            ->replace($model_viewer_component->getDomId(), $model_viewer_component->fetch('related.show', [
+                'attribute' => 'profile',
+                'relation' => 'user'
+            ])) // @todo: hardcoded, ugly
+            ->replace($user_model_viewer_component->getDomId('header-panel'), $user_model_viewer_component->fetch('include.header-panel'))
+            ->replace($user_model_viewer_component->getDomId('name', 'topbar'), $user_model_viewer_component->fetch('snippet.name', [ 'param' => 'topbar' ]))
+            ->replace($user_model_viewer_component->getDomId('name', 'sidebar'), $user_model_viewer_component->fetch('snippet.name', [ 'param' => 'sidebar' ]))
+            ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam()))) // @todo: "hotfixed", modal dom id creation refactoring needed
+            ->get();
     }
 }

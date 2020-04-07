@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\UserManagement\Models;
 
+use Illuminate\Http\Request;
 // rocXolid models
 use Softworx\RocXolid\Models\AbstractCrudModel;
 // rocXolid user management model traits
@@ -17,11 +18,6 @@ use Softworx\RocXolid\UserManagement\Models\Traits\BelongsToUser;
 class CompanyProfile extends AbstractCrudModel
 {
     use BelongsToUser;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected static $can_be_deleted = false;
 
     /**
      * {@inheritDoc}
@@ -67,4 +63,12 @@ class CompanyProfile extends AbstractCrudModel
         'updated_at',
         'deleted_at',
     ];
+
+    /**
+     * {@inheritDoc}
+     */
+    public function canBeDeleted(Request $request): bool
+    {
+        return false;
+    }
 }

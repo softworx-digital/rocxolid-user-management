@@ -39,14 +39,13 @@ class Controller extends AbstractCrudController
      */
     public function index(CrudRequest $request)//: View
     {
-        $repository = $this->getRepository($this->getRepositoryParam($request));
-        $table_component = $this->getTableComponent($repository);
+        $table_component = $this->getTableComponent($this->getTable($request));
 
         try {
-            $code_permissions = $this->permissionReaderService()->sourceCodePermissions();
-            $saved_permissions = $this->permissionReaderService()->persistentPermissions(static::$model_class::make());
+            $code_permissions = $this->permissionScannerService()->sourceCodePermissions();
+            $saved_permissions = $this->permissionScannerService()->persistentPermissions(static::getModelType()::make());
 
-            if (!$this->permissionReaderService()->isSynchronized(
+            if (!$this->permissionScannerService()->isSynchronized(
                 $code_permissions,
                 $saved_permissions
             )) {
@@ -89,22 +88,21 @@ class Controller extends AbstractCrudController
     {
         $this->authorize('synchronize', $this->getModelType());
 
-        $repository = $this->getRepository($this->getRepositoryParam($request));
-        $table_component = $this->getTableComponent($repository);
+        $table_component = $this->getTableComponent($this->getTable($request));
 
         try {
-            $code_permissions = $this->permissionReaderService()->sourceCodePermissions();
-            $saved_permissions = $this->permissionReaderService()->persistentPermissions(static::$model_class::make());
+            $code_permissions = $this->permissionScannerService()->sourceCodePermissions();
+            $saved_permissions = $this->permissionScannerService()->persistentPermissions(static::getModelType()::make());
 
             if (!$param || ($param === 'delete')) {
                 $saved_permissions->diffRecords($code_permissions)->each(function ($data) {
-                    static::$model_class::where($data)->delete();
+                    static::getModelType()::where($data)->delete();
                 });
             }
 
             if (!$param || ($param === 'insert')) {
                 $code_permissions->diffRecords($saved_permissions)->each(function ($data) {
-                    static::$model_class::create($data);
+                    static::getModelType()::create($data);
                 });
             }
         } catch (FileNotFoundException $e) {

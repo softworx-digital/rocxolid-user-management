@@ -26,21 +26,17 @@ class Controller extends AbstractCrudController
         'update.authorization-data' => 'update-authorization',
     ];
 
-    protected function successResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form, string $action)
+    protected function successAjaxResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form)
     {
-        if ($request->ajax() && $request->has('_section')) {
-            $user_model_viewer_component = $model->getModelViewerComponent();
+        $model_viewer_component = $model->getModelViewerComponent();
 
-            $template_name = sprintf('include.%s', $request->_section);
+        $template_name = sprintf('include.%s', $request->_section);
 
-            return $this->response
-                ->notifySuccess($user_model_viewer_component->translate('text.updated'))
-                ->replace($user_model_viewer_component->getDomId('header-panel'), $user_model_viewer_component->fetch('include.header-panel'))
-                ->replace($user_model_viewer_component->getDomId($request->_section), $user_model_viewer_component->fetch($template_name))
-                ->modalClose($user_model_viewer_component->getDomId(sprintf('modal-%s', $action)))
-                ->get();
-        } else {
-            return parent::successResponse($request, $model, $form, $action);
-        }
+        return $this->response
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
+            ->replace($model_viewer_component->getDomId('header-panel'), $model_viewer_component->fetch('include.header-panel'))
+            ->replace($model_viewer_component->getDomId($request->_section), $model_viewer_component->fetch($template_name))
+            ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam())))
+            ->get();
     }
 }

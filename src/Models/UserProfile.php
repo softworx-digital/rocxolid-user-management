@@ -2,6 +2,10 @@
 
 namespace Softworx\RocXolid\UserManagement\Models;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+// rocXolid model contracts
+use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid models
 use Softworx\RocXolid\Models\AbstractCrudModel;
 // rocXolid common model traits
@@ -22,11 +26,6 @@ class UserProfile extends AbstractCrudModel
     use BelongsToUser;
     use HasLanguage;
     use HasNationality;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected static $can_be_deleted = false;
 
     /**
      * {@inheritDoc}
@@ -97,17 +96,33 @@ class UserProfile extends AbstractCrudModel
         'legal_entity',
     ];
 
-    // @todo: ugly
     /**
      * {@inheritDoc}
      */
-    public function fillCustom($data, $action = null)
+    public function onCreateBeforeSave(Collection $data): Crudable
     {
         $this->email = $this->user->email;
 
-        $this->user->name = $this->getTitle();
-        $this->user->save();
+        return parent::onCreateBeforeSave($data);
+    }
 
-        return $this;
+    /**
+     * {@inheritDoc}
+     */
+    public function fillCustom(Collection $data): Crudable
+    {
+        $this->user->update([
+            'name' => $this->getTitle()
+        ]);
+
+        return parent::fillCustom($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function canBeDeleted(Request $request): bool
+    {
+        return false;
     }
 }

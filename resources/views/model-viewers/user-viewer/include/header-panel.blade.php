@@ -12,7 +12,7 @@
                 <small><a href="mailto:{{ $component->getModel()->email }}">{{ $component->getModel()->getAttributeViewValue('email') }}</a></small>
             </h1>
         </div>
-        <div class="col-md-4 col-xs-12 text-right hidden-xs">
+        <div class="col-md-4 col-xs-12 text-right hidden-sm">
             <h4><i class="fa fa-star margin-right-10" title="{{ $component->translate('field.created_at') }}"></i>{{ $component->getModel()->getAttributeViewValue('created_at') }}</h4>
         </div>
     @else

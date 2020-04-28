@@ -21,11 +21,11 @@ class ConfigurationServiceProvider extends IlluminateServiceProvider
     ];
 
     /**
-     * Boot configuration.
+     * Register configuration provider for rocXolid User Management package.
      *
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function boot()
+    public function register(): IlluminateServiceProvider
     {
         $this
             ->configure();

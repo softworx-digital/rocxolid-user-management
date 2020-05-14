@@ -125,4 +125,24 @@ class UserProfile extends AbstractCrudModel
     {
         return false;
     }
+
+    /**
+     * Check if user (profile) is natural person.
+     *
+     * @return boolean
+     */
+    public function isNatural(): bool
+    {
+        return $this->legal_entity === 'natural';
+    }
+
+    /**
+     * Check if user (profile) is juridical person.
+     *
+     * @return boolean
+     */
+    public function isJuridical(): bool
+    {
+        return $this->legal_entity === 'juridical';
+    }
 }

@@ -2,7 +2,6 @@
 
 namespace Softworx\RocXolid\UserManagement\Forms\Fields\Type;
 
-use Log;
 // rocXolid contracts
 use Softworx\RocXolid\Contracts\Valueable;
 // rocXolid form fields

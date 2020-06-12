@@ -2,30 +2,37 @@
 
 namespace Softworx\RocXolid\UserManagement\Http\Controllers\CompanyProfile;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+// rocXolid http requests
 use Softworx\RocXolid\Http\Requests\CrudRequest;
-use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
+// rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
-use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
-use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
-use Softworx\RocXolid\UserManagement\Models\CompanyProfile;
+// rocXolid form contracts
+use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
+// rocXolid user management components
 use Softworx\RocXolid\UserManagement\Components\ModelViewers\CompanyProfileViewer;
+// rocXolid user management controllers
+use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
 
+/**
+ * Company profile controller.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\Common
+ * @version 1.0.0
+ */
 class Controller extends AbstractCrudController
 {
+    /**
+     * {@inheritDoc}
+     */
     protected static $model_viewer_type = CompanyProfileViewer::class;
 
-    protected $form_mapping = [
-        'create' => 'create',
-        'store' => 'create',
-        'edit' => 'update',
-        'update' => 'update',
-    ];
-
-    protected function successAjaxResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form)
+    /**
+     * {@inheritDoc}
+     */
+    protected function successAjaxResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form): array
     {
         $model_viewer_component = $model->getModelViewerComponent();
-        $user_model_viewer_component = $model->user->getModelViewerComponent();
 
         return $this->response
             ->notifySuccess($model_viewer_component->translate('text.updated'))

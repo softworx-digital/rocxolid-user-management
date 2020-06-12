@@ -80,7 +80,7 @@ class Permission extends AbstractCrudModel
     /**
      * {@inheritDoc}
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->name;
         /*

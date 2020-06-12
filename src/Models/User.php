@@ -4,8 +4,6 @@ namespace Softworx\RocXolid\UserManagement\Models;
 
 use Hash;
 use Html;
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
@@ -141,7 +139,7 @@ class User extends Authenticatable implements
     /**
      * {@inheritDoc}
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->profile()->exists() ? $this->profile->getTitle() : $this->name;
     }

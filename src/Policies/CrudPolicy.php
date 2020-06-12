@@ -28,11 +28,13 @@ class CrudPolicy
 
     /**
      * @var bool Switch to turn debugging on / off.
+     * @todo: config / env
      */
     protected $debug = false;
 
     /**
      * @var bool Switch to turn logging on / off.
+     * @todo: config / env
      */
     protected $log = false;
 
@@ -67,14 +69,16 @@ class CrudPolicy
      */
     public function before(HasAuthorization $user, string $ability): ?bool
     {
-        if (!is_null($allow = $this->checkAllowRootAccess($user, $ability))) {
-            return $allow;
+        if (!is_null($allowed = $this->checkAllowRootAccess($user, $ability))) {
+$this->debug(sprintf('Before 1 ability: %s', $ability), $allowed);
+            return $allowed;
         }
 
         // the purpose of this is to handle authorization of model attributes when doing requests
         // the problem is that authorizeResource() doesn't take attribute into consideration
-        if (!is_null($allow = $this->checkAllowRelation($user, $ability))) {
-            return $allow;
+        if (!is_null($allowed = $this->checkAllowRelation($user, $ability))) {
+$this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
+            return $allowed;
         }
 
         return null;
@@ -269,7 +273,7 @@ class CrudPolicy
             }
         }
 
-        $this->log(sprintf('%s: %s', $message, ($allowed ? '✅' : '❌')));
+        $this->log(sprintf('[%s] %s: %s', get_class($this), $message, ($allowed ? '✅' : '❌')));
 
         return $this;
     }

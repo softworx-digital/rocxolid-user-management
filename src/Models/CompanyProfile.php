@@ -3,10 +3,13 @@
 namespace Softworx\RocXolid\UserManagement\Models;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 // rocXolid models
 use Softworx\RocXolid\Models\AbstractCrudModel;
 // rocXolid user management model traits
 use Softworx\RocXolid\UserManagement\Models\Traits\BelongsToUser;
+// app models
+use App\Models\EnumCompanyRegistrationCourt; // @todo: this doesn't belong here
 
 /**
  * rocXolid company profile class.
@@ -35,6 +38,8 @@ class CompanyProfile extends AbstractCrudModel
         'email',
         'established',
         'company_registration_no',
+        'company_registration_court_id',
+        'company_insertion_division',
         'company_insertion_no',
         'tax_no',
         'vat_no',
@@ -64,11 +69,20 @@ class CompanyProfile extends AbstractCrudModel
         'deleted_at',
     ];
 
+    protected $relationships = [
+        'companyRegistrationCourt',
+    ];
+
     /**
      * {@inheritDoc}
      */
     public function canBeDeleted(Request $request): bool
     {
         return false;
+    }
+
+    public function companyRegistrationCourt(): BelongsTo
+    {
+        return $this->belongsTo(EnumCompanyRegistrationCourt::class);
     }
 }

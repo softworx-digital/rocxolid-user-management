@@ -71,5 +71,12 @@ return [
         'activity-data' => 'Aktivita',
         'profile-data' => 'Osobné údaje',
         'profile-data-unavailable' => 'Osobné údaje ešte nie sú vyplnené',
+        //
+        'phone_no' => 'telefón',
+        'email' => 'email',
+        'company_registration_no' => 'IČO',
+        'company_registration_court' => 'zapísaný okr. súdom',
+        'company_insertion_division' => 'oddiel',
+        'company_insertion_no' => 'vložka č.',
     ],
 ];

@@ -313,6 +313,47 @@ class User extends Authenticatable implements
             return '';
         }
 
+        if ($this->profile->isNatural()) {
+            $label = sprintf(
+                "%s\n%s %s\n%s %s",
+                $this->getTitle(),
+                $this->address->street_name,
+                $this->address->street_no,
+                $this->address->zip,
+                $this->address->city()->exists() ? $this->address->city->getTitle() : ''
+            );
+        } elseif ($this->profile->isJuridical() && $this->company()->exists()) {
+            $label = sprintf(
+                "%s\n%s %s\n%s %s%s",
+                $this->company->getTitle(),
+                $this->address->street_name,
+                $this->address->street_no,
+                $this->address->zip,
+                $this->address->city()->exists() ? $this->address->city->getTitle() : null,
+                $this->address->country()->exists() && ($this->address->country->getKey() != 203) ? sprintf("\n%s", $this->address->country->getTitle()) : ''
+            );
+        } else {
+            throw new \RuntimeException(sprintf('User [%s] has invalid user profile', $this->getKey()));
+        }
+
+        return nl2br($label);
+    }
+
+    /**
+     * Obtain formatted address label for heading.
+     *
+     * @return string
+     */
+    public function getAddressLabelHeading(): string
+    {
+        if (!$this->address()->exists()) {
+            return '';
+        }
+
+        if (!$this->profile()->exists()) {
+            return '';
+        }
+
         $user_model_viewer = $this->getModelViewerComponent();
 
         if ($this->profile->isNatural()) {
@@ -372,46 +413,5 @@ class User extends Authenticatable implements
         }
 
         return $label;
-    }
-
-    /**
-     * Obtain formatted address label for heading.
-     *
-     * @return string
-     */
-    public function getAddressLabelHeading(): string
-    {
-        if (!$this->address()->exists()) {
-            return '';
-        }
-
-        if (!$this->profile()->exists()) {
-            return '';
-        }
-
-        if ($this->profile->isNatural()) {
-            $label = sprintf(
-                "%s\n%s %s\n%s %s",
-                $this->getTitle(),
-                $this->address->street_name,
-                $this->address->street_no,
-                $this->address->zip,
-                $this->address->city()->exists() ? $this->address->city->getTitle() : ''
-            );
-        } elseif ($this->profile->isJuridical() && $this->company()->exists()) {
-            $label = sprintf(
-                "%s\n%s %s\n%s %s%s",
-                $this->company->getTitle(),
-                $this->address->street_name,
-                $this->address->street_no,
-                $this->address->zip,
-                $this->address->city()->exists() ? $this->address->city->getTitle() : null,
-                $this->address->country()->exists() && ($this->address->country->getKey() != 203) ? sprintf("\n%s", $this->address->country->getTitle()) : ''
-            );
-        } else {
-            throw new \RuntimeException(sprintf('User [%s] has invalid user profile', $this->getKey()));
-        }
-
-        return nl2br($label);
     }
 }

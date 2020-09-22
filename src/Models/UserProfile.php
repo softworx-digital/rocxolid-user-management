@@ -129,7 +129,7 @@ class UserProfile extends AbstractCrudModel
     /**
      * Check if user (profile) is natural person.
      *
-     * @return boolean
+     * @return bool
      */
     public function isNatural(): bool
     {
@@ -139,7 +139,7 @@ class UserProfile extends AbstractCrudModel
     /**
      * Check if user (profile) is juridical person.
      *
-     * @return boolean
+     * @return bool
      */
     public function isJuridical(): bool
     {

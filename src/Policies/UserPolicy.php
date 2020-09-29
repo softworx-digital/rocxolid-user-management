@@ -37,7 +37,7 @@ class UserPolicy extends CrudPolicy
     public function delete(HasAuthorization $user, Crudable $model, ?string $attribute = null): bool
     {
         if (!config('rocXolid.admin.auth.check_permissions_root', false) && $user->isRoot()) {
-            return !$user->is($model);
+            return !is_null($attribute) || !$user->is($model);
         }
 
         return parent::delete($user, $model) && (!$user->isAdmin() || !$user->is($model));

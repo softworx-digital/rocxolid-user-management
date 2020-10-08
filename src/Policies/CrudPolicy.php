@@ -70,14 +70,14 @@ class CrudPolicy
     public function before(HasAuthorization $user, string $ability): ?bool
     {
         if (!is_null($allowed = $this->checkAllowRootAccess($user, $ability))) {
-$this->debug(sprintf('Before 1 ability: %s', $ability), $allowed);
+            $this->debug(sprintf('Before 1 ability: %s', $ability), $allowed);
             return $allowed;
         }
 
         // the purpose of this is to handle authorization of model attributes when doing requests
         // the problem is that authorizeResource() doesn't take attribute into consideration
         if (!is_null($allowed = $this->checkAllowRelation($user, $ability))) {
-$this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
+            $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
             return $allowed;
         }
 
@@ -89,7 +89,6 @@ $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param string $model_class
-     * @param string $forced_scope_type
      * @return bool
      */
     public function viewAny(HasAuthorization $user, ?string $model_class = null): bool
@@ -104,7 +103,6 @@ $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $forced_scope_type
      * @return bool
      */
     public function viewAnyAll(HasAuthorization $user, Crudable $model): bool
@@ -117,7 +115,6 @@ $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $forced_scope_type
      * @return bool
      */
     public function backAny(HasAuthorization $user, Crudable $model): bool
@@ -130,7 +127,8 @@ $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $forced_scope_type
+     * @param string|null $attribute
+     * @param string|null $forced_scope_type
      * @return bool
      */
     public function view(HasAuthorization $user, Crudable $model, ?string $attribute = null, ?string $forced_scope_type = null): bool
@@ -146,8 +144,8 @@ $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
      * Determine whether the user can create resource.
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
-     * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $attribute
+     * @param \Softworx\RocXolid\Models\Contracts\Crudable|null $model
+     * @param string|null $attribute
      * @return bool
      */
     public function create(HasAuthorization $user, ?Crudable $model = null, ?string $attribute = null): bool
@@ -166,7 +164,7 @@ $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $attribute
+     * @param string|null $attribute
      * @return bool
      */
     public function update(HasAuthorization $user, Crudable $model, ?string $attribute = null): bool
@@ -183,7 +181,7 @@ $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $attribute
+     * @param string|null $attribute
      * @return bool
      */
     public function delete(HasAuthorization $user, Crudable $model, ?string $attribute = null): bool
@@ -214,8 +212,8 @@ $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param string $ability
      * @param string $model_class
-     * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $forced_scope_type
+     * @param \Softworx\RocXolid\Models\Contracts\Crudable|null $model
+     * @param string|null $forced_scope_type
      * @return bool
      */
     protected function checkPermissions(HasAuthorization $user, string $ability, string $model_class, ?Crudable $model = null, ?string $forced_scope_type = null): bool
@@ -259,9 +257,10 @@ $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
      *
      * @param string $message
      * @param string $allowed
+     * @param int $depth
      * @return \Softworx\RocXolid\UserManagement\Policies\CrudPolicy
      */
-    private function debug(string $message, string $allowed, $depth = 20): CrudPolicy
+    protected function debug(string $message, string $allowed, int $depth = 20): CrudPolicy
     {
         if ($this->debug) {
             debug(sprintf('%s %s', ($allowed ? '✅' : '❌'), $message));

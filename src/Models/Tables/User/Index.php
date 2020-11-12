@@ -4,13 +4,9 @@ namespace Softworx\RocXolid\UserManagement\Models\Tables\User;
 
 use Softworx\RocXolid\Tables\AbstractCrudTable;
 // rocXolid filters
-use Softworx\RocXolid\Tables\Filters\Type\Text as TextFilter;
-// use Softworx\RocXolid\Tables\Filters\Type\ModelRelation as ModelRelationFilter;
+use Softworx\RocXolid\Tables\Filters\Type as FilterType;
 // rocXolid columns
-use Softworx\RocXolid\Tables\Columns\Type\Text;
-use Softworx\RocXolid\Tables\Columns\Type\Method;
-use Softworx\RocXolid\Tables\Columns\Type\ImageRelation;
-use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
 
 /**
  * Default user model table.
@@ -23,7 +19,7 @@ class Index extends AbstractCrudTable
 {
     protected $filters = [
         'name' => [
-            'type' => TextFilter::class,
+            'type' => FilterType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'name'
@@ -34,7 +30,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'email' => [
-            'type' => TextFilter::class,
+            'type' => FilterType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'email'
@@ -48,7 +44,7 @@ class Index extends AbstractCrudTable
 
     protected $columns = [
         'image' => [
-            'type' => ImageRelation::class,
+            'type' => ColumnType\ImageRelation::class,
             'options' => [
                 'label' => [
                     'title' => 'image'
@@ -79,7 +75,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'name' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'orderable' => true,
                 'label' => [
@@ -93,7 +89,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'email' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'email'
@@ -106,7 +102,7 @@ class Index extends AbstractCrudTable
             ],
         ],/*
         'language' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -124,7 +120,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'last_action' => [
-            'type' => Method::class,
+            'type' => ColumnType\Method::class,
             'options' => [
                 'label' => [
                     'title' => 'last_action'
@@ -139,7 +135,7 @@ class Index extends AbstractCrudTable
         ],
         *//*
         'days_first_login' => [
-            'type' => Method::class,
+            'type' => ColumnType\Method::class,
             'options' => [
                 'label' => [
                     'title' => 'days_first_login'
@@ -153,7 +149,7 @@ class Index extends AbstractCrudTable
             ],
         ],*//*
         'groups' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -166,7 +162,7 @@ class Index extends AbstractCrudTable
             ],
         ],*/
         'roles' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -179,7 +175,7 @@ class Index extends AbstractCrudTable
             ],
         ],/*
         'permissions' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [

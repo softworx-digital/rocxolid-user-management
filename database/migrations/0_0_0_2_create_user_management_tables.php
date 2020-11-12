@@ -71,6 +71,7 @@ class CreateUserManagementTables extends Migration
             $table->string('name');
             $table->string('guard')->default('rocXolid');
             $table->timestamps();
+            $table->softDeletes();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->unsignedInteger('deleted_by')->nullable();

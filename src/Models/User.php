@@ -6,6 +6,7 @@ use Hash;
 use Html;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -46,6 +47,7 @@ class User extends Authenticatable implements
 {
     use ProtectsRoot;
     use Notifiable;
+    use SoftDeletes;
     use rxTraits\Crudable;
     use rxTraits\HasTokenablePropertiesMethods;
     use Traits\HasAuthorization;

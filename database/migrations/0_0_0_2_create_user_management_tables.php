@@ -54,6 +54,7 @@ class CreateUserManagementTables extends Migration
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->unsignedInteger('deleted_by')->nullable();

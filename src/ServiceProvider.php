@@ -36,10 +36,10 @@ class ServiceProvider extends RocXolidAbstractServiceProvider
     }
 
     /**
-    * Bootstrap the application services.
-    *
-    * @return void
-    */
+     * Bootstrap the application services.
+     *
+     * @return void
+     */
     public function boot()
     {
         $this

@@ -3,16 +3,16 @@
 namespace Softworx\RocXolid\UserManagement\Models\Tables\Permission;
 
 use Softworx\RocXolid\Tables\AbstractCrudTable;
-use Softworx\RocXolid\Tables\Columns\Type\Text;
-use Softworx\RocXolid\Tables\Columns\Type\Flag;
-use Softworx\RocXolid\Tables\Columns\Type\SwitchFlag;
-use Softworx\RocXolid\Tables\Columns\Type\Method;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
 
+/**
+ *
+ */
 class Index extends AbstractCrudTable
 {
     protected $columns = [
         'is_enabled' => [
-            'type' => SwitchFlag::class,
+            'type' => ColumnType\SwitchFlag::class,
             'options' => [
                 'label' => [
                     'title' => 'is_enabled'
@@ -20,7 +20,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'controller_class' => [
-            'type' => Method::class,
+            'type' => ColumnType\Method::class,
             'options' => [
                 'method' => 'getTitle',
                 'label' => [
@@ -34,7 +34,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'policy_ability_group' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'policy_ability_group'
@@ -47,7 +47,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'policy_ability' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'policy_ability'

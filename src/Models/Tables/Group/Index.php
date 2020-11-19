@@ -2,10 +2,9 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Tables\Group;
 
+// rocXolid tables
 use Softworx\RocXolid\Tables\AbstractCrudTable;
-use Softworx\RocXolid\Tables\Columns\Type\Text;
-use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
-use Softworx\RocXolid\Commerce\Models\Shop;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
 
 /**
  *
@@ -14,7 +13,7 @@ class Index extends AbstractCrudTable
 {
     protected $columns = [
         'name' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'name'
@@ -27,7 +26,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'webs' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -45,7 +44,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'users' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -63,7 +62,7 @@ class Index extends AbstractCrudTable
             ],
         ],/*
         'permissions' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [

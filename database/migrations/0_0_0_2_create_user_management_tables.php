@@ -71,6 +71,8 @@ class CreateUserManagementTables extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('guard')->default('rocXolid');
+            $table->boolean('is_self_assignable')->default(0);
+            $table->boolean('is_self_unassignable')->default(0);
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedInteger('created_by')->nullable();

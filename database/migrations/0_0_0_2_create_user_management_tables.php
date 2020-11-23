@@ -53,6 +53,7 @@ class CreateUserManagementTables extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedInteger('created_by')->nullable();
@@ -73,6 +74,7 @@ class CreateUserManagementTables extends Migration
             $table->string('guard')->default('rocXolid');
             $table->boolean('is_self_assignable')->default(0);
             $table->boolean('is_self_unassignable')->default(0);
+
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedInteger('created_by')->nullable();
@@ -95,6 +97,7 @@ class CreateUserManagementTables extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedInteger('created_by')->nullable();
@@ -197,10 +200,16 @@ class CreateUserManagementTables extends Migration
             $table->string('policy_ability_group')->nullable();
             $table->string('policy_ability')->nullable();
             $table->json('scopes')->nullable();
+
             $table->timestamps();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->unsignedInteger('deleted_by')->nullable();
+
+            $table->index('guard');
+            $table->index('controller_class');
+            $table->index('model_class');
+            $table->index('attribute');
         });
 
         return $this;

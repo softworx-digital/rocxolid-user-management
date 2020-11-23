@@ -94,7 +94,7 @@ trait AllowRelation
                         return false;
                     }
                 } elseif ($relation instanceof MorphToMany) {
-dd(__METHOD__, 'TODO');
+                    dd(__METHOD__, 'TODO');
                 } elseif ($relation instanceof BelongsTo) {
                     $related = $relation->getRelated();
                 } else {

@@ -198,7 +198,6 @@ class User extends Authenticatable implements
         if (array_key_exists('roles', $data)
             && ($user = auth('rocXolid')->user())
             && $user->is($this)) {
-
             $roles = collect($data['roles'])
                 ->diff($this->getSelfNonAssignableRoles()->pluck('id'))
                 ->merge($this->roles->where('is_self_unassignable', 0)->pluck('id'));
@@ -270,10 +269,13 @@ class User extends Authenticatable implements
                 $user_model_viewer->fetch('snippet.avatar', [ 'param' => 'sidebar' ])
             );
 
-            $controller->getResponse()->replace('topbar-profile-image', Html::image(
+            $controller->getResponse()->replace(
+                'topbar-profile-image',
+                Html::image(
                 $image->getControllerRoute('get', [ 'size' => 'thumb-square' ]),
                 $image->name,
-                [ 'id' => 'topbar-profile-image' ])
+                [ 'id' => 'topbar-profile-image' ]
+            )
             );
         }
 

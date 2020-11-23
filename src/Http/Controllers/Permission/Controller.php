@@ -132,7 +132,8 @@ class Controller extends AbstractCrudController
             ->setType(Alert::TYPE_INFO)
             ->addTextKey('out-of-sync');
 
-        $alert_component->addButton(Button::build($this, $this)
+        $alert_component->addButton(
+            Button::build($this, $this)
                 ->setOptions([
                     'attributes' => [
                         'class' => 'btn btn-primary col-xs-12',
@@ -143,14 +144,15 @@ class Controller extends AbstractCrudController
                         'title' => $alert_component->translate(sprintf('button.synchronize')),
                     ],
                 ])
-            );
+        );
 
         // there are some persistent permissions not appliable after source code extraction
         if ($saved_permissions->diffRecords($code_permissions)->isNotEmpty()) {
             $alert_component
                 ->addTextKey('out-of-sync-saved-code', 'strong')
                 ->addCollection($saved_permissions->diffRecords($code_permissions)->pluck('name'))
-                ->addButton(Button::build($this, $this)
+                ->addButton(
+                    Button::build($this, $this)
                     ->setOptions([
                         'attributes' => [
                             'class' => 'btn btn-primary col-xs-12',
@@ -169,7 +171,8 @@ class Controller extends AbstractCrudController
             $alert_component
                 ->addTextKey('out-of-sync-code-saved', 'strong')
                 ->addCollection($code_permissions->diffRecords($saved_permissions)->pluck('name'))
-                ->addButton(Button::build($this, $this)
+                ->addButton(
+                    Button::build($this, $this)
                     ->setOptions([
                         'attributes' => [
                             'class' => 'btn btn-primary col-xs-12',

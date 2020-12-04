@@ -39,6 +39,7 @@ class CreateUserManagementTables extends Migration
         Schema::dropIfExists('roles');
         Schema::dropIfExists('users');
         Schema::dropIfExists('user_profiles');
+        Schema::dropIfExists('company_profiles');
         Schema::dropIfExists('permissions');
         Schema::dropIfExists('password_resets');
         Schema::dropIfExists('role_has_permissions');
@@ -96,6 +97,8 @@ class CreateUserManagementTables extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('api_token', 80)->unique()->nullable()->default(null);
+            $table->apiToken();
             $table->rememberToken();
 
             $table->timestamps();

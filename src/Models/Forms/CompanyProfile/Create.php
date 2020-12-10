@@ -13,12 +13,18 @@ use App\Models\EnumCompanyRegistrationCourt; // @todo: this doesn't belong here
 
 class Create extends RocXolidAbstractCrudForm
 {
+    /**
+     * {@inheritDoc}
+     */
     protected $options = [
         'method' => 'POST',
         'route-action' => 'store',
         'class' => 'form-horizontal form-label-left',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $fields = [
         'relation' => [
             'type' => FieldType\Hidden::class,
@@ -158,6 +164,9 @@ class Create extends RocXolidAbstractCrudForm
         ],
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected function adjustFieldsDefinition($fields)
     {
         $fields['user_id']['options']['value'] = $this->getInputFieldValue('user_id');

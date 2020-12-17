@@ -49,6 +49,9 @@ return [
         'created_at' => 'Čas vytvorenia',
         'resetPasswordUrl' => 'URL pre reset hesla (aplikovateľné iba pri resete hesla)',
     ],
+    'tab' => [
+        'preferences' => 'Preferencie'
+    ],
     'activity' => [
         'time' => 'Čas',
         'ip' => 'IP',
@@ -61,8 +64,10 @@ return [
     ],
     'model' => [
         'title' => [
-            'singular' => 'Používateľ administrácie',
-            'plural' => 'Používatelia administrácie',
+            // 'singular' => 'Používateľ administrácie',
+            // 'plural' => 'Používatelia administrácie',
+            'singular' => 'Používateľ',
+            'plural' => 'Používatelia',
         ],
     ],
     'text' => [

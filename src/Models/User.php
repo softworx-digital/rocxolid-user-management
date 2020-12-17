@@ -5,6 +5,8 @@ namespace Softworx\RocXolid\UserManagement\Models;
 use Hash;
 use Html;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -41,6 +43,7 @@ use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
  */
 class User extends Authenticatable implements
     rxContracts\Crudable,
+    rxContracts\ApiRequestable,
     rxContracts\HasTokenablePropertiesMethods,
     Contracts\HasAuthorization,
     Contracts\HasGroups
@@ -49,11 +52,13 @@ class User extends Authenticatable implements
     use Notifiable;
     use SoftDeletes;
     use rxTraits\Crudable;
+    use rxTraits\ApiRequestable;
     use rxTraits\HasTokenablePropertiesMethods;
     use Traits\HasAuthorization;
     use Traits\HasGroups;
     use Traits\HasUserProfile;
     use Traits\HasCompanyProfile;
+    use Traits\HasUserPreferences;
     use CommonTraits\HasAddress;
     use CommonTraits\HasImage;
 
@@ -103,6 +108,16 @@ class User extends Authenticatable implements
     public $password_reset_token;
 
     protected $extra = [];
+
+    /**
+     * {@inheritDoc}
+     */
+    public function onCreateBeforeSave(Collection $data): rxContracts\Crudable
+    {
+        $this->api_token = Str::random(73);
+
+        return $this;
+    }
 
     /**
      * Check if user is Root.

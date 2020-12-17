@@ -18,6 +18,7 @@ class ConfigurationServiceProvider extends IlluminateServiceProvider
      */
     protected $config_files = [
         'rocXolid.user-management.general' => '/../../config/general.php',
+        'rocXolid.user-management.user' => '/../../config/user.php',
     ];
 
     /**

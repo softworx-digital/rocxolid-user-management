@@ -52,6 +52,14 @@ class RouteServiceProvider extends IlluminateServiceProvider
             CrudRouterService::create('role', \Role\Controller::class);
 
             $router->group([
+                'namespace' => 'User',
+                'prefix' => 'user',
+                'as' => 'user.'
+            ], function (Router $router) {
+                $router->get('/{user}/{tab?}', 'Controller@show')->name('show');
+            });
+
+            $router->group([
                 'namespace' => 'Permission',
                 'prefix' => 'permission',
                 'as' => 'permission.',

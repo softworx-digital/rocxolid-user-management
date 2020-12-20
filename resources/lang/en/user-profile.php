@@ -37,7 +37,7 @@ return [
             'juridical' => 'Company',
         ],
         'gender' => [
-            '' => '<i class="fa fa-question" aria-hidden="true"></i>',
+            '' => '<i class="fa fa-question"></i>',
             'm' => 'Male',
             'f' => 'Female',
         ],

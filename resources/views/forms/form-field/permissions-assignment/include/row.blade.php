@@ -28,7 +28,7 @@
         <div class="col-md-1">
             <div class="dropdown">
                 <div class="btn-group btn-group-xs" data-toggle="buttons" style="min-height: 22px;">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                         {{ $controller->translate('text.more-permissions') }}
                         <span class="caret"></span>
                     </button>

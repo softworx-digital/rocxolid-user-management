@@ -1,6 +1,6 @@
 <ul id="{{ $component->getDomId('topbar') }}" class="nav navbar-nav navbar-right">
     <li>
-        <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown">
         @if ($component->getModel()->image()->exists())
             {{ Html::image($component->getModel()->image->getControllerRoute('get', [ 'size' => 'thumb-square' ]), $component->getModel()->name, [ 'id' => 'topbar-profile-image' ]) }}
         @else
@@ -25,7 +25,7 @@
     </li>
 @if (false)
     <li role="presentation" class="dropdown">
-        <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+        <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown">
             <i class="fa fa-envelope-o"></i>
             <span class="badge bg-green">1</span>
         </a>

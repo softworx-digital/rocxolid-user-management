@@ -39,8 +39,8 @@ class Controller extends AbstractCrudController
             ->replace($model_viewer_component->getDomId('user', 'company'), $model_viewer_component->fetch('related.show', [
                 'attribute' => 'company',
                 'relation' => 'user'
-            ])) // @todo: hardcoded, ugly
-            ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam()))) // @todo: "hotfixed", modal dom id creation refactoring needed
+            ])) // @todo hardcoded, ugly
+            ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam()))) // @todo "hotfixed", modal dom id creation refactoring needed
             ->get();
     }
 }

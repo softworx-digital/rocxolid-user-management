@@ -71,7 +71,7 @@ class Permission extends AbstractCrudModel
     ];
 
     /**
-     * @todo: Laravel 7
+     * @todo Laravel 7
      */
     protected $casts = [
         'scopes' => 'array'

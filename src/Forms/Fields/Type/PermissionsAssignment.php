@@ -47,7 +47,7 @@ class PermissionsAssignment extends CollectionRadioList
         }
     }
 
-    // @todo: refactor - put into some more general formfield
+    // @todo refactor - put into some more general formfield
     public function setValue($data, int $index = 0): Valueable
     {
         $value = $data;

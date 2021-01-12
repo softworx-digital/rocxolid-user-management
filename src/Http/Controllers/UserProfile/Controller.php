@@ -40,11 +40,11 @@ class Controller extends AbstractCrudController
             ->replace($model_viewer_component->getDomId('user', 'profile'), $model_viewer_component->fetch('related.show', [
                 'attribute' => 'profile',
                 'relation' => 'user'
-            ])) // @todo: hardcoded, ugly
+            ])) // @todo hardcoded, ugly
             ->replace($user_model_viewer_component->getDomId('header-panel'), $user_model_viewer_component->fetch('include.header-panel'))
             ->replace($user_model_viewer_component->getDomId('name', 'topbar'), $user_model_viewer_component->fetch('snippet.name', [ 'param' => 'topbar' ]))
             ->replace($user_model_viewer_component->getDomId('name', 'sidebar'), $user_model_viewer_component->fetch('snippet.name', [ 'param' => 'sidebar' ]))
-            ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam()))) // @todo: "hotfixed", modal dom id creation refactoring needed
+            ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam()))) // @todo "hotfixed", modal dom id creation refactoring needed
             ->get();
     }
 }

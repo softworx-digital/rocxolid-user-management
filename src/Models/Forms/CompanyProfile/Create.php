@@ -9,7 +9,7 @@ use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // rocXolid form field types
 use Softworx\RocXolid\Forms\Fields\Type as FieldType;
 // app models
-use App\Models\EnumCompanyRegistrationCourt; // @todo: this doesn't belong here
+use App\Models\EnumCompanyRegistrationCourt; // @todo this doesn't belong here
 
 class Create extends RocXolidAbstractCrudForm
 {
@@ -111,7 +111,7 @@ class Create extends RocXolidAbstractCrudForm
                 'label' => [
                     'title' => 'company_insertion_division',
                 ],
-                'value' => 'Sro', // @todo: make configurable
+                'value' => 'Sro', // @todo make configurable
                 'validation' => [
                     'rules' => [
                         'required',

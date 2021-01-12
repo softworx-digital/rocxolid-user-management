@@ -54,7 +54,7 @@ class UserProfile extends AbstractCrudModel
      * {@inheritDoc}
      */
     protected $fillable = [
-        'user_id', // @todo: make it not needed in fillable
+        'user_id', // @todo make it not needed in fillable
         'language_id',
         'legal_entity',
         'email',

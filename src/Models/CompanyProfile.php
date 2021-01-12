@@ -9,7 +9,7 @@ use Softworx\RocXolid\Models\AbstractCrudModel;
 // rocXolid user management model traits
 use Softworx\RocXolid\UserManagement\Models\Traits\BelongsToUser;
 // app models
-use App\Models\EnumCompanyRegistrationCourt; // @todo: this doesn't belong here
+use App\Models\EnumCompanyRegistrationCourt; // @todo this doesn't belong here
 
 /**
  * rocXolid company profile class.
@@ -33,7 +33,7 @@ class CompanyProfile extends AbstractCrudModel
      * {@inheritDoc}
      */
     protected $fillable = [
-        'user_id', // @todo: make it not needed in fillable
+        'user_id', // @todo make it not needed in fillable
         'name',
         'email',
         'established',
@@ -50,7 +50,7 @@ class CompanyProfile extends AbstractCrudModel
      */
     protected $system = [
         'id',
-        'established', // @todo: so far
+        'established', // @todo so far
         'created_at',
         'updated_at',
         'deleted_at',

@@ -28,13 +28,13 @@ class CrudPolicy
 
     /**
      * @var bool Switch to turn debugging on / off.
-     * @todo: config / env
+     * @todo config / env
      */
     protected $debug = false;
 
     /**
      * @var bool Switch to turn logging on / off.
-     * @todo: config / env
+     * @todo config / env
      */
     protected $log = false;
 

@@ -206,7 +206,7 @@ class User extends Authenticatable implements
         return route('rocXolid.auth.reset-password', [ 'token' => $this->password_reset_token ]);
     }
 
-    // @todo: kinda hotfixed, would be better with permission constraints (can (un)assign specific role)
+    // @todo kinda hotfixed, would be better with permission constraints (can (un)assign specific role)
     public function fillRoles(array $data): rxContracts\Crudable
     {
         // updating self

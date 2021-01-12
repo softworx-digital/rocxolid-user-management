@@ -1,4 +1,4 @@
-{{-- @todo: "hotfixed" --}}
+{{-- @todo "hotfixed" --}}
 @if ($permission->policy_ability === 'viewAny')
 <i class="fa fa-list" title="{{ $controller->translate(sprintf('permissions.%s', $permission->policy_ability)) }}"></i>
 @elseif ($permission->policy_ability === 'view')

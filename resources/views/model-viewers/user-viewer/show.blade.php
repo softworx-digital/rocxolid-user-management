@@ -17,5 +17,5 @@
     @endif
     </div>
 
-    {!! $component->render('include.footer') !!}
+    {!! $component->render('include.footer-panel') !!}
 </div>

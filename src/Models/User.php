@@ -43,6 +43,7 @@ use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
  */
 class User extends Authenticatable implements
     rxContracts\Crudable,
+    rxContracts\Searchable,
     rxContracts\ApiRequestable,
     rxContracts\HasTokenablePropertiesMethods,
     Contracts\HasAuthorization,
@@ -105,6 +106,11 @@ class User extends Authenticatable implements
         'permissions',
     ];
 
+    protected $search_columns = [
+        'name',
+        'email',
+    ];
+
     public $password_reset_token;
 
     protected $extra = [];
@@ -157,6 +163,38 @@ class User extends Authenticatable implements
     public function isOwnership(Authorizable $user): bool
     {
         return $this->is($user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSearchColumns(): Collection
+    {
+        return collect($this->search_columns);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSearchColumns(array $search_columns): rxContracts\Searchable
+    {
+        $this->search_columns = $search_columns;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toSearchResult(?string $param = null): array
+    {
+        return [
+            'value' => $this->getKey(),
+            'text' => $this->getTitle(),
+            'data' => [
+                'subtext' => $this->email,
+            ],
+        ];
     }
 
     /**

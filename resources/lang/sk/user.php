@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'filter' => [
+        'name' => 'Meno',
+        'email' => 'e-mail',
+    ],
     'column' => [
         'image' => '<i class="fa fa-image"></i>',
         'name' => 'Meno',

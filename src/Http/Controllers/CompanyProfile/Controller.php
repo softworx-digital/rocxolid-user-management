@@ -17,7 +17,7 @@ use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
  * Company profile controller.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid\Common
+ * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
 class Controller extends AbstractCrudController

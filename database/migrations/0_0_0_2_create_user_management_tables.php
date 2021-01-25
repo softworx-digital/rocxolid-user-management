@@ -17,8 +17,8 @@ class CreateUserManagementTables extends Migration
             ->groups()
             ->roles()
             ->users()
-            ->userProfiles()
-            ->companyProfiles()
+            ->userProfiles() // @todo change to Common\PersonalProfile ?
+            ->companyProfiles() // @todo change to Common\CompanyProfile ?
             ->permissions()
             ->passwordResets()
             ->rolePermissions()

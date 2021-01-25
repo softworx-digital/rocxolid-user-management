@@ -12,7 +12,7 @@ use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
  * Default user model table.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid
+ * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
 class Index extends AbstractCrudTable

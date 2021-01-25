@@ -21,7 +21,7 @@ use Softworx\RocXolid\UserManagement\Models\Permission;
  * CRUDable permission controller.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid
+ * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
 class Controller extends AbstractCrudController

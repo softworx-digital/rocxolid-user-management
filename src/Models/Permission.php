@@ -17,7 +17,7 @@ use Softworx\RocXolid\UserManagement\Models\user;
  * Permission model.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid\Common
+ * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
 class Permission extends AbstractCrudModel

@@ -106,7 +106,7 @@ class Controller extends AbstractCrudController
                 });
             }
         } catch (FileNotFoundException $e) {
-            dd($e);
+            dd(__METHOD__, $e);
         }
 
         if ($request->ajax()) {

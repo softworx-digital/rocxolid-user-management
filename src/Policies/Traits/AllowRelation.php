@@ -2,10 +2,13 @@
 
 namespace Softworx\RocXolid\UserManagement\Policies\Traits;
 
+use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\Access\Authorizable;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+// rocXolid services
+use Softworx\RocXolid\Services\CrudRouterService;
 // rocXolid form contracts
 use Softworx\RocXolid\Forms\Contracts\FormField;
 // rocXolid model contracts
@@ -78,16 +81,21 @@ trait AllowRelation
                 }
 
                 $model_class = $model_class ?? $this->controller->getModelType();
-                $model = app($model_class);
+                $model = collect($this->request->route()->parameters())->first() ?? app($model_class);
                 $relation_name = $input->get('relation');
                 $relation = $model->{$relation_name}();
+                $relation_permission_check_method = sprintf('check%sRelationPermission', Str::studly($relation_name));
 
-                if ($relation instanceof MorphTo) {
+                if (method_exists($this, $relation_permission_check_method)) {
+                    $this->log(sprintf('Delegating permission checking request relation to [%s()]', $relation_permission_check_method));
+
+                    return $this->$relation_permission_check_method($user, $ability);
+                } elseif ($relation instanceof MorphTo) {
                     if ($type = $model->resolvePolymorphType($input->only([
                         $relation->getMorphType(),
                         $relation->getForeignKeyName(),
                     ]))) {
-                        $related = app($type);
+                        $related = $model->exists ? $model->$relation_name : app($type);
                     } else {
                         $this->log(sprintf('Checking request relation: [%s] <--- %s - %s ---> [%s]: -', $model_class, $relation_name, $attribute, get_class($relation->getRelated())));
 
@@ -96,7 +104,7 @@ trait AllowRelation
                 } elseif ($relation instanceof MorphToMany) {
                     dd(__METHOD__, 'TODO');
                 } elseif ($relation instanceof BelongsTo) {
-                    $related = $relation->getRelated();
+                    $related = $model->exists ? $model->$relation_name : $relation->getRelated();
                 } else {
                     throw new \RuntimeException(sprintf(
                         'Unsupported relation type [%s] for [%s->%s()]',
@@ -106,9 +114,11 @@ trait AllowRelation
                     ));
                 }
 
-                $allowed = $this->checkAttributePermissions($user, $ability, $related, $attribute);
+                $this->log(sprintf('>> Checking relation identified from request: [%s] <--- %s - %s ---> [%s]', $model_class, $relation_name, $attribute, get_class($relation->getRelated())));
 
-                $this->log(sprintf('Checking request relation: [%s] <--- %s - %s ---> [%s]: %s', $model_class, $relation_name, $attribute, get_class($relation->getRelated()), ($allowed ? 'OK' : '-')));
+                $allowed = !is_null($related) && $this->checkAttributePermissions($user, $ability, $related, $attribute);
+
+                $this->log(sprintf('<< Relation %s - %s: %s', $relation_name, $attribute, ($allowed ? '✅' : '❌')));
 
                 return $allowed;
             }

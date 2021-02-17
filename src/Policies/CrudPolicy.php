@@ -69,16 +69,24 @@ class CrudPolicy
      */
     public function before(HasAuthorization $user, string $ability): ?bool
     {
+        $this->log(sprintf('[!] >>>>> GENERIC ability [%s] CHECK', $ability));
+
         if (!is_null($allowed = $this->checkAllowRootAccess($user, $ability))) {
-            $this->debug(sprintf('Before 1 ability: %s', $ability), $allowed);
+            $this->debug(sprintf('[!] <<<<< GENERIC ability [%s] CHECK RESULT', $ability), $allowed);
             return $allowed;
+        } else {
+            $this->log(sprintf('[!] <<<<< GENERIC ability [%s] CHECK', $ability));
         }
+
+        $this->log(sprintf('[!!] >>>>> GENERIC RELATION ability [%s] CHECK', $ability));
 
         // the purpose of this is to handle authorization of model attributes when doing requests
         // the problem is that authorizeResource() doesn't take attribute into consideration
         if (!is_null($allowed = $this->checkAllowRelation($user, $ability))) {
-            $this->debug(sprintf('Before 2 ability: %s', $ability), $allowed);
+            $this->debug(sprintf('[!!] <<<<< GENERIC RELATION ability [%s] CHECK RESULT', $ability), $allowed);
             return $allowed;
+        } else {
+            $this->log(sprintf('[!!] <<<<< GENERIC RELATION ability [%s] CHECK', $ability));
         }
 
         return null;
@@ -219,9 +227,9 @@ class CrudPolicy
     protected function checkPermissions(HasAuthorization $user, string $ability, string $model_class, ?Crudable $model = null, ?string $forced_scope_type = null): bool
     {
         if ($model) {
-            $message = sprintf('Checking permission for user [%s], ability [%s], model [%s]:[%s], scope type [%s]', $user->getKey(), $ability, get_class($model), $model->getKey(), $forced_scope_type);
+            $message = sprintf('Checking permission for user [%s], ability [%s], model [%s]:[%s], forced scope type [%s]', $user->getKey(), $ability, get_class($model), $model->getKey(), $forced_scope_type);
         } else {
-            $message = sprintf('Checking permission for user [%s], ability [%s], model [%s], scope type [%s]', $user->getKey(), $ability, $model_class, $forced_scope_type);
+            $message = sprintf('Checking permission for user [%s], ability [%s], model [%s], forced scope type [%s]', $user->getKey(), $ability, $model_class, $forced_scope_type);
         }
 
         $allowed = ($permission = $user->getPermissionFor($ability, $model_class))
@@ -244,8 +252,12 @@ class CrudPolicy
     protected function checkAttributePermissions(HasAuthorization $user, string $ability, Crudable $model, string $attribute): bool
     {
         $message = sprintf('Checking permission for user [%s], ability [%s], model [%s]:[%s], attribute [%s]', $user->getKey(), $ability, get_class($model), $model->getKey(), $attribute);
-
-        $allowed = filled($user->getPermissionFor($ability, get_class($model), $attribute));
+        // a workaroud if checking permissions for buttons, etc. when the request is not for related but for parent
+        $allowed_model = $model->exists ? $this->checkPermissions($user, 'view', get_class($model), $model) : true;
+// $allowed_model_attribute = filled($user->getPermissionFor($ability, get_class($model), $attribute));
+        $allowed = $allowed_model && filled($user->getPermissionFor($ability, get_class($model), $attribute));
+// dump(sprintf("(model) (%s) of [%s][%s] > %s", 'view', get_class($model), $model->getKey(), $allowed_model ? 'allowed' : 'forbidden'));
+// dump(sprintf("(%s) (%s) > %s", $attribute, $ability, $allowed_model_attribute ? 'allowed' : 'forbidden'));
 
         $this->debug($message, $allowed);
 

@@ -150,7 +150,10 @@ class Controller extends AbstractCrudController
         if ($saved_permissions->diffRecords($code_permissions)->isNotEmpty()) {
             $alert_component
                 ->addTextKey('out-of-sync-saved-code', 'strong')
-                ->addCollection($saved_permissions->diffRecords($code_permissions)->pluck('name'))
+                // ->addCollection($saved_permissions->diffRecords($code_permissions)->pluck('name'))
+                ->addCollection($saved_permissions->diffRecords($code_permissions)->transform(function (array $permission) {
+                    return sprintf('%s [%s]', $permission['name'], $permission['controller_class'] ?: $permission['model_class']);
+                }))
                 ->addButton(
                     Button::build($this, $this)
                     ->setOptions([
@@ -170,7 +173,10 @@ class Controller extends AbstractCrudController
         if ($code_permissions->diffRecords($saved_permissions)->isNotEmpty()) {
             $alert_component
                 ->addTextKey('out-of-sync-code-saved', 'strong')
-                ->addCollection($code_permissions->diffRecords($saved_permissions)->pluck('name'))
+                // ->addCollection($code_permissions->diffRecords($saved_permissions)->pluck('name'))
+                ->addCollection($code_permissions->diffRecords($saved_permissions)->transform(function (array $permission) {
+                    return sprintf('%s [%s]', $permission['name'], $permission['controller_class'] ?: $permission['model_class']);
+                }))
                 ->addButton(
                     Button::build($this, $this)
                     ->setOptions([

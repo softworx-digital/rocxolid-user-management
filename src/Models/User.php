@@ -79,6 +79,7 @@ class User extends Authenticatable implements
 
     protected $system = [
         'password',
+        'api_token',
         'email_verified_at',
         'remember_token',
         'created_at',
@@ -154,7 +155,7 @@ class User extends Authenticatable implements
      */
     public function getTitle(): string
     {
-        return $this->profile()->exists() ? $this->profile->getTitle() : $this->name;
+        return $this->profile()->exists() ? $this->profile->getTitle() : ($this->name ?: $this->email);
     }
 
     /**

@@ -87,5 +87,7 @@ return [
         'company_registration_court' => 'zapísaný okr. súdom',
         'company_insertion_division' => 'oddiel',
         'company_insertion_no' => 'vložka č.',
+        //
+        'role-exclusive' => 'Role [:role] sú exkluzívne a nie je možné používateľovi priradiť ďalšie.',
     ],
 ];

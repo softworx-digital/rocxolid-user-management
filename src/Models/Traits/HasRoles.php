@@ -105,7 +105,7 @@ trait HasRoles
         })->isEmpty();
     }
 
-    // @todo "hotfixed"
+    // @todo hotfixed
     // should be in permissions
     public function isAdmin()
     {
@@ -114,5 +114,13 @@ trait HasRoles
         } catch (\Throwable $e) {
             dd('Setup Admin role ID in rocXolid.admin.auth.admin_role_id');
         }
+    }
+
+    // @todo hotfixed
+    public function hasAssignableRoles(): bool
+    {
+        return $this->roles->reduce(function (bool $carry, Role $role) {
+            return !$role->is_exclusive && $carry;
+        }, true);
     }
 }

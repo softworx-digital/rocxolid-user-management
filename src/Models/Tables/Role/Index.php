@@ -2,16 +2,17 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Tables\Role;
 
+// rocXolid tables & types
 use Softworx\RocXolid\Tables\AbstractCrudTable;
-use Softworx\RocXolid\Tables\Columns\Type\Text;
-use Softworx\RocXolid\Tables\Columns\Type\Flag;
-use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
+use Softworx\RocXolid\Tables\Filters\Type as FilterType;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
+use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 
 class Index extends AbstractCrudTable
 {
     protected $columns = [
         'name' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'name'
@@ -23,8 +24,16 @@ class Index extends AbstractCrudTable
                 ],
             ],
         ],
+        'is_exclusive' => [
+            'type' => ColumnType\Flag::class,
+            'options' => [
+                'label' => [
+                    'title' => 'is_exclusive'
+                ],
+            ],
+        ],
         'is_self_assignable' => [
-            'type' => Flag::class,
+            'type' => ColumnType\Flag::class,
             'options' => [
                 'label' => [
                     'title' => 'is_self_assignable'
@@ -32,7 +41,7 @@ class Index extends AbstractCrudTable
             ],
         ],
         'is_self_unassignable' => [
-            'type' => Flag::class,
+            'type' => ColumnType\Flag::class,
             'options' => [
                 'label' => [
                     'title' => 'is_self_unassignable'

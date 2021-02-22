@@ -3,14 +3,16 @@
     <div class="panel-heading">
         <h3 class="panel-title">
             {{ $component->translate('text.authorization-data') }}
-        @can ('update', $component->getModel())
-            <a data-ajax-url="{{ $component->getController()->getRoute('edit', $component->getModel(), ['_section' => 'authorization-data']) }}" class="margin-left-5 pull-right" title="{{ $component->translate('button.edit') }}"><i class="fa fa-pencil"></i></a>
-        @endcan
+        @if (!$component->getModel()->is($user) || $component->getModel()->hasAssignableRoles())
+            @can ('update', $component->getModel())
+                <a data-ajax-url="{{ $component->getController()->getRoute('edit', $component->getModel(), ['_section' => 'authorization-data']) }}" class="margin-left-5 pull-right" title="{{ $component->translate('button.edit') }}"><i class="fa fa-pencil"></i></a>
+            @endcan
+        @endif
         </h3>
     </div>
     <div class="panel-body">
         <dl class="dl-horizontal">
-        @foreach ($component->getModel()->getRelationshipMethods() as $attribute)
+        @foreach ($component->getModel()->getRelationshipMethods('groups', 'permissions') as $attribute)
             @can ('assign', [ $component->getModel(), $attribute ])
                 <dt>{{ $component->translate(sprintf('field.%s', $attribute)) }}</dt>
                 <dd>

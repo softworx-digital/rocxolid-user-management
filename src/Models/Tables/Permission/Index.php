@@ -2,8 +2,11 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Tables\Permission;
 
+// rocXolid tables & types
 use Softworx\RocXolid\Tables\AbstractCrudTable;
+use Softworx\RocXolid\Tables\Filters\Type as FilterType;
 use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
+use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 
 /**
  *

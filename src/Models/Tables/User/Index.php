@@ -2,11 +2,11 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Tables\User;
 
+// rocXolid tables & types
 use Softworx\RocXolid\Tables\AbstractCrudTable;
-// rocXolid filters
 use Softworx\RocXolid\Tables\Filters\Type as FilterType;
-// rocXolid columns
 use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
+use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 
 /**
  * Default user model table.

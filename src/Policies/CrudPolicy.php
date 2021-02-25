@@ -119,6 +119,18 @@ class CrudPolicy
     }
 
     /**
+     * Determine whether the user can view owned resources.
+     *
+     * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
+     * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
+     * @return bool
+     */
+    public function viewAnyOwned(HasAuthorization $user, Crudable $model): bool
+    {
+        return $this->checkPermissions($user, 'viewAny', get_class($model), $model, 'policy.scope.owned');
+    }
+
+    /**
      * Shorthand for view any.
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user

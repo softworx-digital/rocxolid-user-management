@@ -191,7 +191,7 @@ class User extends Authenticatable implements
     {
         return [
             'value' => $this->getKey(),
-            'text' => $this->getTitle(),
+            'text' => $this->getTitle() . ($this->company()->exists() ? sprintf(' (%s)', $this->company->getTitle()) : ''),
             'data' => [
                 'subtext' => $this->email,
             ],

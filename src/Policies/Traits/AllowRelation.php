@@ -106,6 +106,7 @@ trait AllowRelation
                 } elseif ($relation instanceof BelongsTo) {
                     $related = $model->exists ? $model->$relation_name : $relation->getRelated();
                 } else {
+                    return true; // @todo hotfixed
                     throw new \RuntimeException(sprintf(
                         'Unsupported relation type [%s] for [%s->%s()]',
                         get_class($relation),

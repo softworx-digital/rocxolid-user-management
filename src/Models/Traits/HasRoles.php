@@ -28,6 +28,9 @@ trait HasRoles
         return $this->morphToMany(Role::class, 'model', 'model_has_roles');
     }
 
+    /**
+     * @todo identify purpose and document
+     */
     public static function getSelfNonAssignableRoles()
     {
         return Role::where('is_self_assignable', 0)->get();
@@ -41,7 +44,7 @@ trait HasRoles
         return $query->whereHas('roles', function ($query) use ($roles) {
             $query->where(function ($query) use ($roles) {
                 $roles->each(function ($role) use (&$query) {
-                    $query->orWhere(sprintf('%s.%s', $role->getTable(), $role->getKeyName()), $role->getKey());
+                    $query->orWhere($role->getQualifiedKeyName(), $role->getKey());
                 });
             });
         });

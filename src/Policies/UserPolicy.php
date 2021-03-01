@@ -34,6 +34,30 @@ class UserPolicy extends CrudPolicy
     /**
      * {@inheritDoc}
      */
+    public function view(HasAuthorization $user, Crudable $model, ?string $attribute = null, ?string $forced_scope_type = null): bool
+    {
+        if ($model->isRoot() && !$user->isRoot()) {
+            return false;
+        }
+
+        return parent::view($user, $model, $attribute, $forced_scope_type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function update(HasAuthorization $user, Crudable $model, ?string $attribute = null): bool
+    {
+        if ($model->isRoot() && !$user->isRoot()) {
+            return false;
+        }
+
+        return parent::update($user, $model, $attribute);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function delete(HasAuthorization $user, Crudable $model, ?string $attribute = null): bool
     {
         if (!config('rocXolid.admin.auth.check_permissions_root', false) && $user->isRoot()) {

@@ -43,6 +43,7 @@ class UserPolicy extends CrudPolicy
         // return parent::delete($user, $model) && (!$user->isAdmin() || !$user->is($model)); // allow self deletion
         // return parent::delete($user, $model) && !$user->is($model);
         return parent::delete($user, $model) // has permission to delete users in general
+            && !$user->is($model) // @todo hotfixed - user cannot delete self
             && !$model->isAdmin(); // @todo hotfixed - user cannot delete other admins
     }
 

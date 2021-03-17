@@ -28,7 +28,7 @@ class PermissionLoaderService
 
     public function __construct()
     {
-        Permission::addGlobalScope(new IsEnabled);
+        Permission::addGlobalScope(app(IsEnabled::class));
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace Softworx\RocXolid\UserManagement\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
+// rocXolid services
+use Softworx\RocXolid\Services\RouteService;
 // rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 // rocXolid traits
@@ -57,7 +59,15 @@ class CrudPolicy
     public function __construct(CrudRequest $request)
     {
         $this->request = $request;
-        $this->controller = $request->route()->getController();
+
+        // @todo hotfixed
+        try {
+            $this->controller = $request->route()->getController();
+        } catch (\Exception $e) {
+            if (RouteService::isRocXolidMiddleware()) {
+                throw $e;
+            }
+        }
     }
 
     /**

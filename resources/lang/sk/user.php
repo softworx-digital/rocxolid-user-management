@@ -89,5 +89,13 @@ return [
         'company_insertion_no' => 'vložka č.',
         //
         'role-exclusive' => 'Role [:role] sú exkluzívne a nie je možné používateľovi priradiť ďalšie.',
+        //
+        'salutation' => [
+            'natural' => [
+                'f' => 'Vážená pani :name',
+                'm' => 'Vážený pán :name',
+            ],
+            'juridical' => 'Vážený obchodný partner :name',
+        ],
     ],
 ];

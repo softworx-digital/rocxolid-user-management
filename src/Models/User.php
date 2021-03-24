@@ -472,4 +472,20 @@ class User extends Authenticatable implements
 
         return $label;
     }
+
+    /**
+     * Obtain User's salutation.
+     *
+     * @return string
+     */
+    public function salutation(): string
+    {
+        if ($this->exists && $this->profile()->exists()) {
+            return $this->profile->isNatural()
+                ? $this->getModelViewerComponent()->translate(sprintf('text.salutation.natural.%s', $this->profile->gender), [ 'name' => $this->profile->last_name ])
+                : $this->getModelViewerComponent()->translate('text.salutation.juridical', [ 'name' => $this->company()->exists() ? $this->company->getTitle() : '' ]);
+        }
+
+        return '';
+    }
 }

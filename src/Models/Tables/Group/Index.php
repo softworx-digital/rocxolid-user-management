@@ -1,20 +1,21 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Repositories\Group;
+namespace Softworx\RocXolid\UserManagement\Models\Tables\Group;
 
-use Softworx\RocXolid\Repositories\AbstractCrudRepository;
-use Softworx\RocXolid\Repositories\Columns\Type\Text;
-use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
-use Softworx\RocXolid\Commerce\Models\Shop;
+// rocXolid tables & types
+use Softworx\RocXolid\Tables\AbstractCrudTable;
+use Softworx\RocXolid\Tables\Filters\Type as FilterType;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
+use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 
 /**
  *
  */
-class Repository extends AbstractCrudRepository
+class Index extends AbstractCrudTable
 {
     protected $columns = [
         'name' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'name'
@@ -27,7 +28,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'webs' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -45,7 +46,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'users' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -63,7 +64,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],/*
         'permissions' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [

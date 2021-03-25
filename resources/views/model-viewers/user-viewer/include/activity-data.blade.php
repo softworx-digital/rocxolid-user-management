@@ -8,9 +8,9 @@
         <dl class="dl-horizontal">
             <dt>{{ $component->translate('activity.status.heading') }}</dt>
         @if ($component->getModel()->isOnline())
-            <dd class="text-success"><i class="fa fa-check-circle margin-right-5" aria-hidden="true"></i>{{ $component->translate('activity.status.online') }}</dd>
+            <dd class="text-success"><i class="fa fa-check-circle margin-right-5"></i>{{ $component->translate('activity.status.online') }}</dd>
         @else
-            <dd><i class="fa fa-circle margin-right-5" aria-hidden="true"></i>{{ $component->translate('activity.status.offline') }}</dd>
+            <dd><i class="fa fa-circle margin-right-5"></i>{{ $component->translate('activity.status.offline') }}</dd>
         @endif
             <dt>{{ $component->translate('activity.time') }}</dt><dd>{{ $component->getModel()->getLastActivity()->getTime() }}</dd>
             <dt>{{ $component->translate('activity.ip') }}</dt><dd>{{ $component->getModel()->getLastActivity()->getIp() }}</dd>

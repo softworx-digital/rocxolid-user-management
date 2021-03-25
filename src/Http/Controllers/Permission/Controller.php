@@ -16,14 +16,12 @@ use Softworx\RocXolid\Components\General\Alert;
 use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
 // rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\Permission;
-// rocXolid user management repositories
-use Softworx\RocXolid\UserManagement\Repositories\Permission\Repository;
 
 /**
  * CRUDable permission controller.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid
+ * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
 class Controller extends AbstractCrudController
@@ -31,31 +29,9 @@ class Controller extends AbstractCrudController
     /**
      * {@inheritDoc}
      */
-    protected static $model_class = Permission::class;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected static $repository_class = Repository::class;
-
-    /**
-     * @var \Softworx\RocXolid\Services\PermissionScannerService
-     */
-    protected $permission_reader_service;
-
-    /**
-     * Constructor.
-     *
-     * @param \Softworx\RocXolid\Http\Responses\Contracts\AjaxResponse $response
-     * @param \Softworx\RocXolid\Services\PermissionScannerService $permission_reader_service
-     * @return \Softworx\RocXolid\UserManagement\Http\Controllers\Permission\Controller
-     */
-    public function __construct(AjaxResponse $response, PermissionScannerService $permission_reader_service)
-    {
-        parent::__construct($response);
-
-        $this->permission_reader_service = $permission_reader_service;
-    }
+    protected $extra_services = [
+        PermissionScannerService::class,
+    ];
 
     /**
      * {@inheritDoc}
@@ -63,14 +39,13 @@ class Controller extends AbstractCrudController
      */
     public function index(CrudRequest $request)//: View
     {
-        $repository = $this->getRepository($this->getRepositoryParam($request));
-        $repository_component = $this->getRepositoryComponent($repository);
+        $table_component = $this->getTableComponent($this->getTable($request));
 
         try {
-            $code_permissions = $this->permission_reader_service->sourceCodePermissions();
-            $saved_permissions = $this->permission_reader_service->persistentPermissions(static::$model_class::make());
+            $code_permissions = $this->permissionScannerService()->sourceCodePermissions();
+            $saved_permissions = $this->permissionScannerService()->persistentPermissions(static::getModelType()::make());
 
-            if (!$this->permission_reader_service->isSynchronized(
+            if (!$this->permissionScannerService()->isSynchronized(
                 $code_permissions,
                 $saved_permissions
             )) {
@@ -82,12 +57,12 @@ class Controller extends AbstractCrudController
 
         if ($request->ajax()) {
             return $this->response
-                ->replace($repository_component->getDomId(), $repository_component->fetch())
+                ->replace($table_component->getDomId(), $table_component->fetch())
                 ->get();
         } else {
             $dashboard = $this
                 ->getDashboard()
-                ->setRepositoryComponent($repository_component);
+                ->setTableComponent($table_component);
 
             $dashboard->addAlertComponent(Alert::build($this, $this)
                 ->setType(Alert::TYPE_WARNING)
@@ -105,39 +80,38 @@ class Controller extends AbstractCrudController
      * Synchronize persistent permissions with extracted from source code.
      *
      * @Softworx\RocXolid\Annotations\AuthorizedAction(policy_ability_group="execute",policy_ability="synchronize")
-     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request Incoming request.
      * @param string $param
      * @return mixed
      */
     public function synchronize(CrudRequest $request, string $param = null)
     {
-        $this->authorize('synchronize', $this->getModelClass());
+        $this->authorize('synchronize', $this->getModelType());
 
-        $repository = $this->getRepository($this->getRepositoryParam($request));
-        $repository_component = $this->getRepositoryComponent($repository);
+        $table_component = $this->getTableComponent($this->getTable($request));
 
         try {
-            $code_permissions = $this->permission_reader_service->sourceCodePermissions();
-            $saved_permissions = $this->permission_reader_service->persistentPermissions(static::$model_class::make());
+            $code_permissions = $this->permissionScannerService()->sourceCodePermissions();
+            $saved_permissions = $this->permissionScannerService()->persistentPermissions(static::getModelType()::make());
 
             if (!$param || ($param === 'delete')) {
                 $saved_permissions->diffRecords($code_permissions)->each(function ($data) {
-                    static::$model_class::where($data)->delete();
+                    static::getModelType()::where($data)->delete();
                 });
             }
 
             if (!$param || ($param === 'insert')) {
                 $code_permissions->diffRecords($saved_permissions)->each(function ($data) {
-                    static::$model_class::create($data);
+                    static::getModelType()::create($data);
                 });
             }
         } catch (FileNotFoundException $e) {
-            dd($e);
+            dd(__METHOD__, $e);
         }
 
         if ($request->ajax()) {
             return $this->response
-                // ->replace($repository_component->getDomId(), $repository_component->fetch())
+                // ->replace($table_component->getDomId(), $table_component->fetch())
                 ->redirect($this->getRoute('index'))
                 ->get();
         } else {
@@ -158,7 +132,8 @@ class Controller extends AbstractCrudController
             ->setType(Alert::TYPE_INFO)
             ->addTextKey('out-of-sync');
 
-        $alert_component->addButton(Button::build($this, $this)
+        $alert_component->addButton(
+            Button::build($this, $this)
                 ->setOptions([
                     'attributes' => [
                         'class' => 'btn btn-primary col-xs-12',
@@ -169,14 +144,18 @@ class Controller extends AbstractCrudController
                         'title' => $alert_component->translate(sprintf('button.synchronize')),
                     ],
                 ])
-            );
+        );
 
         // there are some persistent permissions not appliable after source code extraction
         if ($saved_permissions->diffRecords($code_permissions)->isNotEmpty()) {
             $alert_component
                 ->addTextKey('out-of-sync-saved-code', 'strong')
-                ->addCollection($saved_permissions->diffRecords($code_permissions)->pluck('name'))
-                ->addButton(Button::build($this, $this)
+                // ->addCollection($saved_permissions->diffRecords($code_permissions)->pluck('name'))
+                ->addCollection($saved_permissions->diffRecords($code_permissions)->transform(function (array $permission) {
+                    return sprintf('%s [%s]', $permission['name'], $permission['controller_class'] ?: $permission['model_class']);
+                }))
+                ->addButton(
+                    Button::build($this, $this)
                     ->setOptions([
                         'attributes' => [
                             'class' => 'btn btn-primary col-xs-12',
@@ -194,8 +173,12 @@ class Controller extends AbstractCrudController
         if ($code_permissions->diffRecords($saved_permissions)->isNotEmpty()) {
             $alert_component
                 ->addTextKey('out-of-sync-code-saved', 'strong')
-                ->addCollection($code_permissions->diffRecords($saved_permissions)->pluck('name'))
-                ->addButton(Button::build($this, $this)
+                // ->addCollection($code_permissions->diffRecords($saved_permissions)->pluck('name'))
+                ->addCollection($code_permissions->diffRecords($saved_permissions)->transform(function (array $permission) {
+                    return sprintf('%s [%s]', $permission['name'], $permission['controller_class'] ?: $permission['model_class']);
+                }))
+                ->addButton(
+                    Button::build($this, $this)
                     ->setOptions([
                         'attributes' => [
                             'class' => 'btn btn-primary col-xs-12',

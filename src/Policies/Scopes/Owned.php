@@ -11,7 +11,7 @@ use Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization;
  * Owned resource permission scope.
  *
  * @author softworx <hello@softworx.digital>
- * @package Softworx\RocXolid\Admin
+ * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
 class Owned

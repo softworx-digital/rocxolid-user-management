@@ -2,13 +2,12 @@
 
 /**
  *--------------------------------------------------------------------------
- * General user management configuration.
+ * User class specific configuration.
  *--------------------------------------------------------------------------
  */
 return [
     /**
-     * View composers.
+     * User preferences class.
      */
-    'composers' => [
-    ]
+    'preferences' => null,
 ];

@@ -5,6 +5,7 @@ return [
         'name' => 'Názov',
         'guard' => 'Guard',
         'permissions' => 'Práva',
+        'is_exclusive' => 'Exkluzívna',
         'is_self_assignable' => 'Môže byť priradená samým sebou',
         'is_self_unassignable' => 'Môže byť odobraná samým sebou',
     ],
@@ -12,6 +13,7 @@ return [
         'name' => 'Názov',
         'guard' => 'Guard',
         'permissions' => 'Práva',
+        'is_exclusive' => 'Exkluzívna',
         'is_self_assignable' => 'Môže byť priradená samým sebou',
         'is_self_unassignable' => 'Môže byť odobraná samým sebou',
         'hint' => [

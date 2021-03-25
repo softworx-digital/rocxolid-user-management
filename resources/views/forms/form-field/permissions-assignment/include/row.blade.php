@@ -1,17 +1,20 @@
 <div class="row">
+@if (isset($attribute))
     <div class="col-md-3">
-    @if (isset($attribute))
         <p class="text-right margin-0">{{ $controller->translate(sprintf('field.%s', $attribute)) }}</p>
-    @else
-        <p class="margin-0">
-            {{ $controller->translate('model.title.singular') }}
-
-        @if (isset($attributes) && $attributes->isNotEmpty())
-            <a class="btn btn-default btn-xs pull-right margin-right-0 collapsed" data-toggle="collapse" href="{{ $component->getDomIdHash(Str::slug(get_class($controller))) }}">{{ $controller->translate('text.attributes') }} <span class="caret"></span></a>
-        @endif
-        </p>
-    @endif
     </div>
+@elseif (isset($attributes) && $attributes->isNotEmpty())
+    <div class="col-md-2">
+        <p class="margin-0"><span title="{{ get_class($controller) }}">{{ $controller->translate('model.title.singular') }}</span></p>
+    </div>
+    <div class="col-md-1">
+        <a class="btn btn-default btn-xs pull-right margin-right-0 collapsed" data-toggle="collapse" href="{{ $component->getDomIdHash(Str::slug(get_class($controller))) }}">{{ $controller->translate('text.attributes') }} <span class="caret"></span></a>
+    </div>
+@else
+    <div class="col-md-3">
+        <p class="margin-0"><span title="{{ get_class($controller) }}">{{ $controller->translate('model.title.singular') }}</span></p>
+    </div>
+@endif
     <div class="col-md-9">
         <div class="col-md-1">
             <div class="btn-group btn-group-xs" data-toggle="buttons" style="min-height: 22px;">
@@ -28,7 +31,7 @@
         <div class="col-md-1">
             <div class="dropdown">
                 <div class="btn-group btn-group-xs" data-toggle="buttons" style="min-height: 22px;">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                         {{ $controller->translate('text.more-permissions') }}
                         <span class="caret"></span>
                     </button>

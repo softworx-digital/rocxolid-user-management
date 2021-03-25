@@ -2,43 +2,47 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\CompanyProfile;
 
-// rocXolid form contracts
-use Softworx\RocXolid\Forms\Contracts\FormField;
+// rocXolid filters
+use Softworx\RocXolid\Filters\IsEnabled;
 // rocXolid forms
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
 // rocXolid form field types
-use Softworx\RocXolid\Forms\Fields\Type\Hidden;
-use Softworx\RocXolid\Forms\Fields\Type\Input;
-use Softworx\RocXolid\Forms\Fields\Type\Email;
-// rocXolid user management models
-use Softworx\RocXolid\UserManagement\Models\User;
+use Softworx\RocXolid\Forms\Fields\Type as FieldType;
+// app models
+use App\Models\EnumCompanyRegistrationCourt; // @todo this doesn't belong here
 
 class Create extends RocXolidAbstractCrudForm
 {
+    /**
+     * {@inheritDoc}
+     */
     protected $options = [
         'method' => 'POST',
         'route-action' => 'store',
         'class' => 'form-horizontal form-label-left',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $fields = [
         'relation' => [
-            'type' => Hidden::class,
+            'type' => FieldType\Hidden::class,
             'options' => [
                 'validation' => 'required',
             ],
         ],
         'model_attribute' => [
-            'type' => Hidden::class,
+            'type' => FieldType\Hidden::class,
             'options' => [
                 'validation' => 'required',
             ],
         ],
         'user_id' => [
-            'type' => Hidden::class,
+            'type' => FieldType\Hidden::class,
         ],
         'name' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'name',
@@ -52,7 +56,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'email' => [
-            'type' => Email::class,
+            'type' => FieldType\Email::class,
             'options' => [
                 'label' => [
                     'title' => 'email',
@@ -66,7 +70,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'company_registration_no' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'company_registration_no',
@@ -79,21 +83,59 @@ class Create extends RocXolidAbstractCrudForm
                 ],
             ],
         ],
+        'company_registration_court_id' => [
+            'type' => FieldType\CollectionSelect::class,
+            'options' => [
+                'label' => [
+                    'title' => 'company_registration_court_id',
+                ],
+                'collection' => [
+                    'model' => EnumCompanyRegistrationCourt::class,
+                    'column' => 'title',
+                    'filters' => [[ 'class' => IsEnabled::class, 'data' => true ]],
+                ],
+                'validation' => [
+                    'rules' => [
+                        'required',
+                        'exists:enum_company_registration_courts,id',
+                    ],
+                ],
+                'attributes' => [
+                    'placeholder' => 'select',
+                ],
+            ],
+        ],
+        'company_insertion_division' => [
+            'type' => FieldType\Input::class,
+            'options' => [
+                'label' => [
+                    'title' => 'company_insertion_division',
+                ],
+                'value' => 'Sro', // @todo make configurable
+                'validation' => [
+                    'rules' => [
+                        'required',
+                        'max:30',
+                    ],
+                ],
+            ],
+        ],
         'company_insertion_no' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'company_insertion_no',
                 ],
                 'validation' => [
                     'rules' => [
-                        'max:255',
+                        'required',
+                        'max:30',
                     ],
                 ],
             ],
         ],
         'tax_no' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'tax_no',
@@ -107,7 +149,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'vat_no' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'vat_no',
@@ -122,6 +164,9 @@ class Create extends RocXolidAbstractCrudForm
         ],
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected function adjustFieldsDefinition($fields)
     {
         $fields['user_id']['options']['value'] = $this->getInputFieldValue('user_id');

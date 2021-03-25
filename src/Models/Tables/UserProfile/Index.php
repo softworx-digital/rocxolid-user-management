@@ -1,12 +1,12 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Repositories\CompanyProfile;
+namespace Softworx\RocXolid\UserManagement\Models\Tables\UserProfile;
 
-use Softworx\RocXolid\Repositories\AbstractCrudRepository;
-use Softworx\RocXolid\Repositories\Columns\Type\Text;
-use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
+use Softworx\RocXolid\Tables\AbstractCrudTable;
+use Softworx\RocXolid\Tables\Columns\Type\Text;
+use Softworx\RocXolid\Tables\Columns\Type\ModelRelation;
 
-class Repository extends AbstractCrudRepository
+class Index extends AbstractCrudTable
 {
     protected $columns = [
         'name' => [

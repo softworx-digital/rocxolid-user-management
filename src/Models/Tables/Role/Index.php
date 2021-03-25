@@ -1,17 +1,18 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Repositories\Role;
+namespace Softworx\RocXolid\UserManagement\Models\Tables\Role;
 
-use Softworx\RocXolid\Repositories\AbstractCrudRepository;
-use Softworx\RocXolid\Repositories\Columns\Type\Text;
-use Softworx\RocXolid\Repositories\Columns\Type\Flag;
-use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
+// rocXolid tables & types
+use Softworx\RocXolid\Tables\AbstractCrudTable;
+use Softworx\RocXolid\Tables\Filters\Type as FilterType;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
+use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 
-class Repository extends AbstractCrudRepository
+class Index extends AbstractCrudTable
 {
     protected $columns = [
         'name' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'name'
@@ -23,8 +24,16 @@ class Repository extends AbstractCrudRepository
                 ],
             ],
         ],
+        'is_exclusive' => [
+            'type' => ColumnType\Flag::class,
+            'options' => [
+                'label' => [
+                    'title' => 'is_exclusive'
+                ],
+            ],
+        ],
         'is_self_assignable' => [
-            'type' => Flag::class,
+            'type' => ColumnType\Flag::class,
             'options' => [
                 'label' => [
                     'title' => 'is_self_assignable'
@@ -32,7 +41,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'is_self_unassignable' => [
-            'type' => Flag::class,
+            'type' => ColumnType\Flag::class,
             'options' => [
                 'label' => [
                     'title' => 'is_self_unassignable'

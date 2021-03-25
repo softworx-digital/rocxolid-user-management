@@ -2,24 +2,20 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\UserProfile;
 
-// rocXolid model scopes
-use Softworx\RocXolid\Models\Scopes\Owned as OwnedScope;
-// rocXolid form contracts
-use Softworx\RocXolid\Forms\Contracts\FormField;
-// rocXolid forms
+// rocXolid forms & fields
 use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-// rocXolid form field types
-use Softworx\RocXolid\Forms\Fields\Type\Hidden;
-use Softworx\RocXolid\Forms\Fields\Type\Input;
-use Softworx\RocXolid\Forms\Fields\Type\Select;
-use Softworx\RocXolid\Forms\Fields\Type\Datepicker;
-use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
+use Softworx\RocXolid\Forms\Fields\Type as FieldType;
 // rocXolid common models
 use Softworx\RocXolid\Common\Models\Language;
 use Softworx\RocXolid\Common\Models\Nationality;
-// rocXolid user management models
-use Softworx\RocXolid\UserManagement\Models\User;
 
+/**
+ * UserProfile data update form.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
 class Update extends RocXolidAbstractCrudForm
 {
     protected $options = [
@@ -30,19 +26,19 @@ class Update extends RocXolidAbstractCrudForm
 
     protected $fields = [
         'relation' => [
-            'type' => Hidden::class,
+            'type' => FieldType\Hidden::class,
             'options' => [
                 'validation' => 'required',
             ],
         ],
         'model_attribute' => [
-            'type' => Hidden::class,
+            'type' => FieldType\Hidden::class,
             'options' => [
                 'validation' => 'required',
             ],
         ],
         'legal_entity' => [
-            'type' => Select::class,
+            'type' => FieldType\Select::class,
             'options' => [
                 // 'choices' => ...adjusted
                 'label' => [
@@ -57,7 +53,7 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
         'first_name' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'first_name',
@@ -70,8 +66,22 @@ class Update extends RocXolidAbstractCrudForm
                 ],
             ],
         ],
+        'middle_name' => [
+            'type' => FieldType\Input::class,
+            'options' => [
+                'label' => [
+                    'title' => 'middle_name',
+                ],
+                'validation' => [
+                    'rules' => [
+                        'nullable',
+                        'max:255',
+                    ],
+                ],
+            ],
+        ],
         'last_name' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'last_name',
@@ -85,7 +95,7 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
         'nationality_id' => [
-            'type' => CollectionSelect::class,
+            'type' => FieldType\CollectionSelect::class,
             'options' => [
                 'label' => [
                     'title' => 'nationality',
@@ -93,7 +103,7 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
         'language_id' => [
-            'type' => CollectionSelect::class,
+            'type' => FieldType\CollectionSelect::class,
             'options' => [
                 'label' => [
                     'title' => 'language',
@@ -101,7 +111,7 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
         'birthdate' => [
-            'type' => Datepicker::class,
+            'type' => FieldType\Datepicker::class,
             'options' => [
                 'label' => [
                     'title' => 'birthdate',
@@ -118,7 +128,7 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
         'gender' => [
-            'type' => Select::class,
+            'type' => FieldType\Select::class,
             'options' => [
                 // 'choices' => ...adjusted
                 'label' => [
@@ -133,27 +143,57 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
         'bank_account_no' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'bank_account_no',
                 ],
                 'validation' => [
                     'rules' => [
-                        // 'required',
+                        'nullable',
+                        'max:255',
                     ],
                 ],
             ],
         ],
         'phone_no' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'phone_no',
                 ],
                 'validation' => [
                     'rules' => [
-                        // 'required',
+                        'nullable',
+                        'max:255',
+                    ],
+                ],
+            ],
+        ],
+        'id_card_no' => [
+            'type' => FieldType\Input::class,
+            'options' => [
+                'label' => [
+                    'title' => 'id_card_no',
+                ],
+                'validation' => [
+                    'rules' => [
+                        'nullable',
+                        'max:255',
+                    ],
+                ],
+            ],
+        ],
+        'passport_no' => [
+            'type' => FieldType\Input::class,
+            'options' => [
+                'label' => [
+                    'title' => 'passport_no',
+                ],
+                'validation' => [
+                    'rules' => [
+                        'nullable',
+                        'max:255',
                     ],
                 ],
             ],

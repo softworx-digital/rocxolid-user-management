@@ -2,7 +2,6 @@
 
 namespace Softworx\RocXolid\UserManagement\Services;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 // rocXolid scopes
 use Softworx\RocXolid\Models\Scopes\IsEnabled;
@@ -29,7 +28,7 @@ class PermissionLoaderService
 
     public function __construct()
     {
-        Permission::addGlobalScope(new IsEnabled);
+        Permission::addGlobalScope(app(IsEnabled::class));
     }
 
     /**

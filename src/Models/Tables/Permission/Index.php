@@ -1,18 +1,21 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Repositories\Permission;
+namespace Softworx\RocXolid\UserManagement\Models\Tables\Permission;
 
-use Softworx\RocXolid\Repositories\AbstractCrudRepository;
-use Softworx\RocXolid\Repositories\Columns\Type\Text;
-use Softworx\RocXolid\Repositories\Columns\Type\Flag;
-use Softworx\RocXolid\Repositories\Columns\Type\SwitchFlag;
-use Softworx\RocXolid\Repositories\Columns\Type\Method;
+// rocXolid tables & types
+use Softworx\RocXolid\Tables\AbstractCrudTable;
+use Softworx\RocXolid\Tables\Filters\Type as FilterType;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
+use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 
-class Repository extends AbstractCrudRepository
+/**
+ *
+ */
+class Index extends AbstractCrudTable
 {
     protected $columns = [
         'is_enabled' => [
-            'type' => SwitchFlag::class,
+            'type' => ColumnType\SwitchFlag::class,
             'options' => [
                 'label' => [
                     'title' => 'is_enabled'
@@ -20,7 +23,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'controller_class' => [
-            'type' => Method::class,
+            'type' => ColumnType\Method::class,
             'options' => [
                 'method' => 'getTitle',
                 'label' => [
@@ -34,7 +37,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'policy_ability_group' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'policy_ability_group'
@@ -47,7 +50,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'policy_ability' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'policy_ability'

@@ -2,8 +2,9 @@
 
 namespace Softworx\RocXolid\UserManagement\Policies;
 
-
 use Illuminate\Auth\Access\HandlesAuthorization;
+// rocXolid services
+use Softworx\RocXolid\Services\RouteService;
 // rocXolid utils
 use Softworx\RocXolid\Http\Requests\CrudRequest;
 // rocXolid traits
@@ -29,11 +30,13 @@ class CrudPolicy
 
     /**
      * @var bool Switch to turn debugging on / off.
+     * @todo config / env
      */
     protected $debug = false;
 
     /**
      * @var bool Switch to turn logging on / off.
+     * @todo config / env
      */
     protected $log = false;
 
@@ -50,13 +53,21 @@ class CrudPolicy
     /**
      * Constructor.
      *
-     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request
+     * @param \Softworx\RocXolid\Http\Requests\CrudRequest $request Incoming request.
      * @return \Softworx\RocXolid\UserManagement\Policies\CrudPolicy
      */
     public function __construct(CrudRequest $request)
     {
         $this->request = $request;
-        $this->controller = $request->route()->getController();
+
+        // @todo hotfixed
+        try {
+            $this->controller = $request->route()->getController();
+        } catch (\Exception $e) {
+            if (RouteService::isRocXolidMiddleware()) {
+                throw $e;
+            }
+        }
     }
 
     /**
@@ -68,14 +79,24 @@ class CrudPolicy
      */
     public function before(HasAuthorization $user, string $ability): ?bool
     {
-        if (!is_null($allow = $this->checkAllowRootAccess($user, $ability))) {
-            return $allow;
+        $this->log(sprintf('[!] >>>>> GENERIC ability [%s] CHECK', $ability));
+
+        if (!is_null($allowed = $this->checkAllowRootAccess($user, $ability))) {
+            $this->debug(sprintf('[!] <<<<< GENERIC ability [%s] CHECK RESULT', $ability), $allowed);
+            return $allowed;
+        } else {
+            $this->log(sprintf('[!] <<<<< GENERIC ability [%s] CHECK', $ability));
         }
+
+        $this->log(sprintf('[!!] >>>>> GENERIC RELATION ability [%s] CHECK', $ability));
 
         // the purpose of this is to handle authorization of model attributes when doing requests
         // the problem is that authorizeResource() doesn't take attribute into consideration
-        if (!is_null($allow = $this->checkAllowRelation($user, $ability))) {
-            return $allow;
+        if (!is_null($allowed = $this->checkAllowRelation($user, $ability))) {
+            $this->debug(sprintf('[!!] <<<<< GENERIC RELATION ability [%s] CHECK RESULT', $ability), $allowed);
+            return $allowed;
+        } else {
+            $this->log(sprintf('[!!] <<<<< GENERIC RELATION ability [%s] CHECK', $ability));
         }
 
         return null;
@@ -86,12 +107,11 @@ class CrudPolicy
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param string $model_class
-     * @param string $forced_scope_type
      * @return bool
      */
     public function viewAny(HasAuthorization $user, ?string $model_class = null): bool
     {
-        $model_class = $model_class ?? $this->controller->getModelClass();
+        $model_class = $model_class ?? $this->controller->getModelType();
 
         return $this->checkPermissions($user, 'viewAny', $model_class);
     }
@@ -101,7 +121,6 @@ class CrudPolicy
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $forced_scope_type
      * @return bool
      */
     public function viewAnyAll(HasAuthorization $user, Crudable $model): bool
@@ -110,11 +129,22 @@ class CrudPolicy
     }
 
     /**
+     * Determine whether the user can view owned resources.
+     *
+     * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
+     * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
+     * @return bool
+     */
+    public function viewAnyOwned(HasAuthorization $user, Crudable $model): bool
+    {
+        return $this->checkPermissions($user, 'viewAny', get_class($model), $model, 'policy.scope.owned');
+    }
+
+    /**
      * Shorthand for view any.
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $forced_scope_type
      * @return bool
      */
     public function backAny(HasAuthorization $user, Crudable $model): bool
@@ -127,7 +157,8 @@ class CrudPolicy
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $forced_scope_type
+     * @param string|null $attribute
+     * @param string|null $forced_scope_type
      * @return bool
      */
     public function view(HasAuthorization $user, Crudable $model, ?string $attribute = null, ?string $forced_scope_type = null): bool
@@ -143,8 +174,8 @@ class CrudPolicy
      * Determine whether the user can create resource.
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
-     * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $attribute
+     * @param \Softworx\RocXolid\Models\Contracts\Crudable|null $model
+     * @param string|null $attribute
      * @return bool
      */
     public function create(HasAuthorization $user, ?Crudable $model = null, ?string $attribute = null): bool
@@ -153,7 +184,7 @@ class CrudPolicy
             return $this->checkAttributePermissions($user, 'create', $model, $attribute);
         }
 
-        $model_class = $model ? get_class($model) : $this->controller->getModelClass();
+        $model_class = $model ? get_class($model) : $this->controller->getModelType();
 
         return $this->checkPermissions($user, 'create', $model_class);
     }
@@ -163,7 +194,7 @@ class CrudPolicy
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $attribute
+     * @param string|null $attribute
      * @return bool
      */
     public function update(HasAuthorization $user, Crudable $model, ?string $attribute = null): bool
@@ -180,7 +211,7 @@ class CrudPolicy
      *
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $attribute
+     * @param string|null $attribute
      * @return bool
      */
     public function delete(HasAuthorization $user, Crudable $model, ?string $attribute = null): bool
@@ -211,16 +242,16 @@ class CrudPolicy
      * @param \Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization $user
      * @param string $ability
      * @param string $model_class
-     * @param \Softworx\RocXolid\Models\Contracts\Crudable $model
-     * @param string $forced_scope_type
+     * @param \Softworx\RocXolid\Models\Contracts\Crudable|null $model
+     * @param string|null $forced_scope_type
      * @return bool
      */
     protected function checkPermissions(HasAuthorization $user, string $ability, string $model_class, ?Crudable $model = null, ?string $forced_scope_type = null): bool
     {
         if ($model) {
-            $message = sprintf('Checking permission for user [%s], ability [%s], model [%s]:[%s], scope type [%s]', $user->getKey(), $ability, get_class($model), $model->getKey(), $forced_scope_type);
+            $message = sprintf('Checking permission for user [%s], ability [%s], model [%s]:[%s], forced scope type [%s]', $user->getKey(), $ability, get_class($model), $model->getKey(), $forced_scope_type);
         } else {
-            $message = sprintf('Checking permission for user [%s], ability [%s], model [%s], scope type [%s]', $user->getKey(), $ability, $model_class, $forced_scope_type);
+            $message = sprintf('Checking permission for user [%s], ability [%s], model [%s], forced scope type [%s]', $user->getKey(), $ability, $model_class, $forced_scope_type);
         }
 
         $allowed = ($permission = $user->getPermissionFor($ability, $model_class))
@@ -243,8 +274,12 @@ class CrudPolicy
     protected function checkAttributePermissions(HasAuthorization $user, string $ability, Crudable $model, string $attribute): bool
     {
         $message = sprintf('Checking permission for user [%s], ability [%s], model [%s]:[%s], attribute [%s]', $user->getKey(), $ability, get_class($model), $model->getKey(), $attribute);
-
-        $allowed = filled($user->getPermissionFor($ability, get_class($model), $attribute));
+        // a workaroud if checking permissions for buttons, etc. when the request is not for related but for parent
+        $allowed_model = $model->exists ? $this->checkPermissions($user, 'view', get_class($model), $model) : true;
+// $allowed_model_attribute = filled($user->getPermissionFor($ability, get_class($model), $attribute));
+        $allowed = $allowed_model && filled($user->getPermissionFor($ability, get_class($model), $attribute));
+// dump(sprintf("(model) (%s) of [%s][%s] > %s", 'view', get_class($model), $model->getKey(), $allowed_model ? 'allowed' : 'forbidden'));
+// dump(sprintf("(%s) (%s) > %s", $attribute, $ability, $allowed_model_attribute ? 'allowed' : 'forbidden'));
 
         $this->debug($message, $allowed);
 
@@ -256,9 +291,10 @@ class CrudPolicy
      *
      * @param string $message
      * @param string $allowed
+     * @param int $depth
      * @return \Softworx\RocXolid\UserManagement\Policies\CrudPolicy
      */
-    private function debug(string $message, string $allowed, $depth = 20): CrudPolicy
+    protected function debug(string $message, string $allowed, int $depth = 20): CrudPolicy
     {
         if ($this->debug) {
             debug(sprintf('%s %s', ($allowed ? '✅' : '❌'), $message));
@@ -270,7 +306,7 @@ class CrudPolicy
             }
         }
 
-        $this->log(sprintf('%s: %s', $message, ($allowed ? '✅' : '❌')));
+        $this->log(sprintf('[%s] %s: %s', get_class($this), $message, ($allowed ? '✅' : '❌')));
 
         return $this;
     }

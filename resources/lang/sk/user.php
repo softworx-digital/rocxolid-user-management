@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'filter' => [
+        'name' => 'Meno',
+        'email' => 'e-mail',
+    ],
     'column' => [
         'image' => '<i class="fa fa-image"></i>',
         'name' => 'Meno',
@@ -49,6 +53,9 @@ return [
         'created_at' => 'Čas vytvorenia',
         'resetPasswordUrl' => 'URL pre reset hesla (aplikovateľné iba pri resete hesla)',
     ],
+    'tab' => [
+        'preferences' => 'Preferencie'
+    ],
     'activity' => [
         'time' => 'Čas',
         'ip' => 'IP',
@@ -61,8 +68,10 @@ return [
     ],
     'model' => [
         'title' => [
-            'singular' => 'Používateľ administrácie',
-            'plural' => 'Používatelia administrácie',
+            // 'singular' => 'Používateľ administrácie',
+            // 'plural' => 'Používatelia administrácie',
+            'singular' => 'Používateľ',
+            'plural' => 'Používatelia',
         ],
     ],
     'text' => [
@@ -71,5 +80,22 @@ return [
         'activity-data' => 'Aktivita',
         'profile-data' => 'Osobné údaje',
         'profile-data-unavailable' => 'Osobné údaje ešte nie sú vyplnené',
+        //
+        'phone_no' => 'telefón',
+        'email' => 'email',
+        'company_registration_no' => 'IČO',
+        'company_registration_court' => 'zapísaný okr. súdom',
+        'company_insertion_division' => 'oddiel',
+        'company_insertion_no' => 'vložka č.',
+        //
+        'role-exclusive' => 'Role [:role] sú exkluzívne a nie je možné používateľovi priradiť ďalšie.',
+        //
+        'salutation' => [
+            'natural' => [
+                'f' => 'Vážená pani :name',
+                'm' => 'Vážený pán :name',
+            ],
+            'juridical' => 'Vážený obchodný partner :name',
+        ],
     ],
 ];

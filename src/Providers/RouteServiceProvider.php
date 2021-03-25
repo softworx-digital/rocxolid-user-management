@@ -4,6 +4,7 @@ namespace Softworx\RocXolid\UserManagement\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+// rocXolid services
 use Softworx\RocXolid\Services\CrudRouterService;
 
 /**
@@ -32,7 +33,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
     /**
      * Define the routes for the package.
      *
-     * @param  \Illuminate\Routing\Router $router Router to be used for routing.
+     * @param \Illuminate\Routing\Router $router Router to be used for routing.
      * @return \Illuminate\Support\ServiceProvider
      */
     private function load(Router $router): IlluminateServiceProvider
@@ -51,6 +52,14 @@ class RouteServiceProvider extends IlluminateServiceProvider
             CrudRouterService::create('role', \Role\Controller::class);
 
             $router->group([
+                'namespace' => 'User',
+                'prefix' => 'user',
+                'as' => 'user.'
+            ], function (Router $router) {
+                $router->get('/{user}/{tab?}', 'Controller@show')->name('show');
+            });
+
+            $router->group([
                 'namespace' => 'Permission',
                 'prefix' => 'permission',
                 'as' => 'permission.',
@@ -67,7 +76,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
     /**
      * Define the route bindings for URL params.
      *
-     * @param  \Illuminate\Routing\Router $router Router to be used for routing.
+     * @param \Illuminate\Routing\Router $router Router to be used for routing.
      * @return \Illuminate\Support\ServiceProvider
      */
     private function mapRouteModels(Router $router): IlluminateServiceProvider

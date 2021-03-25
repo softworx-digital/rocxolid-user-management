@@ -1,24 +1,25 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Repositories\User;
+namespace Softworx\RocXolid\UserManagement\Models\Tables\User;
 
-use Softworx\RocXolid\Repositories\AbstractCrudRepository;
-// rocXolid filters
-use Softworx\RocXolid\Repositories\Filters\Type\Text as TextFilter;
-// use Softworx\RocXolid\Repositories\Filters\Type\ModelRelation as ModelRelationFilter;
-// rocXolid columns
-use Softworx\RocXolid\Repositories\Columns\Type\Text;
-use Softworx\RocXolid\Repositories\Columns\Type\Method;
-use Softworx\RocXolid\Repositories\Columns\Type\ImageRelation;
-use Softworx\RocXolid\Repositories\Columns\Type\ModelRelation;
-// rocXolid user management columns
-use Softworx\RocXolid\UserManagement\Repositories\User\Columns\Type\IsOnline;
+// rocXolid tables & types
+use Softworx\RocXolid\Tables\AbstractCrudTable;
+use Softworx\RocXolid\Tables\Filters\Type as FilterType;
+use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
+use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 
-class Repository extends AbstractCrudRepository
+/**
+ * Default user model table.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
+class Index extends AbstractCrudTable
 {
     protected $filters = [
         'name' => [
-            'type' => TextFilter::class,
+            'type' => FilterType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'name'
@@ -29,7 +30,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'email' => [
-            'type' => TextFilter::class,
+            'type' => FilterType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'email'
@@ -43,7 +44,7 @@ class Repository extends AbstractCrudRepository
 
     protected $columns = [
         'image' => [
-            'type' => ImageRelation::class,
+            'type' => ColumnType\ImageRelation::class,
             'options' => [
                 'label' => [
                     'title' => 'image'
@@ -61,7 +62,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'status' => [
-            'type' => IsOnline::class,
+            'type' => Columns\Type\IsOnline::class,
             'options' => [
                 'label' => [
                     'title' => 'status'
@@ -74,8 +75,9 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'name' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
+                'orderable' => true,
                 'label' => [
                     'title' => 'name'
                 ],
@@ -87,7 +89,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'email' => [
-            'type' => Text::class,
+            'type' => ColumnType\Text::class,
             'options' => [
                 'label' => [
                     'title' => 'email'
@@ -100,7 +102,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],/*
         'language' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -118,7 +120,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],
         'last_action' => [
-            'type' => Method::class,
+            'type' => ColumnType\Method::class,
             'options' => [
                 'label' => [
                     'title' => 'last_action'
@@ -133,7 +135,7 @@ class Repository extends AbstractCrudRepository
         ],
         *//*
         'days_first_login' => [
-            'type' => Method::class,
+            'type' => ColumnType\Method::class,
             'options' => [
                 'label' => [
                     'title' => 'days_first_login'
@@ -147,7 +149,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],*//*
         'groups' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [
@@ -160,8 +162,9 @@ class Repository extends AbstractCrudRepository
             ],
         ],*/
         'roles' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
+                'ajax' => true,
                 'label' => [
                     'title' => 'roles'
                 ],
@@ -172,7 +175,7 @@ class Repository extends AbstractCrudRepository
             ],
         ],/*
         'permissions' => [
-            'type' => ModelRelation::class,
+            'type' => ColumnType\ModelRelation::class,
             'options' => [
                 'ajax' => true,
                 'label' => [

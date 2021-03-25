@@ -1,8 +1,8 @@
 <?php
 
-namespace Softworx\RocXolid\UserManagement\Repositories\User\Columns\Type;
+namespace Softworx\RocXolid\UserManagement\Models\Tables\User\Columns\Type;
 
-use Softworx\RocXolid\Repositories\Columns\AbstractColumn;
+use Softworx\RocXolid\Tables\Columns\AbstractColumn;
 
 class IsOnline extends AbstractColumn
 {

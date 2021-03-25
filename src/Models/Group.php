@@ -5,11 +5,11 @@ namespace Softworx\RocXolid\UserManagement\Models;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 // rocXolid fundamentals
 use Softworx\RocXolid\Models\AbstractCrudModel;
-// commerce models
+// rocXolid commerce models
 use Softworx\RocXolid\Common\Models\Web;
-// commerce scopes
+// rocXolid commerce scopes
 use Softworx\RocXolid\Common\Models\Scopes\UserGroupAssociating;
-// user management models
+// rocXolid user management models
 use Softworx\RocXolid\UserManagement\Models\User;
 use Softworx\RocXolid\UserManagement\Models\Traits\HasPermissions;
 

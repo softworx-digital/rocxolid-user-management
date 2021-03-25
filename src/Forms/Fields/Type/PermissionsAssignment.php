@@ -2,7 +2,6 @@
 
 namespace Softworx\RocXolid\UserManagement\Forms\Fields\Type;
 
-use Log;
 // rocXolid contracts
 use Softworx\RocXolid\Contracts\Valueable;
 // rocXolid form fields
@@ -39,8 +38,7 @@ class PermissionsAssignment extends CollectionRadioList
 
     public function getPermissionPivotFieldName(Permission $permission, string $attribute, int $index = 0): string
     {
-        // @todo: awkward
-        $relation = $this->getForm()->getController()->getModel()->{$this->name}();
+        $relation = $this->getForm()->getModel()->{$this->name}();
 
         if ($this->isArray()) {
             return sprintf('%s[%s][%s][%s][%s][%s]', self::ARRAY_DATA_PARAM, $index, $this->name, $relation->getPivotAccessor(), $permission->getKey(), $attribute);
@@ -49,13 +47,12 @@ class PermissionsAssignment extends CollectionRadioList
         }
     }
 
-    // @todo: refactor - put into some more general formfield
+    // @todo refactor - put into some more general formfield
     public function setValue($data, int $index = 0): Valueable
     {
         $value = $data;
 
-        // @todo: awkward
-        $relation = $this->getForm()->getController()->getModel()->{$this->name}();
+        $relation = $this->getForm()->getModel()->{$this->name}();
         $related = $relation->getRelated();
 
         // coming from submitted data
@@ -76,7 +73,7 @@ class PermissionsAssignment extends CollectionRadioList
                     $pivot_data = collect($data[$relation->getPivotAccessor()] ?? [])->get($related_key);
 
                     $this->addNewPivot($relation, [
-                        $relation->getForeignPivotKeyName() => $this->getForm()->getController()->getModel()->getKey(),
+                        $relation->getForeignPivotKeyName() => $this->getForm()->getModel()->getKey(),
                         $relation->getRelatedPivotKeyName() => $related_key,
                     ] + ($pivot_data ?? []));
                 }

@@ -2,7 +2,6 @@
 
 namespace Softworx\RocXolid\UserManagement\Providers;
 
-use App;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 // rocXolid user management services
 use Softworx\RocXolid\UserManagement\Services\PermissionLoaderService;
@@ -23,7 +22,7 @@ class FacadeServiceProvider extends IlluminateServiceProvider
      */
     public function register(): IlluminateServiceProvider
     {
-        $this->app->bind('permission.loader', function () {
+        $this->app->singleton('permission.loader', function () {
             return $this->app->make(PermissionLoaderService::class);
         });
 

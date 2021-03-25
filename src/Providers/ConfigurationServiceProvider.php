@@ -18,14 +18,15 @@ class ConfigurationServiceProvider extends IlluminateServiceProvider
      */
     protected $config_files = [
         'rocXolid.user-management.general' => '/../../config/general.php',
+        'rocXolid.user-management.user' => '/../../config/user.php',
     ];
 
     /**
-     * Boot configuration.
+     * Register configuration provider for rocXolid User Management package.
      *
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function boot()
+    public function register(): IlluminateServiceProvider
     {
         $this
             ->configure();

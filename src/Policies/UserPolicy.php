@@ -34,13 +34,41 @@ class UserPolicy extends CrudPolicy
     /**
      * {@inheritDoc}
      */
+    public function view(HasAuthorization $user, Crudable $model, ?string $attribute = null, ?string $forced_scope_type = null): bool
+    {
+        if ($model->isRoot() && !$user->isRoot()) {
+            return false;
+        }
+
+        return parent::view($user, $model, $attribute, $forced_scope_type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function update(HasAuthorization $user, Crudable $model, ?string $attribute = null): bool
+    {
+        if ($model->isRoot() && !$user->isRoot()) {
+            return false;
+        }
+
+        return parent::update($user, $model, $attribute);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function delete(HasAuthorization $user, Crudable $model, ?string $attribute = null): bool
     {
         if (!config('rocXolid.admin.auth.check_permissions_root', false) && $user->isRoot()) {
-            return !$user->is($model);
+            return !is_null($attribute) || !$user->is($model);
         }
 
-        return parent::delete($user, $model) && (!$user->isAdmin() || !$user->is($model));
+        // return parent::delete($user, $model) && (!$user->isAdmin() || !$user->is($model)); // allow self deletion
+        // return parent::delete($user, $model) && !$user->is($model);
+        return parent::delete($user, $model) // has permission to delete users in general
+            && !$user->is($model) // @todo hotfixed - user cannot delete self
+            && !$model->isAdmin(); // @todo hotfixed - user cannot delete other admins
     }
 
     /**

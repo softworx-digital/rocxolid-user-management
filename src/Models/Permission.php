@@ -13,14 +13,25 @@ use Softworx\RocXolid\Models\AbstractCrudModel;
 use Softworx\RocXolid\UserManagement\Models\Role;
 use Softworx\RocXolid\UserManagement\Models\user;
 
+/**
+ * Permission model.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
 class Permission extends AbstractCrudModel
 {
-    protected static $can_be_deleted = true;
-
+    /**
+     * {@inheritDoc}
+     */
     protected $hidden = [
         'id',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $fillable = [
         'is_enabled',
         'name',
@@ -34,8 +45,14 @@ class Permission extends AbstractCrudModel
         'scopes',
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $extra = [];
 
+    /**
+     * {@inheritDoc}
+     */
     protected $system = [
         'guard',
         'package',
@@ -53,11 +70,17 @@ class Permission extends AbstractCrudModel
         'deleted_by',
     ];
 
+    /**
+     * @todo Laravel 7
+     */
     protected $casts = [
         'scopes' => 'array'
     ];
 
-    public function getTitle()
+    /**
+     * {@inheritDoc}
+     */
+    public function getTitle(): string
     {
         return $this->name;
         /*

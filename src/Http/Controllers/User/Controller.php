@@ -2,24 +2,34 @@
 
 namespace Softworx\RocXolid\UserManagement\Http\Controllers\User;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-//
+// rocXolid http requests
 use Softworx\RocXolid\Http\Requests\CrudRequest;
-use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
+// rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
-use Softworx\RocXolid\Repositories\Contracts\Repository as RepositoryContract;
-use Softworx\RocXolid\Components\ModelViewers\CrudModelViewer as CrudModelViewerComponent;
-use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
-use Softworx\RocXolid\UserManagement\Models\User;
-use Softworx\RocXolid\UserManagement\Repositories\User\Repository;
+// rocXolid form contracts
+use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
+// rocXolid user management components
 use Softworx\RocXolid\UserManagement\Components\ModelViewers\UserViewer;
+// rocXolid user management controllers
+use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
 
+/**
+ * User controller.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
 class Controller extends AbstractCrudController
 {
-    protected static $model_class = User::class;
+    /**
+     * {@inheritDoc}
+     */
+    protected static $model_viewer_type = UserViewer::class;
 
-    protected static $repository_class = Repository::class;
-
+    /**
+     * {@inheritDoc}
+     */
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',
@@ -31,28 +41,20 @@ class Controller extends AbstractCrudController
         'update.authorization-data' => 'update-authorization',
     ];
 
-    public function getModelViewerComponent(CrudableModel $model): CrudModelViewerComponent
+    /**
+     * {@inheritDoc}
+     */
+    protected function successAjaxResponse(CrudRequest $request, CrudableModel $model, AbstractCrudForm $form): array
     {
-        return UserViewer::build($this, $this)
-            ->setModel($model)
-            ->setController($this);
-    }
+        $model_viewer_component = $model->getModelViewerComponent();
 
-    protected function successResponse(CrudRequest $request, RepositoryContract $repository, AbstractCrudForm $form, CrudableModel $model, string $action)
-    {
-        if ($request->ajax() && $request->has('_section')) {
-            $user_model_viewer_component = $model->getModelViewerComponent();
+        $template_name = sprintf('include.%s', $request->_section);
 
-            $template_name = sprintf('include.%s', $request->_section);
-
-            return $this->response
-                ->notifySuccess($user_model_viewer_component->translate('text.updated'))
-                ->replace($user_model_viewer_component->getDomId('header-panel'), $user_model_viewer_component->fetch('include.header-panel'))
-                ->replace($user_model_viewer_component->getDomId($request->_section), $user_model_viewer_component->fetch($template_name))
-                ->modalClose($user_model_viewer_component->getDomId(sprintf('modal-%s', $action)))
-                ->get();
-        } else {
-            return parent::successResponse($request, $repository, $form, $model, $action);
-        }
+        return $this->response
+            ->notifySuccess($model_viewer_component->translate('text.updated'))
+            ->replace($model_viewer_component->getDomId('header-panel'), $model_viewer_component->fetch('include.header-panel'))
+            ->replace($model_viewer_component->getDomId($request->_section), $model_viewer_component->fetch($template_name))
+            ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam())))
+            ->get();
     }
 }

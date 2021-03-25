@@ -92,9 +92,8 @@ class Update extends RocXolidAbstractCrudForm
 
     protected function adjustFieldsDefinition($fields)
     {
-        // @todo: hotfix
+        // @todo hotfix
         return [];
-
 
         $rule = Rule::unique('users', 'email')
             ->ignore($this->getModel()->getKey());

@@ -128,6 +128,20 @@ class User extends Authenticatable implements
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function onUpdateAfterSave(Collection $data): rxContracts\Crudable
+    {
+        if ($this->wasChanged('email') && $this->profile) {
+            $this->profile->update([
+                'email' => $this->email,
+            ]);
+        }
+
+        return $this;
+    }
+
+    /**
      * Check if user is Root.
      *
      * @return bool

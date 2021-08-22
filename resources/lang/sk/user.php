@@ -68,8 +68,6 @@ return [
     ],
     'model' => [
         'title' => [
-            // 'singular' => 'Používateľ administrácie',
-            // 'plural' => 'Používatelia administrácie',
             'singular' => 'Používateľ',
             'plural' => 'Používatelia',
         ],

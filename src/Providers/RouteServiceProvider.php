@@ -39,7 +39,7 @@ class RouteServiceProvider extends IlluminateServiceProvider
     private function load(Router $router): IlluminateServiceProvider
     {
         $router->group([
-            'module' => 'rocXolid-user-management',
+            'module' => 'rocXolid:user-management',
             'middleware' => [ 'web', 'rocXolid.auth' ],
             'namespace' => 'Softworx\RocXolid\UserManagement\Http\Controllers',
             'prefix' => sprintf('%s/user-management', config('rocXolid.admin.general.routes.root', 'rocXolid')),

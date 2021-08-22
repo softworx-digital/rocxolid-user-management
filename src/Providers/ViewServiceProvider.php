@@ -4,6 +4,8 @@ namespace Softworx\RocXolid\UserManagement\Providers;
 
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+// rocXolid user management package provider
+use Softworx\RocXolid\UserManagement\ServiceProvider as PackageServiceProvider;
 
 /**
  * rocXolid views & composers service provider.
@@ -33,12 +35,12 @@ class ViewServiceProvider extends IlluminateServiceProvider
      *
      * @return \Illuminate\Support\ServiceProvider
      */
-    private function load()
+    private function load(): IlluminateServiceProvider
     {
         // customized views preference
-        $this->loadViewsFrom(resource_path('views/vendor/softworx/rocXolid/user-management'), 'rocXolid:user-management');
+        $this->loadViewsFrom(PackageServiceProvider::viewsPublishPath(), 'rocXolid:user-management');
         // pre-defined views fallback
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'rocXolid:user-management');
+        $this->loadViewsFrom(PackageServiceProvider::viewsSourcePath(dirname(dirname(__DIR__))), 'rocXolid:user-management');
 
         return $this;
     }

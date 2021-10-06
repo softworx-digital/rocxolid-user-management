@@ -115,8 +115,6 @@ class User extends Authenticatable implements
 
     public $password_reset_token;
 
-    protected $extra = [];
-
     /**
      * {@inheritDoc}
      */

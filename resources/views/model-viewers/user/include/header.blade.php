@@ -1,4 +1,4 @@
-<div id="{{ $component->getDomId('header-panel') }}" class="x_title">
+<div id="{{ $component->getDomId('header-panel') }}" class="x_title no-border">
     <div class="row">
     @if ($component->getModel()->exists)
         <div class="col-md-8 col-xs-12">

@@ -2,8 +2,16 @@
 
 namespace Softworx\RocXolid\UserManagement\Policies\Traits;
 
-use Illuminate\Contracts\Auth\Access\Authorizable;
+// rocXolid user management contracts
+use Softworx\RocXolid\UserManagement\Models\Contracts\HasAuthorization;
 
+/**
+ * Trait to allow access to all abilities for a root user.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
 trait AllowRootAccess
 {
     /**
@@ -13,7 +21,7 @@ trait AllowRootAccess
      * @param string $ability
      * @return bool|void
      */
-    public function checkAllowRootAccess(Authorizable $user, string $ability): ?bool
+    public function checkAllowRootAccess(HasAuthorization $user, string $ability): ?bool
     {
         if (!config('rocXolid.admin.auth.check_permissions_root', false) && $user->isRoot()) {
             return true;

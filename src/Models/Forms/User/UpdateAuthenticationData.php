@@ -3,20 +3,22 @@
 namespace Softworx\RocXolid\UserManagement\Models\Forms\User;
 
 use Illuminate\Support\Collection;
-// rocXolid forms
-use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-// rocXolid form field types
+// rocXolid forms & related
+use Softworx\RocXolid\Forms\AbstractCrudUpdateForm;
 use Softworx\RocXolid\Forms\Fields\Type as FieldType;
 
-class UpdateAuthentication extends RocXolidAbstractCrudForm
+/**
+ * User model authentication data update form.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
+class UpdateAuthenticationData extends AbstractCrudUpdateForm
 {
-    protected $options = [
-        'method' => 'POST',
-        'route-action' => 'update',
-        'class' => 'form-horizontal form-label-left',
-        'section' => 'authentication-data',
-    ];
-
+    /**
+     * {@inheritDoc}
+     */
     protected $fields = [
         'email' => [
             'type' => FieldType\Email::class,
@@ -28,7 +30,6 @@ class UpdateAuthentication extends RocXolidAbstractCrudForm
                     'rules' => [
                         'required',
                         'email',
-                        // 'unique:users,email',
                     ],
                 ],
             ],
@@ -41,7 +42,6 @@ class UpdateAuthentication extends RocXolidAbstractCrudForm
                 ],
                 'validation' => [
                     'rules' => [
-                        // 'required',
                         'nullable',
                         'max:255',
                         'min:6',
@@ -81,6 +81,7 @@ class UpdateAuthentication extends RocXolidAbstractCrudForm
 
     /**
      * {@inheritDoc}
+     * @todo hotfixed to enable empty password if not changing, you can do better
      */
     public function getFormFieldsValues(): Collection
     {

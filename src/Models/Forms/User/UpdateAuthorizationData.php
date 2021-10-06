@@ -5,8 +5,8 @@ namespace Softworx\RocXolid\UserManagement\Models\Forms\User;
 use PermissionLoader;
 // rocXolid filters
 use Softworx\RocXolid\Filters;
-// rocXolid forms & fields
-use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+// rocXolid forms & related
+use Softworx\RocXolid\Forms\AbstractCrudUpdateForm;
 use Softworx\RocXolid\Forms\Fields\Type as FieldType;
 // rocXolid user management form fields
 use Softworx\RocXolid\UserManagement\Forms\Fields\Type\PermissionsAssignment;
@@ -15,19 +15,22 @@ use Softworx\RocXolid\UserManagement\Models\Group;
 use Softworx\RocXolid\UserManagement\Models\Role;
 use Softworx\RocXolid\UserManagement\Models\Permission;
 
-// @todo shitty as hell
-class UpdateAuthorization extends RocXolidAbstractCrudForm
+/**
+ * User model authorization data update form.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ * @todo ugly, revise & refactor
+ */
+class UpdateAuthorizationData extends AbstractCrudUpdateForm
 {
-    protected $options = [
-        'method' => 'POST',
-        'route-action' => 'update',
-        'class' => 'form-horizontal form-label-left',
-        'section' => 'authorization-data',
-    ];
-
+    /**
+     * {@inheritDoc}
+     */
     protected $fields = [/*
         'groups' => [
-            'type' => CollectionCheckbox::class,
+            'type' => FieldType\CollectionCheckbox::class,
             'options' => [
                 'label' => [
                     'title' => 'groups',
@@ -64,6 +67,9 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
         ],
     ];
 
+    /**
+     * {@inheritDoc}
+     */
     protected function adjustFieldsDefinition($fields)
     {
         // updating self
@@ -73,12 +79,7 @@ class UpdateAuthorization extends RocXolidAbstractCrudForm
                 ->where('is_self_unassignable', 0)
                 ->merge($user->getSelfNonAssignableRoles());
 
-            $fields['roles']['options']['collection']['filters'] = [
-                [
-                    'class' => Filters\Except::class,
-                    'data' => $except,
-                ],
-            ];
+            $fields['roles']['options']['collection']['filters'] = [[ 'class' => Filters\Except::class, 'data' => $except, ]];
         }
 
         /*

@@ -10,7 +10,7 @@
                 'related' => $component->getModel(),
             ]) !!}
         @endif
-            {!! $component->render('include.activity-data') !!}
+            {!! $component->render('panel.activity', [ 'param' => 'activity', 'class' => 'info' ]) !!}
         </div>
     </div>
     <div class="col-xl-5 col-md-4 col-xs-12">
@@ -34,8 +34,8 @@
         @else
             {!! $component->getModel()->address()->make()->getModelViewerComponent()->render('related.unavailable', [ 'attribute' => 'address', 'relation' => 'parent', 'related' => $component->getModel() ]) !!}
         @endif
-            {!! $component->render('include.authentication-data') !!}
-            {!! $component->render('include.authorization-data') !!}
+            {!! $component->render('panel.authentication', [ 'param' => 'data.authentication' ]) !!}
+            {!! $component->render('panel.authorization', [ 'param' => 'data.authorization' ]) !!}
         </div>
     </div>
 </div>

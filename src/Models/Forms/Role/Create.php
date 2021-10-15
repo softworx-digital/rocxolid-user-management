@@ -12,7 +12,7 @@ class Create extends RocXolidAbstractCrudForm
         'class' => 'form-horizontal form-label-left',
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         /*
         $fields = array_merge_recursive($fields, [

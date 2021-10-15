@@ -64,7 +64,7 @@ class UpdateAuthenticationData extends AbstractCrudUpdateForm
     /**
      * {@inheritDoc}
      */
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $user = auth('rocXolid')->user();
 

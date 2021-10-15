@@ -160,7 +160,7 @@ class Create extends AbstractCrudCreateForm
     /**
      * {@inheritDoc}
      */
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['user_id']['options']['value'] = $this->getInputFieldValue('user_id');
         $fields['relation']['options']['value'] = $this->getInputFieldValue('relation');

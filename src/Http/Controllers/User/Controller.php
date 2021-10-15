@@ -33,8 +33,10 @@ class Controller extends AbstractCrudController
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',
+        //
         'edit.panel:authentication.data.authentication' => 'update-authentication-data',
         'update.panel:authentication.data.authentication' => 'update-authentication-data',
+        //
         'edit.panel:authorization.data.authorization' => 'update-authorization-data',
         'update.panel:authorization.data.authorization' => 'update-authorization-data',
     ];

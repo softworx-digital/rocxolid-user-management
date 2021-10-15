@@ -142,7 +142,7 @@ class Registration extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         // language
         $fields['language_id']['options']['collection'] = Language::where('is_admin_available', 1)->pluck('name', 'id');

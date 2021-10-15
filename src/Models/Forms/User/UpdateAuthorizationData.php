@@ -70,7 +70,7 @@ class UpdateAuthorizationData extends AbstractCrudUpdateForm
     /**
      * {@inheritDoc}
      */
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         // updating self
         // @todo kinda "hotfixed"

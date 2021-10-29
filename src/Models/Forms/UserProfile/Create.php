@@ -2,53 +2,43 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\UserProfile;
 
-// rocXolid model scopes
-use Softworx\RocXolid\Models\Scopes\Owned as OwnedScope;
-// rocXolid form contracts
-use Softworx\RocXolid\Forms\Contracts\FormField;
-// rocXolid forms
-use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-// rocXolid form field types
-use Softworx\RocXolid\Forms\Fields\Type\Hidden;
-use Softworx\RocXolid\Forms\Fields\Type\Input;
-use Softworx\RocXolid\Forms\Fields\Type\Select;
-use Softworx\RocXolid\Forms\Fields\Type\Datepicker;
-use Softworx\RocXolid\Forms\Fields\Type\CollectionSelect;
-// rocXolid common models
-use Softworx\RocXolid\Common\Models\Language;
-use Softworx\RocXolid\Common\Models\Nationality;
-// rocXolid user management models
-use Softworx\RocXolid\UserManagement\Models\User;
+// rocXolid forms & related
+use Softworx\RocXolid\Forms\AbstractCrudCreateForm;
+use Softworx\RocXolid\Forms\Fields\Type as FieldType;
 
-class Create extends RocXolidAbstractCrudForm
+/**
+ * UserProfile model create form.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
+class Create extends AbstractCrudCreateForm
 {
-    protected $options = [
-        'method' => 'POST',
-        'route-action' => 'store',
-        'class' => 'form-horizontal form-label-left',
-    ];
-
+    /**
+     * {@inheritDoc}
+     */
     protected $fields = [
         'relation' => [
-            'type' => Hidden::class,
+            'type' => FieldType\Hidden::class,
             'options' => [
                 'validation' => 'required',
             ],
         ],
         'model_attribute' => [
-            'type' => Hidden::class,
+            'type' => FieldType\Hidden::class,
             'options' => [
                 'validation' => 'required',
             ],
         ],
         'user_id' => [
-            'type' => Hidden::class,
+            'type' => FieldType\Hidden::class,
             'options' => [
                 'validation' => 'required',
             ],
         ],
         'legal_entity' => [
-            'type' => Select::class,
+            'type' => FieldType\CollectionRadioList::class,
             'options' => [
                 // 'choices' => ...adjusted
                 'label' => [
@@ -63,7 +53,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'first_name' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'first_name',
@@ -77,7 +67,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'last_name' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'last_name',
@@ -91,7 +81,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'nationality_id' => [
-            'type' => CollectionSelect::class,
+            'type' => FieldType\CollectionSelect::class,
             'options' => [
                 'label' => [
                     'title' => 'nationality',
@@ -99,7 +89,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'language_id' => [
-            'type' => CollectionSelect::class,
+            'type' => FieldType\CollectionSelect::class,
             'options' => [
                 'label' => [
                     'title' => 'language',
@@ -107,7 +97,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'birthdate' => [
-            'type' => Datepicker::class,
+            'type' => FieldType\Datepicker::class,
             'options' => [
                 'label' => [
                     'title' => 'birthdate',
@@ -124,7 +114,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'gender' => [
-            'type' => Select::class,
+            'type' => FieldType\CollectionRadioList::class,
             'options' => [
                 // 'choices' => ...adjusted
                 'label' => [
@@ -139,7 +129,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'bank_account_no' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'bank_account_no',
@@ -152,7 +142,7 @@ class Create extends RocXolidAbstractCrudForm
             ],
         ],
         'phone_no' => [
-            'type' => Input::class,
+            'type' => FieldType\Input::class,
             'options' => [
                 'label' => [
                     'title' => 'phone_no',
@@ -166,24 +156,25 @@ class Create extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    /**
+     * {@inheritDoc}
+     */
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['user_id']['options']['value'] = $this->getInputFieldValue('user_id');
         $fields['relation']['options']['value'] = $this->getInputFieldValue('relation');
         $fields['model_attribute']['options']['value'] = $this->getInputFieldValue('model_attribute');
-
-        $fields['legal_entity']['options']['choices'] = [
-            'natural' => __('rocXolid:user-management::user-profile.choice.legal_entity.natural'),
-            'juridical' => __('rocXolid:user-management::user-profile.choice.legal_entity.juridical'),
-        ];
-
-        $fields['gender']['options']['choices'] = [
-            'm' => __('rocXolid:user-management::user-profile.choice.gender.m'),
-            'f' => __('rocXolid:user-management::user-profile.choice.gender.f'),
-        ];
-
-        $fields['nationality_id']['options']['collection'] = Nationality::pluck('name', 'id');
-        $fields['language_id']['options']['collection'] = Language::where('is_admin_available', 1)->pluck('name', 'id');
+        //
+        $fields['legal_entity']['options']['collection'] = collect([ 'natural', 'juridical' ])->mapWithKeys(function (string $choice) {
+            return [ $choice => $this->getController()->translate(sprintf('choice.legal_entity.%s', $choice)) ];
+        });
+        //
+        $fields['gender']['options']['collection'] = collect([ 'm', 'f' ])->mapWithKeys(function (string $choice) {
+            return [ $choice => $this->getController()->translate(sprintf('choice.gender.%s', $choice)) ];
+        });
+        //
+        $fields['nationality_id']['options']['collection'] = $this->getModel()->nationality()->getRelated()->pluck('name', 'id');
+        $fields['language_id']['options']['collection'] = $this->getModel()->language()->getRelated()->where('is_admin_available', 1)->pluck('name', 'id');
 
         return $fields;
     }

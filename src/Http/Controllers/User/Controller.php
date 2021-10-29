@@ -9,12 +9,12 @@ use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // rocXolid form contracts
 use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
 // rocXolid user management components
-use Softworx\RocXolid\UserManagement\Components\ModelViewers\UserViewer;
+use Softworx\RocXolid\UserManagement\Components\ModelViewers\User as UserViewer;
 // rocXolid user management controllers
 use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
 
 /**
- * User controller.
+ * User model controller.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\UserManagement
@@ -33,12 +33,12 @@ class Controller extends AbstractCrudController
     protected $form_mapping = [
         'create' => 'create',
         'store' => 'create',
-        'edit' => 'update',
-        'update' => 'update',
-        'edit.authentication-data' => 'update-authentication',
-        'update.authentication-data' => 'update-authentication',
-        'edit.authorization-data' => 'update-authorization',
-        'update.authorization-data' => 'update-authorization',
+        //
+        'edit.panel:authentication.data.authentication' => 'update-authentication-data',
+        'update.panel:authentication.data.authentication' => 'update-authentication-data',
+        //
+        'edit.panel:authorization.data.authorization' => 'update-authorization-data',
+        'update.panel:authorization.data.authorization' => 'update-authorization-data',
     ];
 
     /**
@@ -52,7 +52,7 @@ class Controller extends AbstractCrudController
 
         return $this->response
             ->notifySuccess($model_viewer_component->translate('text.updated'))
-            ->replace($model_viewer_component->getDomId('header-panel'), $model_viewer_component->fetch('include.header-panel'))
+            ->replace($model_viewer_component->getDomId('header-panel'), $model_viewer_component->fetch('include.header'))
             ->replace($model_viewer_component->getDomId($request->_section), $model_viewer_component->fetch($template_name))
             ->modalClose($model_viewer_component->getDomId(sprintf('modal-%s', $form->getParam())))
             ->get();

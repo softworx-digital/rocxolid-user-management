@@ -4,6 +4,8 @@ namespace Softworx\RocXolid\UserManagement\Models;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+// rocXolid utilities
+use Softworx\RocXolid\Casts;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid models
@@ -89,11 +91,11 @@ class UserProfile extends AbstractCrudModel
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    protected $enums = [
-        'gender',
-        'legal_entity',
+    protected $casts = [
+        'gender' => Casts\Enum::class,
+        'legal_entity' => Casts\Enum::class,
     ];
 
     /**

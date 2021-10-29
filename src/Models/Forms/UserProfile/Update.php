@@ -2,28 +2,22 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\UserProfile;
 
-// rocXolid forms & fields
-use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
+// rocXolid forms & related
+use Softworx\RocXolid\Forms\AbstractCrudUpdateForm;
 use Softworx\RocXolid\Forms\Fields\Type as FieldType;
-// rocXolid common models
-use Softworx\RocXolid\Common\Models\Language;
-use Softworx\RocXolid\Common\Models\Nationality;
 
 /**
- * UserProfile data update form.
+ * UserProfile model update form.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
-class Update extends RocXolidAbstractCrudForm
+class Update extends AbstractCrudUpdateForm
 {
-    protected $options = [
-        'method' => 'POST',
-        'route-action' => 'update',
-        'class' => 'form-horizontal form-label-left',
-    ];
-
+    /**
+     * {@inheritDoc}
+     */
     protected $fields = [
         'relation' => [
             'type' => FieldType\Hidden::class,
@@ -38,7 +32,7 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
         'legal_entity' => [
-            'type' => FieldType\Select::class,
+            'type' => FieldType\CollectionRadioList::class,
             'options' => [
                 // 'choices' => ...adjusted
                 'label' => [
@@ -128,7 +122,7 @@ class Update extends RocXolidAbstractCrudForm
             ],
         ],
         'gender' => [
-            'type' => FieldType\Select::class,
+            'type' => FieldType\CollectionRadioList::class,
             'options' => [
                 // 'choices' => ...adjusted
                 'label' => [
@@ -200,23 +194,24 @@ class Update extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    /**
+     * {@inheritDoc}
+     */
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['relation']['options']['value'] = $this->getInputFieldValue('relation');
         $fields['model_attribute']['options']['value'] = $this->getInputFieldValue('model_attribute');
-
-        $fields['legal_entity']['options']['choices'] = [
-            'natural' => __('rocXolid:user-management::user-profile.choice.legal_entity.natural'),
-            'juridical' => __('rocXolid:user-management::user-profile.choice.legal_entity.juridical'),
-        ];
-
-        $fields['gender']['options']['choices'] = [
-            'm' => __('rocXolid:user-management::user-profile.choice.gender.m'),
-            'f' => __('rocXolid:user-management::user-profile.choice.gender.f'),
-        ];
-
-        $fields['nationality_id']['options']['collection'] = Nationality::pluck('name', 'id');
-        $fields['language_id']['options']['collection'] = Language::where('is_admin_available', 1)->pluck('name', 'id');
+        //
+        $fields['legal_entity']['options']['collection'] = collect([ 'natural', 'juridical' ])->mapWithKeys(function (string $choice) {
+            return [ $choice => $this->getController()->translate(sprintf('choice.legal_entity.%s', $choice)) ];
+        });
+        //
+        $fields['gender']['options']['collection'] = collect([ 'm', 'f' ])->mapWithKeys(function (string $choice) {
+            return [ $choice => $this->getController()->translate(sprintf('choice.gender.%s', $choice)) ];
+        });
+        //
+        $fields['nationality_id']['options']['collection'] = $this->getModel()->nationality()->getRelated()->pluck('name', 'id');
+        $fields['language_id']['options']['collection'] = $this->getModel()->language()->getRelated()->where('is_admin_available', 1)->pluck('name', 'id');
 
         return $fields;
     }

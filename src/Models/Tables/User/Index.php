@@ -2,14 +2,14 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Tables\User;
 
-// rocXolid tables & types
+// rocXolid tables & related
 use Softworx\RocXolid\Tables\AbstractCrudTable;
 use Softworx\RocXolid\Tables\Filters\Type as FilterType;
 use Softworx\RocXolid\Tables\Columns\Type as ColumnType;
 use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
 
 /**
- * Default user model table.
+ * Default User model table.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\UserManagement
@@ -17,6 +17,9 @@ use Softworx\RocXolid\Tables\Buttons\Type as ButtonType;
  */
 class Index extends AbstractCrudTable
 {
+    /**
+     * @inheritDoc
+     */
     protected $filters = [
         'name' => [
             'type' => FilterType\Text::class,
@@ -42,6 +45,9 @@ class Index extends AbstractCrudTable
         ],
     ];
 
+    /**
+     * @inheritDoc
+     */
     protected $columns = [
         'image' => [
             'type' => ColumnType\ImageRelation::class,
@@ -118,7 +124,7 @@ class Index extends AbstractCrudTable
                     'column' => 'name',
                 ],
             ],
-        ],
+        ],*//*
         'last_action' => [
             'type' => ColumnType\Method::class,
             'options' => [
@@ -132,8 +138,7 @@ class Index extends AbstractCrudTable
                     ],
                 ],
             ],
-        ],
-        *//*
+        ],*//*
         'days_first_login' => [
             'type' => ColumnType\Method::class,
             'options' => [
@@ -172,6 +177,11 @@ class Index extends AbstractCrudTable
                     'name' => 'roles',
                     'column' => 'name',
                 ],
+                'wrapper' => [
+                    'attributes' => [
+                        'class' => 'text-center',
+                    ],
+                ],
             ],
         ],/*
         'permissions' => [
@@ -189,6 +199,9 @@ class Index extends AbstractCrudTable
         ],*/
     ];
 
+    /**
+     * @inheritDoc
+     */
     protected function getButtonsDefinition()
     {
         unset($this->buttons['show-modal']);

@@ -8,13 +8,11 @@ use Softworx\RocXolid\Http\Requests\CrudRequest;
 use Softworx\RocXolid\Models\Contracts\Crudable as CrudableModel;
 // rocXolid form contracts
 use Softworx\RocXolid\Forms\AbstractCrudForm as AbstractCrudForm;
-// rocXolid user management components
-use Softworx\RocXolid\UserManagement\Components\ModelViewers\CompanyProfileViewer;
 // rocXolid user management controllers
 use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
 
 /**
- * Company profile controller.
+ * CompanyProfile model controller.
  *
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\UserManagement
@@ -22,11 +20,6 @@ use Softworx\RocXolid\UserManagement\Http\Controllers\AbstractCrudController;
  */
 class Controller extends AbstractCrudController
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected static $model_viewer_type = CompanyProfileViewer::class;
-
     /**
      * {@inheritDoc}
      */

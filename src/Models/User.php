@@ -40,6 +40,7 @@ use Softworx\RocXolid\UserManagement\Models\Traits\ProtectsRoot;
  * @author softworx <hello@softworx.digital>
  * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
+ * @todo revise, refactor
  */
 class User extends Authenticatable implements
     rxContracts\Crudable,
@@ -114,14 +115,26 @@ class User extends Authenticatable implements
 
     public $password_reset_token;
 
-    protected $extra = [];
-
     /**
      * {@inheritDoc}
      */
     public function onCreateBeforeSave(Collection $data): rxContracts\Crudable
     {
         $this->api_token = Str::random(73);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function onUpdateAfterSave(Collection $data): rxContracts\Crudable
+    {
+        if ($this->wasChanged('email') && $this->profile) {
+            $this->profile->update([
+                'email' => $this->email,
+            ]);
+        }
 
         return $this;
     }
@@ -360,6 +373,7 @@ class User extends Authenticatable implements
      * Obtain formatted address label.
      *
      * @return string
+     * @todo doesn't belong here
      */
     public function getAddressLabel(): string
     {
@@ -401,6 +415,7 @@ class User extends Authenticatable implements
      * Obtain formatted address label for heading.
      *
      * @return string
+     * @todo doesn't belong here
      */
     public function getAddressLabelHeading(): string
     {
@@ -477,6 +492,7 @@ class User extends Authenticatable implements
      * Obtain User's salutation.
      *
      * @return string
+     * @todo doesn't belong here
      */
     public function salutation(): string
     {

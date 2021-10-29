@@ -15,9 +15,7 @@
     }],
 	"license": "MIT",
     "require": {
-		"php": "~7.2",
-        "laravel/framework": "^6.0|^8.0",
-        "dannyvankooten/laravel-vat": "^2.0.3",
+		"dannyvankooten/laravel-vat": "^2.0.3",
         "softworx/rocxolid-admin": "*",
         "softworx/rocxolid-common": "*"
 	},

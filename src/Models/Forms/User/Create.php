@@ -109,7 +109,7 @@ class Create extends RocXolidAbstractCrudForm
         ],*/
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['language_id']['options']['collection'] = Language::where('is_admin_available', 1)->pluck('name', 'id');
 

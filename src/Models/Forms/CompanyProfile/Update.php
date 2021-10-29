@@ -2,23 +2,22 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\CompanyProfile;
 
-// rocXolid filters
-use Softworx\RocXolid\Filters\IsEnabled;
-// rocXolid forms
-use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-// rocXolid form field types
+// rocXolid forms & related
+use Softworx\RocXolid\Forms\AbstractCrudUpdateForm;
 use Softworx\RocXolid\Forms\Fields\Type as FieldType;
-// app models
-use App\Models\EnumCompanyRegistrationCourt; // @todo this doesn't belong here
 
-class Update extends RocXolidAbstractCrudForm
+/**
+ * CompanyProfile model update form.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
+class Update extends AbstractCrudUpdateForm
 {
-    protected $options = [
-        'method' => 'POST',
-        'route-action' => 'update',
-        'class' => 'form-horizontal form-label-left',
-    ];
-
+    /**
+     * {@inheritDoc}
+     */
     protected $fields = [
         'relation' => [
             'type' => FieldType\Hidden::class,
@@ -73,7 +72,7 @@ class Update extends RocXolidAbstractCrudForm
                     ],
                 ],
             ],
-        ],
+        ],/*
         'company_registration_court_id' => [
             'type' => FieldType\CollectionSelect::class,
             'options' => [
@@ -95,7 +94,7 @@ class Update extends RocXolidAbstractCrudForm
                     'placeholder' => 'select',
                 ],
             ],
-        ],
+        ],*/
         'company_insertion_division' => [
             'type' => FieldType\Input::class,
             'options' => [
@@ -155,7 +154,10 @@ class Update extends RocXolidAbstractCrudForm
         ],
     ];
 
-    protected function adjustFieldsDefinition($fields)
+    /**
+     * {@inheritDoc}
+     */
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['relation']['options']['value'] = $this->getInputFieldValue('relation');
         $fields['model_attribute']['options']['value'] = $this->getInputFieldValue('model_attribute');

@@ -73,6 +73,7 @@ class CreateUserManagementTables extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('guard')->default('rocXolid');
+            $table->boolean('is_exclusive')->default(0);
             $table->boolean('is_self_assignable')->default(0);
             $table->boolean('is_self_unassignable')->default(0);
 
@@ -97,8 +98,7 @@ class CreateUserManagementTables extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('api_token', 80)->unique()->nullable()->default(null);
-            $table->apiToken();
+            $table->string('api_token', 80)->unique()->nullable();
             $table->rememberToken();
 
             $table->timestamps();

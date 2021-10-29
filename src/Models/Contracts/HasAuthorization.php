@@ -2,6 +2,7 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Contracts;
 
+use Illuminate\Contracts\Auth\Access\Authorizable;
 // rocXolid model contracts
 use Softworx\RocXolid\Models\Contracts\Crudable;
 // rocXolid user management model contracts
@@ -18,7 +19,7 @@ use Softworx\RocXolid\UserManagement\Models\Permission;
  * @package Softworx\RocXolid\UserManagement
  * @version 1.0.0
  */
-interface HasAuthorization extends HasRoles, HasPermissions, HasRolePermissions
+interface HasAuthorization extends Authorizable, HasRoles, HasPermissions, HasRolePermissions
 {
     /**
      * Get permission for given ability, model class and attribute.

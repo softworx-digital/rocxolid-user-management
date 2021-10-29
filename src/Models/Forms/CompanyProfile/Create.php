@@ -2,26 +2,19 @@
 
 namespace Softworx\RocXolid\UserManagement\Models\Forms\CompanyProfile;
 
-// rocXolid filters
-use Softworx\RocXolid\Filters\IsEnabled;
-// rocXolid forms
-use Softworx\RocXolid\Forms\AbstractCrudForm as RocXolidAbstractCrudForm;
-// rocXolid form field types
+// rocXolid forms & related
+use Softworx\RocXolid\Forms\AbstractCrudCreateForm;
 use Softworx\RocXolid\Forms\Fields\Type as FieldType;
-// app models
-use App\Models\EnumCompanyRegistrationCourt; // @todo this doesn't belong here
 
-class Create extends RocXolidAbstractCrudForm
+/**
+ * CompanyProfile model create form.
+ *
+ * @author softworx <hello@softworx.digital>
+ * @package Softworx\RocXolid\UserManagement
+ * @version 1.0.0
+ */
+class Create extends AbstractCrudCreateForm
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected $options = [
-        'method' => 'POST',
-        'route-action' => 'store',
-        'class' => 'form-horizontal form-label-left',
-    ];
-
     /**
      * {@inheritDoc}
      */
@@ -82,7 +75,7 @@ class Create extends RocXolidAbstractCrudForm
                     ],
                 ],
             ],
-        ],
+        ],/*
         'company_registration_court_id' => [
             'type' => FieldType\CollectionSelect::class,
             'options' => [
@@ -104,7 +97,7 @@ class Create extends RocXolidAbstractCrudForm
                     'placeholder' => 'select',
                 ],
             ],
-        ],
+        ],*/
         'company_insertion_division' => [
             'type' => FieldType\Input::class,
             'options' => [
@@ -167,7 +160,7 @@ class Create extends RocXolidAbstractCrudForm
     /**
      * {@inheritDoc}
      */
-    protected function adjustFieldsDefinition($fields)
+    protected function adjustFieldsDefinition(array $fields): array
     {
         $fields['user_id']['options']['value'] = $this->getInputFieldValue('user_id');
         $fields['relation']['options']['value'] = $this->getInputFieldValue('relation');

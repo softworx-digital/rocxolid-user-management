@@ -1,50 +1,35 @@
 <?php
 
 return [
-    'filter' => [
-        'name' => 'Meno',
-        'email' => 'e-mail',
+    'model' => [
+        'title' => [
+            'singular' => 'Používateľ',
+            'plural' => 'Používatelia',
+        ],
     ],
     'column' => [
-        'image' => '<i class="fa fa-image"></i>',
-        'name' => 'Meno',
-        'email' => 'e-mail',
-        'language' => 'Jazyk',
         'groups' => 'Skupiny používateľov',
         'roles' => 'Role používateľov',
         'permissions' => 'Práva',
         'extra_permissions' => 'Extra práva',
         'last_action' => 'Posledná aktivita',
-        'status' => 'Stav',
         'days_first_login' => 'Dnešné prvé prihlásenie',
         'activity' => [
-            'time' => 'Čas',
-            'ip' => 'IP',
-            'url' => 'URL',
             'status' => [
-                'heading' => 'Stav',
                 'online' => 'Online',
                 'offline' => 'Offline',
             ],
         ],
     ],
     'field' => [
-        'name' => 'Meno',
-        'email' => 'e-mail',
-        'password' => 'Heslo',
-        'password_confirmation' => 'Heslo - potvrdenie',
-        'remember_token' => 'Token pre zapamätanie prihlásenia',
-        'profile' => 'Profil',
-        'company' => 'Údaje o spoločnosti',
-        'language' => 'Jazyk',
+        // 'company' => 'Údaje o spoločnosti',
         'groups' => 'Skupiny používateľov',
         'roles' => 'Role používateľov',
         'permissions' => 'Práva',
         'extra_permissions' => 'Extra práva',
         'last_action' => 'Posledná aktivita',
-        'status' => 'Stav',
         'days_first_login' => 'Dnešné prvé prihlásenie',
-        'login' => 'Prihlasovacie meno',
+        'remember_token' => 'Token pre zapamätanie prihlásenia',
         'email_verified_at' => 'Čas verifikácie e-mailu',
     ],
     'token' => [
@@ -53,40 +38,38 @@ return [
         'created_at' => 'Čas vytvorenia',
         'resetPasswordUrl' => 'URL pre reset hesla (aplikovateľné iba pri resete hesla)',
     ],
-    'tab' => [
-        'preferences' => 'Preferencie'
-    ],
-    'activity' => [
-        'time' => 'Čas',
-        'ip' => 'IP',
-        'url' => 'URL',
-        'status' => [
-            'heading' => 'Stav',
-            'online' => 'Online',
-            'offline' => 'Offline',
+    'panel' => [
+        'data' => [
+            'authentication' => [
+                'heading' => 'Autentifikačné údaje',
+            ],
+            'authorization' => [
+                'heading' => 'Autorizačné údaje',
+            ],
+            'company' => [
+                'heading' => 'Údaje o spoločnosti',
+            ],
+            'instagram' => [
+                'heading' => 'Instagram',
+            ],
+            'note' => [
+                'heading' => 'Poznámka',
+            ],
         ],
-    ],
-    'model' => [
-        'title' => [
-            // 'singular' => 'Používateľ administrácie',
-            // 'plural' => 'Používatelia administrácie',
-            'singular' => 'Používateľ',
-            'plural' => 'Používatelia',
+        'activity' => [
+            'heading' => 'Aktivita',
+            'time' => 'Čas prihlásenia',
+            'ip' => 'IPv4 adresa',
+            'url' => 'URL',
+            'status' => [
+                'heading' => 'Stav',
+                'online' => 'Online',
+                'offline' => 'Offline',
+            ],
         ],
     ],
     'text' => [
-        'authentication-data' => 'Prihlasovacie údaje',
-        'authorization-data' => 'Autorizačné údaje',
-        'activity-data' => 'Aktivita',
-        'profile-data' => 'Osobné údaje',
         'profile-data-unavailable' => 'Osobné údaje ešte nie sú vyplnené',
-        //
-        'phone_no' => 'telefón',
-        'email' => 'email',
-        'company_registration_no' => 'IČO',
-        'company_registration_court' => 'zapísaný okr. súdom',
-        'company_insertion_division' => 'oddiel',
-        'company_insertion_no' => 'vložka č.',
         //
         'role-exclusive' => 'Role [:role] sú exkluzívne a nie je možné používateľovi priradiť ďalšie.',
         //
